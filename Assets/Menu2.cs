@@ -9,4 +9,9 @@ public class Menu2 : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(2); // Can also use 1;
     }
+
+    public void Back()
+    {
+        SceneManager.LoadSceneAsync(0); // Can also use 1;
+    }
 }
