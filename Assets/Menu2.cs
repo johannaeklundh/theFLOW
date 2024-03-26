@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class Menu2 : MonoBehaviour
 {
-   public void PlayGame()
+    public void PlayGame()
     {
-        SceneManager.LoadSceneAsync(1); // Can also use 1;
+        SceneManager.LoadSceneAsync(2); // Can also use 1;
     }
 }
