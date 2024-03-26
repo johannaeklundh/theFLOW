@@ -12,7 +12,13 @@ public class AIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CalculatePower(this);   // Runs this function on start, see changes to the right
+        //calculatePower(this);   // Runs this function on start, see changes to the right
+        //setState(this);
+        setPlacements(this);
+        player1.DisplayPlayerInfo();
+        player2.DisplayPlayerInfo();
+        player3.DisplayPlayerInfo();
+        player4.DisplayPlayerInfo();
     }
 
     // Update is called once per frame
@@ -26,7 +32,9 @@ public class AIScript : MonoBehaviour
     
     RULES:
     1. Varible-names for constants will always begin with a big letter.
-    2. Function-names will also always begin whith a big letter
+    2. Function-names will always begin with a small letter
+    3. Regular variable-names will begin with a small letter
+
 
     Necessary inputs from other code:
     - Power from the player-team
@@ -58,15 +66,44 @@ public class AIScript : MonoBehaviour
 
 
     /************Inputs(placeholders)*********/
+    
     // Current position of each player, 0 = outer edge, 51 = center (GOAL), placeholder taken from FLOW - EN VIRVEL
     public int pos1 = 35;   // current position for player 1
     public int pos2 = 26;   // current position for player 2
-    public int pos3 = 21;   // current position for player 3
+    public int pos3 = 41;   // current position for player 3 (diffrent from paper due to wanting to test setPlacements)
     public int pos4 = 0;    // current position for player 4
 
-    public float teamPower = 47.5F; // current power of the player-team
+    // Handles all data unique to each player
+    public struct PlayerData{
+        public int id;
+        public int position;
+        public int placement;
+        
+        // Constructor
+        public PlayerData(int playerID, int playerPosition, int playerPlacement)
+        {
+            id = playerID;
+            position = playerPosition;
+            placement = playerPlacement;
+        }
 
-    
+        // A way to display each player info in the console
+        public void DisplayPlayerInfo()
+        {
+            Debug.Log("Player ID: " + id);
+            Debug.Log("Player Position: " + position);
+            Debug.Log("Player Placement: " + placement);
+        }
+    }
+
+    // Create the 4 players (may change due to the number of players beign flexible)
+    PlayerData player1 = new PlayerData(1, 0, 1);
+    PlayerData player2 = new PlayerData(2, 0, 2);
+    PlayerData player3 = new PlayerData(3, 0, 3);
+    PlayerData player4 = new PlayerData(4, 0, 4);
+
+
+    public float teamPower = 47.5F; // current power of the player-team
 
 
     /************Constants*********/
@@ -90,11 +127,80 @@ public class AIScript : MonoBehaviour
 
 
     /**********************Functions************************/
+
+    // Placeholder to decide the placement of the players
+    public static void setPlacements(AIScript instance){
+
+        instance.player1.position = instance.pos1;
+        instance.player2.position = instance.pos2;
+        instance.player3.position = instance.pos3;
+        instance.player4.position = instance.pos4;
+        
+        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
+        PlayerData[] players = {(PlayerData)instance.player1, (PlayerData)instance.player2, (PlayerData)instance.player3, (PlayerData)instance.player4};
+        
+        // Create vector storing the current position of each player
+        Vector4 positions = new Vector4(instance.player1.position, instance.player2.position, instance.player3.position, instance.player4.position);
+
+        // Convert to arry for easier sorting
+        int[] sortedPositions = {(int)positions.x, (int)positions.y, (int)positions.z, (int)positions.w};
+
+        // Sort new array
+        System.Array.Sort(sortedPositions, (x,y) => y.CompareTo(x));
+
+        // Update placements
+        for(int i = 0; i < players.Length; i++)
+        {
+            for(int n = 0; n < sortedPositions.Length; n++)
+            {
+                if(players[i].position == sortedPositions[n]){
+                    players[i].placement = n + 1;
+                }
+            }
+        }
+
+        instance.player1.placement = players[0].placement;
+        instance.player2.placement = players[1].placement;
+        instance.player3.placement = players[2].placement;
+        instance.player4.placement = players[3].placement;
+
+    }
+    
     
     // Placeholder to calcute the AIs power
-    [ContextMenu("CalculatePower")] // Makes it so that we can run the function on command when playing the game by pressing the 3 dot beside the script on the right
-    public static void CalculatePower(AIScript instance){   
+    //[ContextMenu("CalculatePower")] // Makes it so that we can run the function on command when playing the game by pressing the 3 dot beside the script on the right (only work on non-static)
+    public static void calculatePower(AIScript instance){   
         instance.power = (int)instance.teamPower;
     }
+
+    // Placeholder to set the state of the AI dephending on performance (change to case)
+    public static void setState(AIScript instance){
+
+        switch(instance.pos1)
+        {
+            case int n when n >= 46:
+                instance.state = 3;
+                break;
+            case int n when n >= 40:
+                instance.state = 2;
+                break;
+            case int n when n >= 33:
+                instance.state = 1;
+                break;
+            default:
+                instance.state = 0;
+                break;
+        }
+    }
+
+    /*/ Placeholder to answer WHO got hit by lightning
+    public static int playerHit(AIScript instance){
+
+    }*/
+
+    /*/ Placeholder to answer if a player DID get hit by lightning
+    public static void isHit(AIScript instance){
+
+    }*/
 
 }
