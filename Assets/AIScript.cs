@@ -13,12 +13,14 @@ public class AIScript : MonoBehaviour
     void Start()
     {
         //calculatePower(this);   // Runs this function on start, see changes to the right
-        //setState(this);
-        setPlacements(this);
-        player1.DisplayPlayerInfo();
+        setPlacements(this);    // Test to set the correct placements of the players, must always intialize or all placements will be wrong
+        setState(this);   // Test to set the state of the AI
+        player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
         player2.DisplayPlayerInfo();
         player3.DisplayPlayerInfo();
         player4.DisplayPlayerInfo();
+        //Debug.Log("The player whose placement is 1 is player nr: " + placementPlayer(this, 1).id);  // Tests the search for player at placement function by writing out who is currently in placement 1
+        isHit(this);
     }
 
     // Update is called once per frame
@@ -34,11 +36,12 @@ public class AIScript : MonoBehaviour
     1. Varible-names for constants will always begin with a big letter.
     2. Function-names will always begin with a small letter
     3. Regular variable-names will begin with a small letter
+    4. Struct-names always begin with a big letter
 
 
     Necessary inputs from other code:
     - Power from the player-team
-    - Placements of each player
+    - Position of each player
 
     Necessary outputs from this code:
     - Power from the AI
@@ -128,7 +131,7 @@ public class AIScript : MonoBehaviour
 
     /**********************Functions************************/
 
-    // Placeholder to decide the placement of the players
+    // Placeholder to decide the placement of the players, change to update every 5 sec or smth
     public static void setPlacements(AIScript instance){
 
         instance.player1.position = instance.pos1;
@@ -173,10 +176,33 @@ public class AIScript : MonoBehaviour
         instance.power = (int)instance.teamPower;
     }
 
-    // Placeholder to set the state of the AI dephending on performance (change to case)
+    // Find a what player holds a certain placement
+    public static PlayerData placementPlayer(AIScript instance, int place){
+
+        // Test weather place is possible
+        if(place > 4){
+             throw new System.Exception("Invalid placement entered, try 1-4");
+        }
+
+        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
+        PlayerData[] players = {(PlayerData)instance.player1, (PlayerData)instance.player2, (PlayerData)instance.player3, (PlayerData)instance.player4};
+
+        // Search for player whose placement matches the searched place and return the player
+        for(int i = 0; i < players.Length; i++)
+        {
+            if(players[i].placement == place){
+                return players[i];
+            }
+        }
+
+        //return players[0];
+        throw new System.Exception("Could not find player at placement " + place);
+    }
+
+    // Placeholder to set the state of the AI dephending on the player positioned the closest to the center (change to include other players and update once every 5 sec)
     public static void setState(AIScript instance){
 
-        switch(instance.pos1)
+        switch(placementPlayer(instance, 1).position)   // Uses the player whose placement is 1:s position
         {
             case int n when n >= 46:
                 instance.state = 3;
@@ -193,13 +219,40 @@ public class AIScript : MonoBehaviour
         }
     }
 
+    // Placeholder to answer if a player DID get hit by lightning
+    public static void isHit(AIScript instance){
+
+        int chance = 0; // The chance of getting hit based on the state of th AI
+
+        switch(instance.state)
+        {
+            case int n when n == 3:
+                chance = PerState3;
+                break;
+            case int n when n == 2:
+                chance = PerState2;
+                break;
+            case int n when n == 1:
+                chance = PerState1;
+                break;
+            default:
+                chance = 0;
+                break;
+        }
+
+        // Genrate random number inbetween 0-100
+        int randomInt = Random.Range(0, 100);
+
+        if(randomInt <= chance){    // There is a chance% chance of getting hit
+            instance.gotHit = true; // Maybe change so that instead of having a bool, the function playerHit only gets called here
+        }
+        else{
+            instance.gotHit = false;
+        }
+    }
+
     /*/ Placeholder to answer WHO got hit by lightning
     public static int playerHit(AIScript instance){
-
-    }*/
-
-    /*/ Placeholder to answer if a player DID get hit by lightning
-    public static void isHit(AIScript instance){
 
     }*/
 
