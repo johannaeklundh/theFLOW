@@ -52,7 +52,7 @@ public class Aftermath: MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadSceneAsync(2); // Can also use 1;
+        SceneManager.LoadSceneAsync(5); // Can also use 1;
     }
 
 }
