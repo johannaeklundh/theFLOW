@@ -12,9 +12,19 @@ public class Aftermath : MonoBehaviour
         //TransparentBackground = Get
     }
 
-    public void Overlay()
+    public void StartMenu ()
     {
-        //SceneManager.LoadSceneAsync(); // Can also use 1;
-        //TransparentBackground.setActive(true);
+         SceneManager.LoadSceneAsync(0); // Can also use 1;
     }
+
+    public void ConnectMenu()
+    {
+        SceneManager.LoadSceneAsync(1); // Can also use 1;
+    }
+
+    public void ReStart()
+    {
+        SceneManager.LoadSceneAsync(2); // Can also use 1;
+    }
+
 }
