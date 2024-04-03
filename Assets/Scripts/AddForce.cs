@@ -33,7 +33,7 @@ public class AddForce : MonoBehaviour
     //    }
 
     //}
-    void FixedUpdate() //Better for physics
+    void FixedUpdate() //Better than Update() for physics
     {
         foreach (GameObject ball in gameObjects)
         {
