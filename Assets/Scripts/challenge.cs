@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Menu2 : MonoBehaviour
+public class challenge : MonoBehaviour
 {
-    public void PlayGame()
+    public void Finish()
     {
         SceneManager.LoadSceneAsync(2); // Can also use 1;
-    }
-
-    public void Back()
-    {
-        SceneManager.LoadSceneAsync(0); // Can also use 1;
     }
 }
