@@ -29,10 +29,10 @@ public class AIScript : MonoBehaviour
             calculatePower(this);   // Runs this function on start, see changes to the right
             setPlacements(this);    // Test to set the correct placements of the players, must always intialize or all placements will be wrong
             setState(this);   // Test to set the state of the AI
-            player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            player2.DisplayPlayerInfo();
-            player3.DisplayPlayerInfo();
-            player4.DisplayPlayerInfo();
+            //player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            //player2.DisplayPlayerInfo();
+            //player3.DisplayPlayerInfo();
+            //player4.DisplayPlayerInfo();
             //Debug.Log("The player whose placement is 1 is player nr: " + placementPlayer(this, 1).id);  // Tests the search for player at placement function by writing out who is currently in placement 1
             isHit(this);
 
@@ -162,8 +162,8 @@ public class AIScript : MonoBehaviour
 
 
     // Takes in the position of a player in x- and y-direction and makes it a distance from center, assumes center of screen is (0,0) (maybe move to gameLogic)
-    public static int setPosition(AIScript instance, int x, int y){
-        float position = Mathf.Sqrt(Mathf.Abs(x) + Mathf.Abs(y));    // Pythtagoras theorem to get distance from center
+    public static int calculatePosition(AIScript instance, int x, int y){
+        float position = Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(y, 2));    // Pythtagoras theorem to get distance from center
         return (int)position;
     }   // Add more things dephending on overall performance based of of gameLogic
 
