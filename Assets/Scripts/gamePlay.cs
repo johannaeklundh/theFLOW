@@ -23,7 +23,8 @@ public class gamePlay : MonoBehaviour
 
             updatePlayerPosition(this);
             setPlacements(this);
-            
+            setConsistency(this);
+            setUnbothered(this);
 
 
             // Display all that is stored in playerData in console
@@ -72,6 +73,12 @@ public class gamePlay : MonoBehaviour
         public int id;
         public int position;
         public int placement;
+        /*public float power;
+        public float meanAlpha;
+        public float meanTheta;
+        public float consistency;
+        public float unbothered;
+        public float balance;*/
         
         // Constructor
         public PlayerData(int playerID, int playerPosition, int playerPlacement)
@@ -134,6 +141,31 @@ public class gamePlay : MonoBehaviour
     /**********************************Functions*****************************************/
     
     
+    // Algorithm for calculating consistency
+    public static float calculateConsistency(gamePlay instance){
+        float con = 5;
+
+        return con;
+    }
+
+    // Set consistency of each player, utilizes calculateConsistency
+    public static void setConsistency(gamePlay instance){
+        //instance.player1.consistency = 5;
+    }
+
+    // Algorithm for calculating unbothered
+    public static float calculateUnbothered(gamePlay instance){
+        float unboth = 5;
+
+        return unboth;
+    }
+
+    // Set unbothered of each player, utilizes calculateUnbothered
+    public static void setUnbothered(gamePlay instance){
+        //instance.player1.unbothered = 5;
+    }
+    
+    
     // Takes in the position of a player in x- and y-direction and makes it a distance from center, assumes center of screen is (0,0)
     public static int calculatePosition(int x, int y){
         float position = Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(y, 2));    // Pythtagoras theorem to get distance from center
@@ -183,6 +215,15 @@ public class gamePlay : MonoBehaviour
         instance.player3.placement = players[2].placement;
         instance.player4.placement = players[3].placement;
 
+    }
+
+
+    // Returns the power in which the vortex will spin in, positive means players are winning, negative means Ai is winning
+    public static int whoseWinning(gamePlay instance, int teamPower, int aiPower){
+        
+        int rotate = 50;
+
+        return rotate;
     }
 
 
