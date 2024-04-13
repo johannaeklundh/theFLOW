@@ -73,19 +73,26 @@ public class gamePlay : MonoBehaviour
         public int id;
         public int position;
         public int placement;
-        /*public float power;
+        public float power;
         public float meanAlpha;
         public float meanTheta;
         public float consistency;
         public float unbothered;
-        public float balance;*/
+        public float balance;
         
         // Constructor
-        public PlayerData(int playerID, int playerPosition, int playerPlacement)
+        public PlayerData(int playerID, int playerPosition = 0, int playerPlacement = 0, float playerPower = 50, float playerAlphaMean = 0.0f,
+        float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f , float playerBalance = 0.0f)
         {
             id = playerID;
             position = playerPosition;
             placement = playerPlacement;
+            power = playerPower;
+            meanAlpha = playerAlphaMean;
+            meanTheta = playerThetaMean;
+            consistency = playerConsistency;
+            unbothered = playerUnbothered;
+            balance = playerBalance;
         }
 
         // A way to display each player info in the console
@@ -94,6 +101,12 @@ public class gamePlay : MonoBehaviour
             Debug.Log("Player ID: " + id);
             Debug.Log("Player Position: " + position);
             Debug.Log("Player Placement: " + placement);
+            Debug.Log("Player Power: " + power);
+            Debug.Log("Player Mean of Alpha: " + meanAlpha);
+            Debug.Log("Player Mean of Theta: " + meanTheta);
+            Debug.Log("Player Consistency: " + consistency);
+            Debug.Log("Player Unbothered: " + unbothered);
+            Debug.Log("Player Balance: " + balance);
         }
     }
 
@@ -108,11 +121,11 @@ public class gamePlay : MonoBehaviour
     
     
     
-    // Create the 4 players (may change due to the number of players beign flexible)
-    PlayerData player1 = new PlayerData(1, 0, 1);
-    PlayerData player2 = new PlayerData(2, 0, 2);
-    PlayerData player3 = new PlayerData(3, 0, 3);
-    PlayerData player4 = new PlayerData(4, 0, 4);
+    // Create the 4 players (may change to function due to the number of players beign flexible)
+    PlayerData player1 = new PlayerData(1);
+    PlayerData player2 = new PlayerData(2);
+    PlayerData player3 = new PlayerData(3);
+    PlayerData player4 = new PlayerData(4);
 
 
     // Current position of each player in x and y(placeholder)
