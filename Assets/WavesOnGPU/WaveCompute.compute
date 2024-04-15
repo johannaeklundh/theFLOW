@@ -8,14 +8,9 @@ int2 resolution;
 float3 effect;
 float dispersion;
 
-
 [numthreads(8, 8, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
-    // Get the current coordinates as floats
-    //float x = float(id.x);
-    //float y = float(id.y);
-
     float ns_ij = NState[id.xy].x; //red channel
     float nm1_ij = Nm1State[id.xy].x;
     float ns_ip1j = NState[id.xy + uint2(1, 0)].x;
@@ -26,16 +21,16 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     newWaveHeight = newWaveHeight * dispersion;
     
     //testar smoothing
-    newWaveHeight = lerp(ns_ij, newWaveHeight, 0.8);
-    newWaveHeight = lerp(nm1_ij, newWaveHeight, 0.8);
-    newWaveHeight = lerp(ns_ip1j, newWaveHeight, 0.8);
-    //newWaveHeight = lerp(ns_ijp1, newWaveHeight, 0.8);
-    //newWaveHeight = lerp(ns_im1j, newWaveHeight, 0.8);
-    //newWaveHeight = lerp(ns_ijm1, newWaveHeight, 0.8);
+    newWaveHeight = lerp(ns_ij, newWaveHeight, 0.4);
+    //newWaveHeight = lerp(nm1_ij, newWaveHeight, 0.4);
+    newWaveHeight = lerp(ns_ip1j, newWaveHeight, 0.7);
+    //newWaveHeight = lerp(ns_ijp1, newWaveHeight, 0.7);
+    newWaveHeight = lerp(ns_im1j, newWaveHeight, 0.7);
+    //newWaveHeight = lerp(ns_ijm1, newWaveHeight, 0.7);
 
     
     // Compare floats with floats
-    if (id.x == floor(effect.x) && id.y == floor(effect.y))
+    if (id.x == int(floor(effect.x)) && id.y == int(floor(effect.y)))
     {
         newWaveHeight = effect.z;
     }
@@ -47,8 +42,13 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     
     if (obstaclesTex[id.xy].y == 1)
     {
-        newWaveHeight = -0.5;
+        newWaveHeight = -0.1;
     }
 
+    //float brightnessFactor = 0.9;
+    //float4 trailColor = float4(newWaveHeight * brightnessFactor, newWaveHeight * brightnessFactor, newWaveHeight * brightnessFactor, 1.0);
+
+    //Np1State[id.xy] = trailColor;
+    
     Np1State[id.xy] = float4(newWaveHeight, newWaveHeight, newWaveHeight, 1); //new color RGBA
 }

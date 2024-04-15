@@ -153,8 +153,8 @@ GameObject:
   - component: {fileID: 16928715}
   - component: {fileID: 16928714}
   - component: {fileID: 16928713}
-  - component: {fileID: 16928712}
   - component: {fileID: 16928711}
+  - component: {fileID: 16928717}
   m_Layer: 0
   m_Name: CircleTop
   m_TagString: Untagged
@@ -179,20 +179,8 @@ MonoBehaviour:
   circularSpeed: 120
   radius: 2
   startAngle: 90
---- !u!114 &16928712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16928710}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &16928713
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -265,7 +253,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16928710}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &16928716
 Transform:
   m_ObjectHideFlags: 0
@@ -282,6 +270,19 @@ Transform:
   - {fileID: 2051558823}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &16928717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16928710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 16928711}
 --- !u!1 &88122826
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,8 +295,8 @@ GameObject:
   - component: {fileID: 88122831}
   - component: {fileID: 88122830}
   - component: {fileID: 88122829}
-  - component: {fileID: 88122828}
   - component: {fileID: 88122827}
+  - component: {fileID: 88122833}
   m_Layer: 0
   m_Name: CircleRight
   m_TagString: Untagged
@@ -320,20 +321,8 @@ MonoBehaviour:
   circularSpeed: 120
   radius: 2
   startAngle: 0
---- !u!114 &88122828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 88122826}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &88122829
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -406,7 +395,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88122826}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &88122832
 Transform:
   m_ObjectHideFlags: 0
@@ -423,6 +412,19 @@ Transform:
   - {fileID: 663717003}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &88122833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88122826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 88122827}
 --- !u!1 &133028088
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,8 +437,8 @@ GameObject:
   - component: {fileID: 133028093}
   - component: {fileID: 133028092}
   - component: {fileID: 133028091}
-  - component: {fileID: 133028090}
   - component: {fileID: 133028089}
+  - component: {fileID: 133028095}
   m_Layer: 0
   m_Name: CircleTopInner
   m_TagString: Untagged
@@ -460,21 +462,9 @@ MonoBehaviour:
   centerPoint: {fileID: 10292194}
   circularSpeed: 120
   radius: 1.5
-  startAngle: 90
---- !u!114 &133028090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133028088}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  startAngle: 70
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &133028091
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -547,7 +537,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133028088}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &133028094
 Transform:
   m_ObjectHideFlags: 0
@@ -564,6 +554,19 @@ Transform:
   - {fileID: 1708914404}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &133028095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133028088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 133028089}
 --- !u!1 &155776217
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,6 +984,8 @@ MonoBehaviour:
   circularSpeed: 150
   radius: 0
   startAngle: 0
+  targetCircularSpeed: 30
+  speedAdjustmentRate: 5
 --- !u!1 &657586985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,8 +1211,8 @@ GameObject:
   - component: {fileID: 814114181}
   - component: {fileID: 814114180}
   - component: {fileID: 814114179}
-  - component: {fileID: 814114178}
   - component: {fileID: 814114177}
+  - component: {fileID: 814114183}
   m_Layer: 0
   m_Name: CircleBottom
   m_TagString: Untagged
@@ -1232,20 +1237,8 @@ MonoBehaviour:
   circularSpeed: 120
   radius: 2
   startAngle: 270
---- !u!114 &814114178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 814114176}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &814114179
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1318,7 +1311,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 814114176}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &814114182
 Transform:
   m_ObjectHideFlags: 0
@@ -1335,6 +1328,19 @@ Transform:
   - {fileID: 1190639990}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &814114183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814114176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 814114177}
 --- !u!1 &827642801
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,8 +1353,8 @@ GameObject:
   - component: {fileID: 827642806}
   - component: {fileID: 827642805}
   - component: {fileID: 827642804}
-  - component: {fileID: 827642803}
   - component: {fileID: 827642802}
+  - component: {fileID: 827642808}
   m_Layer: 0
   m_Name: CircleLeftInner
   m_TagString: Untagged
@@ -1372,21 +1378,9 @@ MonoBehaviour:
   centerPoint: {fileID: 10292194}
   circularSpeed: 120
   radius: 1.5
-  startAngle: 180
---- !u!114 &827642803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 827642801}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  startAngle: 160
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &827642804
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1459,7 +1453,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 827642801}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &827642807
 Transform:
   m_ObjectHideFlags: 0
@@ -1476,6 +1470,19 @@ Transform:
   - {fileID: 1107565085}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &827642808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827642801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 827642802}
 --- !u!1 &891114509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1691,8 +1698,8 @@ GameObject:
   - component: {fileID: 950315965}
   - component: {fileID: 950315964}
   - component: {fileID: 950315963}
-  - component: {fileID: 950315962}
   - component: {fileID: 950315961}
+  - component: {fileID: 950315967}
   m_Layer: 0
   m_Name: CircleBottomInner
   m_TagString: Untagged
@@ -1716,21 +1723,9 @@ MonoBehaviour:
   centerPoint: {fileID: 10292194}
   circularSpeed: 120
   radius: 1.5
-  startAngle: 270
---- !u!114 &950315962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950315960}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  startAngle: 250
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &950315963
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1803,7 +1798,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950315960}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &950315966
 Transform:
   m_ObjectHideFlags: 0
@@ -1820,6 +1815,19 @@ Transform:
   - {fileID: 1197543353}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &950315967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950315960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 950315961}
 --- !u!1 &1107565084
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,8 +2286,8 @@ GameObject:
   - component: {fileID: 1600163988}
   - component: {fileID: 1600163987}
   - component: {fileID: 1600163986}
-  - component: {fileID: 1600163985}
   - component: {fileID: 1600163984}
+  - component: {fileID: 1600163990}
   m_Layer: 0
   m_Name: CircleRightInner
   m_TagString: Untagged
@@ -2303,21 +2311,9 @@ MonoBehaviour:
   centerPoint: {fileID: 10292194}
   circularSpeed: 120
   radius: 1.5
-  startAngle: 0
---- !u!114 &1600163985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1600163983}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  startAngle: -20
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &1600163986
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2390,7 +2386,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600163983}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1600163989
 Transform:
   m_ObjectHideFlags: 0
@@ -2407,6 +2403,19 @@ Transform:
   - {fileID: 271796245}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &1600163990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600163983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 1600163984}
 --- !u!1 &1689581585
 GameObject:
   m_ObjectHideFlags: 0
@@ -2419,8 +2428,8 @@ GameObject:
   - component: {fileID: 1689581590}
   - component: {fileID: 1689581589}
   - component: {fileID: 1689581588}
-  - component: {fileID: 1689581587}
   - component: {fileID: 1689581586}
+  - component: {fileID: 1689581592}
   m_Layer: 0
   m_Name: CircleLeft
   m_TagString: Untagged
@@ -2445,20 +2454,8 @@ MonoBehaviour:
   circularSpeed: 120
   radius: 2
   startAngle: 180
---- !u!114 &1689581587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1689581585}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5aad5bb95a6514db2f41d863fbb407, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnSpeed: 30
-  speed: 10
+  targetCircularSpeed: 0
+  speedAdjustmentRate: 5
 --- !u!136 &1689581588
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2531,7 +2528,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1689581585}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1689581591
 Transform:
   m_ObjectHideFlags: 0
@@ -2548,6 +2545,19 @@ Transform:
   - {fileID: 1166863397}
   m_Father: {fileID: 1852943460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &1689581592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689581585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addforce: {fileID: 1689581586}
 --- !u!1 &1708914403
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,12 +2998,12 @@ PrefabInstance:
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945,
         type: 3}
       propertyPath: effect.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945,
         type: 3}
       propertyPath: effect.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945,
         type: 3}

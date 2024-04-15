@@ -9,8 +9,9 @@ public class WaveManager : MonoBehaviour
     public RenderTexture NState, Nm1State, Np1State;
     public Vector2Int resolution;
     public RenderTexture obstaclesTex;
-    public Vector3 effect; // x,y, strength
+   // public Vector3 effect; // x,y, strength
     public float dispersion; //How much the waves are disappering 
+
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,7 @@ public class WaveManager : MonoBehaviour
         InitializeTexture(ref NState);
         InitializeTexture(ref Nm1State);
         InitializeTexture(ref Np1State);
+        waveMaterial.SetTexture("_rippleTex", NState);
         obstaclesTex.enableRandomWrite = true;
 
         Debug.Assert(obstaclesTex.width == resolution.x && obstaclesTex.height == resolution.y);
@@ -40,7 +42,7 @@ public class WaveManager : MonoBehaviour
         waveCompute.SetTexture(0, "NState", NState);
         waveCompute.SetTexture(0, "Nm1State", Nm1State);
         waveCompute.SetTexture(0, "Np1State", Np1State);
-        waveCompute.SetVector("effect", effect);
+        //waveCompute.SetVector("effect", effect);
         waveCompute.SetInts("resolution", resolution.x, resolution.y);
         waveCompute.SetFloat("dispersion", dispersion);
         waveCompute.SetTexture(0, "obstaclesTex", obstaclesTex);

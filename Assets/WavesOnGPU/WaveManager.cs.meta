@@ -3,7 +3,14 @@ guid: afb680ad8605d8b4aa64ecd73f3072a0
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - waveMaterial: {instanceID: 0}
+  - rippleMat: {fileID: 2100000, guid: 5194104783c99c94db161b7657fa98b9, type: 2}
+  - waveCompute: {instanceID: 0}
+  - NState: {instanceID: 0}
+  - Nm1State: {instanceID: 0}
+  - Np1State: {instanceID: 0}
+  - obstaclesTex: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
