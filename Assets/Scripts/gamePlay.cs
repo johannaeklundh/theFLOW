@@ -1,23 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+//using System.Runtime.Remoting.Channels;
 using UnityEngine;
 
 public class gamePlay : MonoBehaviour
 {
+    // Can change from Unity
+    public float alphaChange = 50;
+    public float thetaChange = 40;
+
     // Start is called before the first frame update
     void Start()
     {
         updatePlayerPosition(this);
         setPlacements(this);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-
-        
+   
         // Put functions inside this to delay the update to every 3 sec
         if(canUpdate){
 
@@ -26,16 +32,12 @@ public class gamePlay : MonoBehaviour
             setConsistency(this);
             setUnbothered(this);
 
+            //float alphaTest = 30;
+            //float thetaTest = 40;
 
-            // Display all that is stored in playerData in console
-            Debug.Log("\nPlayer1:");
-            player1.displayPlayerInfo();
-            Debug.Log("\nPlayer2:");
-            player2.displayPlayerInfo();
-            Debug.Log("\nPlayer3:");
-            player3.displayPlayerInfo();
-            Debug.Log("\nPlayer4:");
-            player4.displayPlayerInfo();       
+            setMean(this, alphaChange,thetaChange);
+            setBalance(this, alphaChange, thetaChange);
+            setPower(this, alphaChange, thetaChange);  
                  
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -61,7 +63,7 @@ public class gamePlay : MonoBehaviour
         // Allow updates to happen
         canUpdate = true;
     }
-    /********************************************************************************'******/
+    /**************************************************************************************/
 
 
 
@@ -79,7 +81,9 @@ public class gamePlay : MonoBehaviour
         public float consistency;
         public float unbothered;
         public float balance;
-        
+        public float largestDistance;
+        public float smallestDistance;
+
         // Constructor
         public PlayerData(int playerID, int playerPosition = 0, int playerPlacement = 0, float playerPower = 50, float playerAlphaMean = 0.0f,
         float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f , float playerBalance = 0.0f)
@@ -93,20 +97,22 @@ public class gamePlay : MonoBehaviour
             consistency = playerConsistency;
             unbothered = playerUnbothered;
             balance = playerBalance;
-        }
+            largestDistance = 0;
+            smallestDistance = 100;
+    }
 
         // A way to display each player info in the console
         public void displayPlayerInfo()
         {
-            Debug.Log("Player ID: " + id);
-            Debug.Log("Player Position: " + position);
-            Debug.Log("Player Placement: " + placement);
-            Debug.Log("Player Power: " + power);
-            Debug.Log("Player Mean of Alpha: " + meanAlpha);
-            Debug.Log("Player Mean of Theta: " + meanTheta);
-            Debug.Log("Player Consistency: " + consistency);
-            Debug.Log("Player Unbothered: " + unbothered);
-            Debug.Log("Player Balance: " + balance);
+            UnityEngine.Debug.Log("Player ID: " + id);
+            UnityEngine.Debug.Log("Player Position: " + position);
+            UnityEngine.Debug.Log("Player Placement: " + placement);
+            UnityEngine.Debug.Log("Player Power: " + power);
+            UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
+            UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
+            UnityEngine.Debug.Log("Player Consistency: " + consistency);
+            UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
+            UnityEngine.Debug.Log("Player Balance: " + balance);
         }
     }
 
@@ -240,16 +246,73 @@ public class gamePlay : MonoBehaviour
     }
 
 
+    // Return the new calculated the mean of input BrainWave with the latest input
+    static float calculateMean(float mean, float brainWave)
+    {
+        mean = (mean + brainWave) / 2;
+        return mean;
+    }
 
+   // Set mean of both alpha and theta of each player
+    static void setMean(gamePlay instance, float alpha, float theta)
+    {
 
+        instance.player1.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
+        instance.player1.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+                                                     
+        instance.player2.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
+        instance.player2.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+                                                     
+        instance.player3.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
+        instance.player3.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+                                                    
+        instance.player4.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
+        instance.player4.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+    }
+   
+    // Returns the new calculated power (a mean of alpha and theta)
+    public static float calculatePower(float alpha, float theta)
+    {
+        float power = (alpha + theta) / 2;
+        return power;
+    }
+    // Set power to each instance of players
+    static void setPower(gamePlay instance, float alpha, float theta)
+    {
+        // float at the end (50) should be replaced with brainWave input
+        instance.player1.power = calculatePower(alpha, theta);
+        instance.player2.power = calculatePower(alpha, theta);
+        instance.player3.power = calculatePower(alpha, theta);
+        instance.player4.power = calculatePower(alpha, theta);
+    }
 
+    // Returns the new calculated balnce (how close alpha and theta is)
+    static float calculateBalance(ref PlayerData playerTemp, float alpha, float theta)
+    {
+        float diff = Math.Abs(alpha - theta);
+        if(diff > playerTemp.largestDistance)
+        {
+            //change playerTemp largest distance
+            playerTemp.largestDistance = diff;
 
+        } else if(diff < playerTemp.smallestDistance)
+        {
+            //change playerTemp smallest distance
+            playerTemp.smallestDistance = diff;
+        }   
+        // Calculate new balance
+        float balance = (playerTemp.largestDistance + playerTemp.smallestDistance) / 2;
+        return balance;
+    }
 
+    public static void setBalance(gamePlay instance, float alpha, float theta)
+    {
+        instance.player1.balance = calculateBalance(ref instance.player1, alpha, theta);
+        instance.player2.balance = calculateBalance(ref instance.player2, alpha, theta);
+        instance.player3.balance = calculateBalance(ref instance.player3, alpha, theta);
+        instance.player4.balance = calculateBalance(ref instance.player4, alpha, theta);
 
-
-
-
-
-
+    }
+     
     /************************************************************************************/
 }
