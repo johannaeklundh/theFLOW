@@ -7,28 +7,32 @@ RWTexture2D<float4> obstaclesTex;
 int2 resolution;
 float3 effect;
 float dispersion;
+float4 rippleObjs[10];
+float arrayLength;
 
 [numthreads(8, 8, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID)
 {
-    float ns_ij = NState[id.xy].x; //red channel
-    float nm1_ij = Nm1State[id.xy].x;
+    float ns_ij = NState[id.xy].x;
+    float nm1s_ij = Nm1State[id.xy].x;
     float ns_ip1j = NState[id.xy + uint2(1, 0)].x;
     float ns_ijp1 = NState[id.xy + uint2(0, 1)].x;
     float ns_im1j = NState[id.xy - uint2(1, 0)].x;
     float ns_ijm1 = NState[id.xy - uint2(0, 1)].x;
-    float newWaveHeight = ns_ij * 2 - nm1_ij + 0.25 * (ns_ip1j + ns_im1j + ns_ijp1 + ns_ijm1 - 4 * ns_ij);
+    float newWaveHeight = ns_ij * 2 - nm1s_ij + 0.25 * (ns_ip1j + ns_im1j + ns_ijp1 + ns_ijm1 - 4 * ns_ij);
     newWaveHeight = newWaveHeight * dispersion;
-    
-    //testar smoothing
-    newWaveHeight = lerp(ns_ij, newWaveHeight, 0.4);
-    //newWaveHeight = lerp(nm1_ij, newWaveHeight, 0.4);
-    newWaveHeight = lerp(ns_ip1j, newWaveHeight, 0.7);
-    //newWaveHeight = lerp(ns_ijp1, newWaveHeight, 0.7);
-    newWaveHeight = lerp(ns_im1j, newWaveHeight, 0.7);
-    //newWaveHeight = lerp(ns_ijm1, newWaveHeight, 0.7);
 
     
+    
+    //testar smoothing
+    //newWaveHeight = lerp(ns_ij, newWaveHeight, 0.8);
+    //newWaveHeight = lerp(nm1s_ij, newWaveHeight, 0.8);
+    //newWaveHeight = lerp(ns_ip1j, newWaveHeight, 0.7);
+    //newWaveHeight = lerp(ns_ijp1, newWaveHeight, 0.7);
+    //newWaveHeight = lerp(ns_im1j, newWaveHeight, 0.7);
+    //newWaveHeight = lerp(ns_ijm1, newWaveHeight, 0.7);
+
+    /*
     // Compare floats with floats
     if (id.x == int(floor(effect.x)) && id.y == int(floor(effect.y)))
     {
@@ -49,6 +53,16 @@ void CSMain(uint3 id : SV_DispatchThreadID)
     //float4 trailColor = float4(newWaveHeight * brightnessFactor, newWaveHeight * brightnessFactor, newWaveHeight * brightnessFactor, 1.0);
 
     //Np1State[id.xy] = trailColor;
+    */
+
+    for(int i; i<10; i++)
+    {
+        if(i > arrayLength) break;
+        if(distance(rippleObjs[i].xy, id.xy) < rippleObjs[i].z)
+        {
+            newWaveHeight = 1;
+        }
+    }
     
     Np1State[id.xy] = float4(newWaveHeight, newWaveHeight, newWaveHeight, 1); //new color RGBA
 }
