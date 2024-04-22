@@ -9,11 +9,14 @@ public class AddForce : MonoBehaviour
     public Transform centerPoint; // The center point around which the objects will circle.
     public float circularSpeed = 0f; // The speed of the circular movement start at 0.
     public float radius; // The radius of the circular movement
+    public float targetRadius;
     public float startAngle; // The initial angle for this object
     private float currentAngle; // Current angle of rotation around the center
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate = 10f; // Rate of speed change per second
+    private float startSpeed = 50f;
+    private float radiusAdjustmentRate = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +39,9 @@ public class AddForce : MonoBehaviour
             centerPoint.position = Vector3.zero;
         }
 
-        targetCircularSpeed = 40;
+        targetCircularSpeed = startSpeed;
         currentAngle = startAngle;
+        targetRadius = radius;
     }
 
     //Called every frame
@@ -50,20 +54,22 @@ public class AddForce : MonoBehaviour
             return;
         }
 
-        if (circularSpeed < 40) { circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, 40 * Time.deltaTime); }
+        if (circularSpeed < startSpeed) { circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, startSpeed * Time.deltaTime); }
 
-        if (Mathf.Abs(targetCircularSpeed) < 40)
+        if (Mathf.Abs(targetCircularSpeed) < startSpeed)
         {
             //Change direction quickly
             circularSpeed = -1 * circularSpeed;
-            if (targetCircularSpeed < 0) { targetCircularSpeed += 80; } //80 change in circularspeed for a better effect
-            else if (targetCircularSpeed > 0) { targetCircularSpeed -= 80; }
+            if (targetCircularSpeed < 0) { targetCircularSpeed += startSpeed*2; } //80 change in circularspeed for a better effect
+            else if (targetCircularSpeed > 0) { targetCircularSpeed -= startSpeed*2; }
         }
         else
         {
             //Change direction slowly
             circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, speedAdjustmentRate * Time.deltaTime);
         }
+
+        radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
 
         // Calculate circular movement
         RotateAroundCenter();
@@ -85,7 +91,7 @@ public class AddForce : MonoBehaviour
         Vector3 newPosition = centerPoint.position + direction * radius;
 
         // Apply the new position (and noise)
-        if (circularSpeed < 60) { transform.position = newPosition; }
+        if (Mathf.Abs(circularSpeed) < startSpeed+15f) { transform.position = newPosition; }
         else
         {
             float noiseX = RandomGen();
@@ -98,6 +104,6 @@ public class AddForce : MonoBehaviour
 
     float RandomGen()
     {
-        return UnityEngine.Random.Range(-0.05f, 0.05f);
+        return UnityEngine.Random.Range(-0.03f, 0.03f);
     }
 }
