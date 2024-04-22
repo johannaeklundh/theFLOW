@@ -38,7 +38,7 @@ public class gamePlay : MonoBehaviour
             updatePlayerPosition(this);
             setPlacements(this);
             setConsistency(this);
-            //setUnbothered(this, 1); //gets called in AI
+            //setUnbothered(this, ref player1); //gets called in AI
 
             //float alphaTest = 30;
             //float thetaTest = 40;
@@ -137,7 +137,7 @@ public class gamePlay : MonoBehaviour
             //UnityEngine.Debug.Log("Player Theta: " + theta);
             //UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
             //UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
-            //UnityEngine.Debug.Log("Player Consistency: " + consistency);
+            UnityEngine.Debug.Log("Player Consistency: " + consistency);
             UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
             //UnityEngine.Debug.Log("Player Balance: " + balance);
         }
@@ -325,25 +325,25 @@ public class gamePlay : MonoBehaviour
     public static void setConsistency(gamePlay instance){
         // Player 1
         float consistency = derivatePower(instance.player1); // Calculate consistency for player
-        if(consistency < 0 && instance.player1.consistency > consistency){ // Only keep the largest decending derivative (want player to get better)
+        if(instance.player1.consistency > consistency){ // Only keep the largest decending derivative (want player to get better)
             instance.player1.consistency = consistency; // Update
         }
 
         // Player 2
         consistency = derivatePower(instance.player2); // Calculate consistency for player
-        if(consistency < 0 && instance.player2.consistency > consistency){ // Only keep the largest decending derivative
+        if(instance.player2.consistency > consistency){ // Only keep the largest decending derivative
             instance.player2.consistency = consistency; // Update
         }
         
         // Player 3
         consistency = derivatePower(instance.player3); // Calculate consistency for player
-        if(consistency < 0 && instance.player3.consistency > consistency){ // Only keep the largest decending derivative
+        if(instance.player3.consistency > consistency){ // Only keep the largest decending derivative
             instance.player3.consistency = consistency; // Update
         }
         
         // Player 4
         consistency = derivatePower(instance.player4); // Calculate consistency for player
-        if(consistency < 0 && instance.player4.consistency > consistency){ // Only keep the largest decending derivative
+        if(instance.player4.consistency > consistency){ // Only keep the largest decending derivative
             instance.player4.consistency = consistency; // Update
         }
     }
@@ -358,16 +358,27 @@ public class gamePlay : MonoBehaviour
     }*/
 
     // Set unbothered of each player, utilizes calculateUnbothered
-    public static async void setUnbothered(gamePlay instance, int id){
+    public static void setUnbothered(gamePlay instance, int id){
 
         PlayerData p = idPlayer(instance, id);
         float unbothered = derivatePower(p);
 
         if(unbothered > p.unbothered){ // Update to the largest value
-            //instance.p.unbothered = unbothered;   FIX
+            if(id == 1){
+                instance.player1.unbothered = unbothered;
+            }
+            else if(id == 2){
+                instance.player2.unbothered = unbothered;
+            }
+            else if(id == 3){
+                instance.player3.unbothered = unbothered;
+            }
+            else{
+                instance.player4.unbothered = unbothered;
+            }
         }
 
-        //p.displayPlayerInfo();
+        //player.displayPlayerInfo();
     }
 
 

@@ -368,6 +368,7 @@ public class AIScript : MonoBehaviour
 
         Debug.Log("The player whose ID is: " + who + " got hit, how hard: " + how);
 
+        //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
         gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay
 
         return (who, how);
