@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChangeSpeed : MonoBehaviour
 {
-    public AddForce addForce;
+    public AddForce changeForce;
     private float step = 10f;
     private float radiusChange = 0.1f;
 
@@ -13,21 +13,21 @@ public class ChangeSpeed : MonoBehaviour
         //Press M to increase speed
         if (Input.GetKeyDown(KeyCode.M))
         {
-            addForce.targetCircularSpeed += step;
+            changeForce.targetCircularSpeed += step;
         }// Press L to decrease speed
         if (Input.GetKeyDown(KeyCode.L))
         {
-            addForce.targetCircularSpeed -= step;
+            changeForce.targetCircularSpeed -= step;
         }
 
         //Press S for smaller radius
         if (Input.GetKeyDown(KeyCode.S))
         {
-            addForce.targetRadius -= radiusChange;
+            changeForce.targetRadius -= radiusChange;
         }// Press B for bigger radius
         if (Input.GetKeyDown(KeyCode.B))
         {
-            addForce.targetRadius += radiusChange;
+            changeForce.targetRadius += radiusChange;
         }
     }
 }

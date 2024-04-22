@@ -81,6 +81,11 @@ public class AddForce : MonoBehaviour
         currentAngle += circularSpeed * Time.deltaTime;
         currentAngle %= 360; // Ensure the angle stays within 0-360 degrees
 
+        //float noiseX = RandomGen();
+        //float noiseZ = RandomGen();
+
+        //randomNoise = new Vector3(noiseX, 0, noiseZ);
+
         // Calculate the new position based on the center point, radius, and current angle
         Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward;
         Vector3 newPosition = centerPoint.position + direction * radius;
