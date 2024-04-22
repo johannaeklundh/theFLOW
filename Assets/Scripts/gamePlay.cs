@@ -131,15 +131,15 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player ID: " + id);
             //UnityEngine.Debug.Log("Player Position: " + position);
             //UnityEngine.Debug.Log("Player Placement: " + placement);
-            UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            UnityEngine.Debug.Log("Player Power: " + power);
+            //UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
+            //UnityEngine.Debug.Log("Player Power: " + power);
             //UnityEngine.Debug.Log("Player Alpha: " + alpha);
             //UnityEngine.Debug.Log("Player Theta: " + theta);
-            //UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
-            //UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
+            UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
+            UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
             //UnityEngine.Debug.Log("Player Consistency: " + consistency);
-            UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
-            //UnityEngine.Debug.Log("Player Balance: " + balance);
+            //UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
+            UnityEngine.Debug.Log("Player Balance: " + balance);
         }
     }
 
@@ -358,7 +358,7 @@ public class gamePlay : MonoBehaviour
     }*/
 
     // Set unbothered of each player, utilizes calculateUnbothered
-    public static async void setUnbothered(gamePlay instance, int id){
+    public static void setUnbothered(gamePlay instance, int id){
 
         PlayerData p = idPlayer(instance, id);
         float unbothered = derivatePower(p);
@@ -382,17 +382,17 @@ public class gamePlay : MonoBehaviour
     static void setMean(gamePlay instance, float alpha, float theta)
     {
 
-        instance.player1.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
-        instance.player1.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+        instance.player1.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player1.alpha);
+        instance.player1.meanTheta = calculateMean(instance.player1.meanTheta, instance.player1.theta);
                                                      
-        instance.player2.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
-        instance.player2.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+        instance.player2.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player2.alpha);
+        instance.player2.meanTheta = calculateMean(instance.player1.meanTheta, instance.player2.theta);
                                                      
-        instance.player3.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
-        instance.player3.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+        instance.player3.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player2.alpha);
+        instance.player3.meanTheta = calculateMean(instance.player1.meanTheta, instance.player3.theta);
                                                     
-        instance.player4.meanAlpha = calculateMean(instance.player1.meanAlpha, alpha);
-        instance.player4.meanTheta = calculateMean(instance.player1.meanTheta, theta);
+        instance.player4.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player2.alpha);
+        instance.player4.meanTheta = calculateMean(instance.player1.meanTheta, instance.player4.theta);
     }
 
     // Returns the new calculated balnce (how close alpha and theta is)
@@ -414,13 +414,13 @@ public class gamePlay : MonoBehaviour
         return balance;
     }
 
+    // Set balance of all players
     public static void setBalance(gamePlay instance, float alpha, float theta)
     {
         instance.player1.balance = calculateBalance(ref instance.player1, alpha, theta);
         instance.player2.balance = calculateBalance(ref instance.player2, alpha, theta);
         instance.player3.balance = calculateBalance(ref instance.player3, alpha, theta);
         instance.player4.balance = calculateBalance(ref instance.player4, alpha, theta);
-
     }
 
     // Updates the players current position (placeholder)

@@ -11,8 +11,8 @@ public class PentagonFillOutline : MonoBehaviour
     public float offsetX = 0f; // Offset in the x-direction
     public float offsetY = 0f; // Offset in the y-direction
     public float width = 0.5f;
-    [Range(0f, 1f)]
-    public float[] inputs = new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+    [Range(0f, 100f)]
+    public float[] inputs = new float[] { 100.0f, 100.0f, 100.0f, 100.0f, 100.0f };
 
     LineRenderer lineRenderer;
 
@@ -50,7 +50,7 @@ public class PentagonFillOutline : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             float angleInRadians = Mathf.Deg2Rad * (i * angle + 70); // Offset by 90 degrees to orient the pentagon correctly
-            vertices[i] = new Vector3(Mathf.Cos(angleInRadians) * radius * inputs[i] + offsetX, Mathf.Sin(angleInRadians) * radius*inputs[i] + offsetY, 0);
+            vertices[i] = new Vector3(Mathf.Cos(angleInRadians) * radius * inputs[i]/100 + offsetX, Mathf.Sin(angleInRadians) * radius*inputs[i] / 100 + offsetY, 0);
         }
 
         return vertices;
