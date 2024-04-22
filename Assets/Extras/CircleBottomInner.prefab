@@ -73,8 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f,
-    type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
   m_Color: {r: 0.07476878, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,7 +97,6 @@ GameObject:
   - component: {fileID: 531321709087474755}
   - component: {fileID: 4844602392346542268}
   - component: {fileID: 4279861500325030568}
-  - component: {fileID: 5115103595816845533}
   m_Layer: 0
   m_Name: CircleBottomInner
   m_TagString: Untagged
@@ -211,19 +209,7 @@ MonoBehaviour:
   centerPoint: {fileID: 0}
   circularSpeed: 120
   radius: 1.5
+  targetRadius: 0
   startAngle: 250
   targetCircularSpeed: 0
   speedAdjustmentRate: 5
---- !u!114 &5115103595816845533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3944737214524657366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addforce: {fileID: 4279861500325030568}
