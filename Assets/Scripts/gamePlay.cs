@@ -40,8 +40,8 @@ public class gamePlay : MonoBehaviour
             setBalance(this);
             // setUnbothered is called upon in AI 
 
-            player1.displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            // player2.displayPlayerInfo();
+            // player1.displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            player2.displayPlayerInfo();
             // player3.displayPlayerInfo();
             // player4.displayPlayerInfo();
                  
@@ -382,11 +382,12 @@ public class gamePlay : MonoBehaviour
     
     
     // returns a radious for each player, goes from 0 to 2
-    public static float calculatePosition(gamePlay instance, PlayerData player){
+    public static float calculatePosition(gamePlay instance, PlayerData player, float lightning = 0.0f){
         
         float position = player.position;
 
-        if(player.position < 2){    // Must be less than 2
+        // Normal increase/decrease dephending on power
+        if(player.position < 2.0f){    // Must be less than 2
             if(player.power > instance.AI.power + 10){
                 position = position + 0.1f;
             }
@@ -394,16 +395,28 @@ public class gamePlay : MonoBehaviour
                 position = position + 0.05f;
             }
             else if(player.power >= instance.AI.power){
-            position++;
+            position = position + 0.01f;
+            }
         }
-        }
-        else if(player.position > 0){   // Must be more than 0
+        else if(player.position > 0.0f){   // Must be more than 0
             if(player.power < instance.AI.power - 5){
                 position = position - 0.05f;
             }
             else if(player.power < instance.AI.power -10){
                 position = position -0.1f;
             }
+        }
+
+        // Lightning from AI 
+        position = position - lightning;
+        
+
+        // Keep positions inbetween possible values
+        if(player.position > 2.0f){
+            position = 2.0f;
+        }
+        if(player.position < 0.0f){
+            position = 0.0f;
         }
 
         return position;

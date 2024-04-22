@@ -88,9 +88,9 @@ public class AIScript : MonoBehaviour
 
     
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const int LIGHT = 1;
-    public const int MEDIUM = 2;
-    public const int HARD = 3;
+    public const float LIGHT = 0.1f;
+    public const float MEDIUM = 0.2f;
+    public const float HARD = 0.3f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
     public const int PerState1 = 50; // 4% chance of getting hit per second when state = 1
@@ -236,19 +236,18 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to answer WHO got hit by lightning and HOW hard they got hit
-    public static (int, int) playerHit(AIScript instance){
+    public static void playerHit(AIScript instance){
 
         // Only the players placed 1-3 can get hit
 
         // Generate random integer inbetween 1-3, decides what player at the generated placement got got hit
         int placement = Random.Range(1, 4);
         //Debug.Log("Random placement between 1 and 3 is " + placement);
-        int who = placementPlayer(instance, placement).id;
+        gamePlay.PlayerData player = placementPlayer(instance, placement);
 
-        //Debug.Log("playerHit:   Player " + placementPlayer(instance, placement).id  + " whose placement is " + placementPlayer(instance, placement).placement + " and who = " + who);
-        //placementPlayer(instance, placement).displayPlayerInfo();
+        int who = player.id;    // Player whose id is the one who got hit
 
-        int how = 0;    // How hard the player got hit based on the state of the AI
+        float how = 0;    // How hard the player got hit based on the state of the AI
 
         switch(instance.state)
         {
@@ -263,11 +262,15 @@ public class AIScript : MonoBehaviour
                 break;
         }
 
+        Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
+        player.displayPlayerInfo();
+
+        // Moving the player in question back "how" many steps
+        gamePlay.calculatePosition(instance.GP, player, how);   // Updates unbothered of the player that got hit in gamePlay-class
+
 
         //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
         gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay-class
-
-        return (who, how);
     }
 
 }
