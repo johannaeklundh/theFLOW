@@ -7,6 +7,11 @@ using UnityEngine;
 
 public class AIScript : MonoBehaviour
 {
+    /********Refrence instances to other classes/scripts********/
+    public gamePlay GP;
+
+
+    /***********************************************************/
     
     // Start is called before the first frame update
     void Start()
@@ -14,12 +19,12 @@ public class AIScript : MonoBehaviour
         calculatePower(this);   // Runs this function on start, see changes to the right
         setPlacements(this);    // Test to set the correct placements of the players, must always intialize or all placements will be wrong
         setState(this);   // Test to set the state of the AI
-        player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
+        /*player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
         player2.DisplayPlayerInfo();
         player3.DisplayPlayerInfo();
-        player4.DisplayPlayerInfo();
+        player4.DisplayPlayerInfo();*/
         //Debug.Log("The player whose placement is 1 is player nr: " + placementPlayer(this, 1).id);  // Tests the search for player at placement function by writing out who is currently in placement 1
-        isHit(this);
+        //isHit(this);
     }
 
     // Update is called once per frame
@@ -152,7 +157,7 @@ public class AIScript : MonoBehaviour
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
     public const int PerState1 = 4; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 8; // 8% chance of getting hit per second when state = 2
+    public const int PerState2 = 75; // 8% chance of getting hit per second when state = 2
     public const int PerState3 = 16; // 16% chance of getting hit per second when state = 3
 
 
@@ -361,7 +366,10 @@ public class AIScript : MonoBehaviour
                 break;
         }
 
-        // Debug.Log("Player ID: " + who + ", how hard: " + how);
+        Debug.Log("The player whose ID is: " + who + " got hit, how hard: " + how);
+
+        gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay
+
         return (who, how);
     }
 
