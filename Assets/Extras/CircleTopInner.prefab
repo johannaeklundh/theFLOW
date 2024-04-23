@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6042364463765609314}
   - component: {fileID: 4210356262212150231}
   - component: {fileID: 1113455141649480010}
-  - component: {fileID: 358347982710202692}
   m_Layer: 0
   m_Name: CircleTopInner
   m_TagString: Untagged
@@ -126,22 +125,10 @@ MonoBehaviour:
   centerPoint: {fileID: 0}
   circularSpeed: 120
   radius: 1.5
+  targetRadius: 0
   startAngle: 70
   targetCircularSpeed: 0
   speedAdjustmentRate: 5
---- !u!114 &358347982710202692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6028253058237289979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6789431e37fae7c449242f8caf99c75e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addforce: {fileID: 1113455141649480010}
 --- !u!1 &7369561922591672110
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,8 +202,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f,
-    type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
   m_Color: {r: 0.07476878, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
