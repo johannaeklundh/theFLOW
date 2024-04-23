@@ -237,7 +237,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2
+  radius: 2.5
   targetRadius: 0
   startAngle: 135
   targetCircularSpeed: 0
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c9f091ba9503483db33aa83bf924b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereLight: {fileID: 891114510}
+  sphereLight: {fileID: 0}
   minSize: 1
   maxSize: 5
   minIntensity: 1
@@ -530,7 +530,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2
+  radius: 2.5
   targetRadius: 0
   startAngle: 225
   targetCircularSpeed: 0
@@ -625,13 +625,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 891114509}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.37400046, y: -0.23863071, z: 0.10021311, w: 0.8905821}
+  m_LocalRotation: {x: 0.2090646, y: -0.25268397, z: 0.056018684, w: 0.9430295}
   m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45.56, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 25, y: -30, z: 0}
 --- !u!114 &891114512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,7 +785,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2
+  radius: 2.5
   targetRadius: 0
   startAngle: 45
   targetCircularSpeed: 0
@@ -864,7 +864,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2
+  radius: 2.5
   targetRadius: 0
   startAngle: 315
   targetCircularSpeed: 0
@@ -1978,7 +1978,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 08824e6e966546041810945bca8abbca, type: 2}
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: objects.Array.size
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: objects.Array.data[0]
@@ -2020,6 +2020,14 @@ PrefabInstance:
       propertyPath: objects.Array.data[9]
       value: 
       objectReference: {fileID: 1583370988}
+    - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
+      propertyPath: objects.Array.data[10]
+      value: 
+      objectReference: {fileID: 1275965110}
+    - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
+      propertyPath: objects.Array.data[11]
+      value: 
+      objectReference: {fileID: 845564347}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

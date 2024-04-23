@@ -15,8 +15,7 @@ public class AddForce : MonoBehaviour
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate; // Rate of speed change per second
-    //private float startSpeed = 50f;
-    private float radiusAdjustmentRate = 0.1f;
+    private float radiusAdjustmentRate = 0.5f;
 
     public int speedID;
     public int behaviorID;
@@ -34,6 +33,7 @@ public class AddForce : MonoBehaviour
                 return;
             }
         }
+        //transform.localScale = new Vector3(1f, 1f, 1f); //THIS TO CHANGE SIZE
 
         // Initialize centerPoint to origin
         if (centerPoint == null)
@@ -101,8 +101,8 @@ public class AddForce : MonoBehaviour
         Vector3 newPosition = centerPoint.position + direction * radius;
 
         // Apply the new position (and noise)
-        if (Mathf.Abs(circularSpeed) < DetermineSpeedBySpeedID(speedID) + 15f) { transform.position = newPosition; }
-        else
+
+        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 20f && behaviorID ==1)
         {
             float noiseX = RandomGen();
             float noiseZ = RandomGen();
@@ -110,7 +110,7 @@ public class AddForce : MonoBehaviour
             randomNoise = new Vector3(noiseX, 0, noiseZ);
             transform.position = newPosition + randomNoise;
         }
-        // Debug.Log($"Object: {gameObject.name}, Position: {transform.position}, CircularSpeed: {circularSpeed}, RandomNoise: {randomNoise}");
+        else { transform.position = newPosition; }
 
     }
 

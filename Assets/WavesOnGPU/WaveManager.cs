@@ -12,7 +12,7 @@ public class WaveManager : MonoBehaviour
     public float size = 1;
     private bool render;
     public Transform[] objects;
-    private Vector4[] array = new Vector4[10];
+    private Vector4[] array = new Vector4[15];
    // public Vector3 effect; // x,y, strength
     public float dispersion; //How much the waves are disappering 
 

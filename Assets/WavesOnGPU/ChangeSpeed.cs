@@ -6,7 +6,7 @@ public class ChangeSpeed : MonoBehaviour
 {
     public AddForce changeForce;
     private float step = 10f;
-    private float radiusChange = 0.1f;
+    private float radiusChange = 1f;
 
     void Update()
     {
@@ -19,15 +19,19 @@ public class ChangeSpeed : MonoBehaviour
         {
             changeForce.targetCircularSpeed -= step;
         }
+        if (changeForce.behaviorID == 0)
+        {
+            //Press S for smaller radius
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                changeForce.targetRadius -= radiusChange;
+            }// Press B for bigger radius
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                changeForce.targetRadius += radiusChange;
+            }
 
-        //Press S for smaller radius
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            changeForce.targetRadius -= radiusChange;
-        }// Press B for bigger radius
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            changeForce.targetRadius += radiusChange;
         }
+
     }
 }
