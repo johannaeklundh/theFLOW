@@ -24,7 +24,7 @@ public class LightSourceBehaviour : MonoBehaviour
     {
         // Hämta den associerade post processing volymen och Bloom-inställningarna
         volume = GetComponent<Volume>();
-        volume.profile.TryGet(out bloom);
+       // volume.profile.TryGet(out bloom);
 
         // Hämta referensen till spelarens prestandahantering
         // playerPerformance = FindObjectOfType<PlayerPerformance>();

@@ -14,9 +14,12 @@ public class AddForce : MonoBehaviour
     private float currentAngle; // Current angle of rotation around the center
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
-    public float speedAdjustmentRate = 10f; // Rate of speed change per second
-    private float startSpeed = 50f;
+    public float speedAdjustmentRate; // Rate of speed change per second
+    //private float startSpeed = 50f;
     private float radiusAdjustmentRate = 0.1f;
+
+    public int speedID;
+    public int behaviorID;
 
     // Start is called before the first frame update
     void Start()
@@ -39,29 +42,41 @@ public class AddForce : MonoBehaviour
             centerPoint.position = Vector3.zero;
         }
 
-        targetCircularSpeed = startSpeed;
         currentAngle = startAngle;
         targetRadius = radius;
+        targetCircularSpeed = DetermineSpeedBySpeedID(speedID);
+    }
+
+    float DetermineSpeedBySpeedID(int id)
+    {
+        switch (id)
+        {
+            case 1: return 25f;
+            case 2: return 50f;
+            default: return 10f;
+        }
     }
 
     //Called every frame
     void FixedUpdate()
     {
-
         if (waveManager == null)
         {
             Debug.LogError("WaveManager is null. Make sure it is assigned or found on the same GameObject.");
             return;
         }
 
-        if (circularSpeed < startSpeed) { circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, startSpeed * Time.deltaTime); }
-
-        if (Mathf.Abs(targetCircularSpeed) < startSpeed)
+        if (circularSpeed < DetermineSpeedBySpeedID(speedID))
         {
-            //Change direction quickly
-            circularSpeed = -1 * circularSpeed;
-            if (targetCircularSpeed < 0) { targetCircularSpeed += startSpeed*2; } //80 change in circularspeed for a better effect
-            else if (targetCircularSpeed > 0) { targetCircularSpeed -= startSpeed*2; }
+            circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
+        }
+
+        if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID)) //Change direction quickly
+        {
+            if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; }
+
+            if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //100 change in circularspeed for a better effect
+            else if (targetCircularSpeed > 0) { targetCircularSpeed -= DetermineSpeedBySpeedID(speedID) * 2; }
         }
         else
         {
@@ -81,17 +96,12 @@ public class AddForce : MonoBehaviour
         currentAngle += circularSpeed * Time.deltaTime;
         currentAngle %= 360; // Ensure the angle stays within 0-360 degrees
 
-        //float noiseX = RandomGen();
-        //float noiseZ = RandomGen();
-
-        //randomNoise = new Vector3(noiseX, 0, noiseZ);
-
         // Calculate the new position based on the center point, radius, and current angle
         Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward;
         Vector3 newPosition = centerPoint.position + direction * radius;
 
         // Apply the new position (and noise)
-        if (Mathf.Abs(circularSpeed) < startSpeed+15f) { transform.position = newPosition; }
+        if (Mathf.Abs(circularSpeed) < DetermineSpeedBySpeedID(speedID) + 15f) { transform.position = newPosition; }
         else
         {
             float noiseX = RandomGen();
@@ -100,6 +110,8 @@ public class AddForce : MonoBehaviour
             randomNoise = new Vector3(noiseX, 0, noiseZ);
             transform.position = newPosition + randomNoise;
         }
+        // Debug.Log($"Object: {gameObject.name}, Position: {transform.position}, CircularSpeed: {circularSpeed}, RandomNoise: {randomNoise}");
+
     }
 
     float RandomGen()
