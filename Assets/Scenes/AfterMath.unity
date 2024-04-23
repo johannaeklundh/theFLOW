@@ -1785,7 +1785,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Instructions
+  m_text: Background
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3334,7 +3334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: How does the game work?
+  m_text: Background
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5131,16 +5131,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae dictum
-    enim, eget congue urna. Pellentesque rhoncus scelerisque magna at imperdiet.
-    Donec tempus consequat tellus, nec varius mauris feugiat quis. In porttitor eros
-    augue. Nullam luctus leo purus, quis faucibus dolor congue id. Phasellus eget
-    pharetra ligula, at dictum nulla. Nam laoreet accumsan dolor, eu eleifend est
-    sagittis sodales. Nulla sit amet tempus metus. \n\nNam eget ipsum nisl. Suspendisse
-    finibus est vel ipsum blandit rhoncus. Curabitur eget turpis ante. Morbi id malesuada
-    dolor. Sed eu tempus augue, nec congue sem. Integer urna purus, rhoncus in arcu
-    eu, tincidunt scelerisque felis. Duis posuere purus nulla, sit amet scelerisque
-    lectus tincidunt et.\r\n"
+  m_text: "The Flow is a game that is an inspirational mental tool and an educational
+    art piece in one.\r\n\r\nVia a visualization screen and EEG-headband that registers
+    your alpha-brainwaves (relaxation) and Theta-brainwaves (focus), you get to compete
+    alone or together, against an interfering AI. The one who is BOTH calm and focused
+    - finds his/her flow - wins!\r\n\r\nBetween competitions, the players receive
+    relaxation exercises and tips. Brain research shows that children in competitive
+    fashion more quickly get an emotional memory in their body of the expereince
+    of a \"flow\" that they can return to or use later in everyday life when stressed.\r\n\r\nIn
+    a pedagogic and playful way, the Flow encourages and visualizes the mental inner
+    state, exploring the balance between being focused and being calm - finding the
+    flow. \r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5827,7 +5828,7 @@ GameObject:
   - component: {fileID: 1479963060}
   - component: {fileID: 1479963059}
   m_Layer: 5
-  m_Name: Instruction
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
