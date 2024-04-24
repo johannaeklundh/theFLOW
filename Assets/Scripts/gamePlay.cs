@@ -11,12 +11,23 @@ public class gamePlay : MonoBehaviour
     /********Refrence instances to other classes/scripts********/
     public AIScript AI;
 
+    public PlayerData[] players;    // Public array of all players
+
 
     /***********************************************************/
 
     // Start is called before the first frame update
     void Start()
     {
+        // Instantiate players
+        players = new PlayerData[4];    // 4 may change dephening on nr of players
+
+        // Initiate players
+        players[0] = new PlayerData(1);
+        players[1] = new PlayerData(2);
+        players[2] = new PlayerData(3);
+        players[3] = new PlayerData(4);
+
         updatePrevAndCurrent(this); // Update brainwves
         updatePlayerPosition(this); // Update positions
         setPlacements(this);        // Set placements
@@ -40,10 +51,10 @@ public class gamePlay : MonoBehaviour
             setBalance(this);
             // setUnbothered is called upon in AI 
 
-            // player1.displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            player2.displayPlayerInfo();
-            // player3.displayPlayerInfo();
-            // player4.displayPlayerInfo();
+            players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            // players[1].displayPlayerInfo();
+            // players[2].displayPlayerInfo();
+            // players[3].displayPlayerInfo();
                  
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -98,7 +109,7 @@ public class gamePlay : MonoBehaviour
         public float smallestDistance;
 
         // Constructor
-        public PlayerData(int playerID, float playerPosition = 0.0f, int playerPlacement = 0, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
+        public PlayerData(int playerID, float playerPosition = 0.0f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
         float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f, float playerBalance = 0.0f)
         {
             id = playerID;
@@ -126,9 +137,9 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player Position: " + position);
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            UnityEngine.Debug.Log("Player Power: " + power);
-            // UnityEngine.Debug.Log("Player Alpha: " + alpha);
-            // UnityEngine.Debug.Log("Player Theta: " + theta);
+            // UnityEngine.Debug.Log("Player Power: " + power);
+            UnityEngine.Debug.Log("Player Alpha: " + alpha);
+            UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
             // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
             // UnityEngine.Debug.Log("Player Consistency: " + consistency);
@@ -141,57 +152,73 @@ public class gamePlay : MonoBehaviour
 
     
     
-    
-    
-    
-    /***********************************Variables****************************************/
-    
-    
-    // Create the 4 players (may change to function due to the number of players beign flexible)
-    public PlayerData player1 = new PlayerData(1);
-    public PlayerData player2 = new PlayerData(2);
-    public PlayerData player3 = new PlayerData(3);
-    public PlayerData player4 = new PlayerData(4);
-
-    /************************************************************************************/
-
-    
-    
     /**********************************Useful Functions**********************************/
+
+    // Function that assign values to a specified field of PlayerData for each player in players
+    void assignValuesToField(float[] values, string fieldName) {    // Must be called with an instance if within a function
+
+        if (values.Length != players.Length) {  // Test if possible
+            UnityEngine.Debug.LogError("Number of values should match the number of players.");
+            return;
+        }
+        
+        for (int i = 0; i < players.Length; i++) {  // Go through all players
+
+            // Use reflection to set the value of the specified field
+            var field = typeof(PlayerData).GetField(fieldName);
+            if (field != null && field.FieldType == typeof(float)) {
+                field.SetValueDirect(__makeref(players[i]), values[i]);
+            }
+        }
+    }
+
+    // Overloadeed version for int[]
+    void assignValuesToField(int[] values, string fieldName) {    // Must be called with an instance if within a function
+
+        if (values.Length != players.Length) {  // Test if possible
+            UnityEngine.Debug.LogError("Number of values should match the number of players.");
+            return;
+        }
+        
+        for (int i = 0; i < players.Length; i++) {  // Go through all players
+
+            // Use reflection to set the value of the specified field
+            var field = typeof(PlayerData).GetField(fieldName);
+            if (field != null && field.FieldType == typeof(int)) {
+                field.SetValueDirect(__makeref(players[i]), values[i]);
+            }
+        }
+    }
     
     // Set the players alpha, theta and power and all the previous ones
     public static void updatePrevAndCurrent(gamePlay instance){
-        // Player 1
-        instance.player1.prevAlpha = instance.player1.alpha;    // Set prev to the current
-        instance.player1.alpha = (int)Mathf.Abs(50*Mathf.Sin(Time.time));       // Update current, for now random number
-        instance.player1.prevTheta = instance.player1.theta;    
-        instance.player1.theta = (int)Mathf.Abs(30*Mathf.Cos(Time.time));   
-        instance.player1.prevPower = instance.player1.power;    
-        instance.player1.power = calculatePower(instance.player1.alpha, instance.player1.theta);  
+        
+        // Assign prevAlpha
+        int[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
+        instance.assignValuesToField(prevAlphaValues, "prevAlpha");
 
-        // Player 2
-        instance.player2.prevAlpha = instance.player2.alpha;    // Set prev to the current
-        instance.player2.alpha = (int)Mathf.Abs(44*Mathf.Sin(Time.time));       // Update current, for now random number
-        instance.player2.prevTheta = instance.player2.theta;    
-        instance.player2.theta = (int)Mathf.Abs(66*Mathf.Cos(Time.time));   
-        instance.player2.prevPower = instance.player2.power;    
-        instance.player2.power = calculatePower(instance.player2.alpha, instance.player2.theta);  
+        // Assign alpha
+        int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
+        (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};
+        instance.assignValuesToField(alphaValues, "alpha");
+        
+        // Assign prevTheta
+        int[] prevThetaValues = {instance.players[0].theta, instance.players[1].theta, instance.players[2].theta, instance.players[3].theta};
+        instance.assignValuesToField(prevThetaValues, "prevTheta");
 
-        // Player 3
-        instance.player3.prevAlpha = instance.player3.alpha;    // Set prev to the current
-        instance.player3.alpha = (int)Mathf.Abs(28*Mathf.Sin(Time.time));       // Update current, for now random number
-        instance.player3.prevTheta = instance.player3.theta;    
-        instance.player3.theta = (int)Mathf.Abs(49*Mathf.Cos(Time.time));   
-        instance.player3.prevPower = instance.player3.power;    
-        instance.player3.power = calculatePower(instance.player3.alpha, instance.player3.theta);
+        // Assign theta
+        int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
+        (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};
+        instance.assignValuesToField(thetaValues, "theta");
 
-        // Player 4
-        instance.player4.prevAlpha = instance.player4.alpha;    // Set prev to the current
-        instance.player4.alpha = (int)Mathf.Abs(52*Mathf.Sin(Time.time));       // Update current, for now random number
-        instance.player4.prevTheta = instance.player4.theta;    
-        instance.player4.theta = (int)Mathf.Abs(31*Mathf.Cos(Time.time));   
-        instance.player4.prevPower = instance.player4.power;    
-        instance.player4.power = calculatePower(instance.player4.alpha, instance.player4.theta);  
+        // Assign prevPower
+        float[] prevPowerValues = {instance.players[0].power, instance.players[1].power, instance.players[2].power, instance.players[3].power};
+        instance.assignValuesToField(prevPowerValues, "prevPower");
+
+        // Assign power
+        float[] powerValues = {calculatePower(instance.players[0].alpha, instance.players[0].theta), calculatePower(instance.players[1].alpha, instance.players[1].theta),
+         calculatePower(instance.players[2].alpha, instance.players[2].theta),calculatePower(instance.players[3].alpha, instance.players[3].theta)};
+        instance.assignValuesToField(powerValues, "power");
     }
     
     // Calculates change
@@ -209,11 +236,8 @@ public class gamePlay : MonoBehaviour
     // Placeholder to decide the placement of the players, updates every 3 sec
     public static void setPlacements(gamePlay instance){
         
-        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
-        PlayerData[] players = {(PlayerData)instance.player1, (PlayerData)instance.player2, (PlayerData)instance.player3, (PlayerData)instance.player4};
-        
         // Create vector storing the current position of each player
-        Vector4 positions = new Vector4(instance.player1.position, instance.player2.position, instance.player3.position, instance.player4.position);
+        Vector4 positions = new Vector4(instance.players[0].position, instance.players[1].position, instance.players[2].position, instance.players[3].position);
 
         // Convert to arry for easier sorting
         float[] sortedPositions = {(float)positions.x, (float)positions.y, (float)positions.z, (float)positions.w};
@@ -222,20 +246,20 @@ public class gamePlay : MonoBehaviour
         System.Array.Sort(sortedPositions, (x,y) => y.CompareTo(x));
 
         // Update placements
-        for(int i = 0; i < players.Length; i++)
+        for(int i = 0; i < instance.players.Length; i++)
         {
             for(int n = 0; n < sortedPositions.Length; n++)
             {
-                if(players[i].position == sortedPositions[n]){
-                    players[i].placement = n + 1;
+                if(instance.players[i].position == sortedPositions[n]){
+                    instance.players[i].placement = n + 1;
                 }
             }
         }
 
-        instance.player1.placement = players[0].placement;
-        instance.player2.placement = players[1].placement;
-        instance.player3.placement = players[2].placement;
-        instance.player4.placement = players[3].placement;
+        instance.players[0].placement = instance.players[0].placement;
+        instance.players[1].placement = instance.players[1].placement;
+        instance.players[2].placement = instance.players[2].placement;
+        instance.players[3].placement = instance.players[3].placement;
 
     }
 
@@ -247,14 +271,11 @@ public class gamePlay : MonoBehaviour
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
-        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
-        PlayerData[] players = {(PlayerData)instance.player1, (PlayerData)instance.player2, (PlayerData)instance.player3, (PlayerData)instance.player4};
-
         // Search for player whose placement matches the searched place and return the player
-        for(int i = 0; i < players.Length; i++)
+        for(int i = 0; i < instance.players.Length; i++)
         {
-            if(players[i].id == ID){
-                return players[i];
+            if(instance.players[i].id == ID){
+                return instance.players[i];
             }
         }
 
@@ -277,27 +298,27 @@ public class gamePlay : MonoBehaviour
     // Set consistency of each player
     public static void setConsistency(gamePlay instance){
         // Player 1
-        float consistency = derivatePower(instance.player1); // Calculate consistency for player
-        if(instance.player1.consistency > consistency){ // Only keep the largest decending derivative (want player to get better)
-            instance.player1.consistency = consistency; // Update
+        float consistency = derivatePower(instance.players[0]); // Calculate consistency for player
+        if(instance.players[0].consistency > consistency){ // Only keep the largest decending derivative (want player to get better)
+            instance.players[0].consistency = consistency; // Update
         }
 
         // Player 2
-        consistency = derivatePower(instance.player2); // Calculate consistency for player
-        if(instance.player2.consistency > consistency){ // Only keep the largest decending derivative
-            instance.player2.consistency = consistency; // Update
+        consistency = derivatePower(instance.players[1]); // Calculate consistency for player
+        if(instance.players[1].consistency > consistency){ // Only keep the largest decending derivative
+            instance.players[1].consistency = consistency; // Update
         }
         
         // Player 3
-        consistency = derivatePower(instance.player3); // Calculate consistency for player
-        if(instance.player3.consistency > consistency){ // Only keep the largest decending derivative
-            instance.player3.consistency = consistency; // Update
+        consistency = derivatePower(instance.players[2]); // Calculate consistency for player
+        if(instance.players[2].consistency > consistency){ // Only keep the largest decending derivative
+            instance.players[2].consistency = consistency; // Update
         }
         
         // Player 4
-        consistency = derivatePower(instance.player4); // Calculate consistency for player
-        if(instance.player4.consistency > consistency){ // Only keep the largest decending derivative
-            instance.player4.consistency = consistency; // Update
+        consistency = derivatePower(instance.players[3]); // Calculate consistency for player
+        if(instance.players[3].consistency > consistency){ // Only keep the largest decending derivative
+            instance.players[3].consistency = consistency; // Update
         }
     }
 
@@ -309,16 +330,16 @@ public class gamePlay : MonoBehaviour
 
         if(unbothered < p.unbothered){ // Update to the largest decending value
             if(id == 1){
-                instance.player1.unbothered = unbothered;
+                instance.players[0].unbothered = unbothered;
             }
             else if(id == 2){
-                instance.player2.unbothered = unbothered;
+                instance.players[1].unbothered = unbothered;
             }
             else if(id == 3){
-                instance.player3.unbothered = unbothered;
+                instance.players[2].unbothered = unbothered;
             }
             else{
-                instance.player4.unbothered = unbothered;
+                instance.players[3].unbothered = unbothered;
             }
         }
 
@@ -337,17 +358,17 @@ public class gamePlay : MonoBehaviour
     static void setMean(gamePlay instance)
     {
 
-        instance.player1.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player1.alpha);
-        instance.player1.meanTheta = calculateMean(instance.player1.meanTheta, instance.player1.theta);
+        instance.players[0].meanAlpha = calculateMean(instance.players[0].meanAlpha, instance.players[0].alpha);
+        instance.players[0].meanTheta = calculateMean(instance.players[0].meanTheta, instance.players[0].theta);
                                                      
-        instance.player2.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player2.alpha);
-        instance.player2.meanTheta = calculateMean(instance.player1.meanTheta, instance.player2.theta);
+        instance.players[1].meanAlpha = calculateMean(instance.players[0].meanAlpha, instance.players[1].alpha);
+        instance.players[1].meanTheta = calculateMean(instance.players[0].meanTheta, instance.players[1].theta);
                                                      
-        instance.player3.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player2.alpha);
-        instance.player3.meanTheta = calculateMean(instance.player1.meanTheta, instance.player3.theta);
+        instance.players[2].meanAlpha = calculateMean(instance.players[0].meanAlpha, instance.players[1].alpha);
+        instance.players[2].meanTheta = calculateMean(instance.players[0].meanTheta, instance.players[2].theta);
                                                     
-        instance.player4.meanAlpha = calculateMean(instance.player1.meanAlpha, instance.player2.alpha);
-        instance.player4.meanTheta = calculateMean(instance.player1.meanTheta, instance.player4.theta);
+        instance.players[3].meanAlpha = calculateMean(instance.players[0].meanAlpha, instance.players[1].alpha);
+        instance.players[3].meanTheta = calculateMean(instance.players[0].meanTheta, instance.players[3].theta);
     }
 
     // Returns the new calculated balnce (how close alpha and theta is)
@@ -372,10 +393,10 @@ public class gamePlay : MonoBehaviour
     // Set balance of all players
     public static void setBalance(gamePlay instance)
     {
-        instance.player1.balance = calculateBalance(ref instance.player1);
-        instance.player2.balance = calculateBalance(ref instance.player2);
-        instance.player3.balance = calculateBalance(ref instance.player3);
-        instance.player4.balance = calculateBalance(ref instance.player4);
+        instance.players[0].balance = calculateBalance(ref instance.players[0]);
+        instance.players[1].balance = calculateBalance(ref instance.players[1]);
+        instance.players[2].balance = calculateBalance(ref instance.players[2]);
+        instance.players[3].balance = calculateBalance(ref instance.players[3]);
     }
 
     
@@ -424,10 +445,10 @@ public class gamePlay : MonoBehaviour
     
     // Updates the players current position (placeholder)
     public static void updatePlayerPosition(gamePlay instance){
-        instance.player1.position = calculatePosition(instance, instance.player1);
-        instance.player2.position = calculatePosition(instance, instance.player2);
-        instance.player3.position = calculatePosition(instance, instance.player3);
-        instance.player4.position = calculatePosition(instance, instance.player4);
+        instance.players[0].position = calculatePosition(instance, instance.players[0]);
+        instance.players[1].position = calculatePosition(instance, instance.players[1]);
+        instance.players[2].position = calculatePosition(instance, instance.players[2]);
+        instance.players[3].position = calculatePosition(instance, instance.players[3]);
     }
 
 

@@ -110,10 +110,10 @@ public class AIScript : MonoBehaviour
         int minDecrease = -5;   // Minimum amount of decrease in the power for the AI
 
         // How far apart the player placed in 1:st place is from the player placed in 4:th place
-        float diffrencePlacement1_4 = instance.GP.player1.position - instance.GP.player4.position;
+        float diffrencePlacement1_4 = instance.GP.players[0].position - instance.GP.players[3].position;
 
         // How far apart the player placed in 1:st place is from the player placed in 2:th place, small diffrence can result in big boost to the others
-        float diffrencePlacement1_2 = instance.GP.player1.position - instance.GP.player2.position;
+        float diffrencePlacement1_2 = instance.GP.players[0].position - instance.GP.players[1].position;
 
         if(instance.state == 3 && diffrencePlacement1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
             maxIncrease = 10;
@@ -145,7 +145,7 @@ public class AIScript : MonoBehaviour
 
     // Calculates the player-teams averge power
     public static float calculateTeamPower(AIScript instance){
-        return (instance.GP.player1.power + instance.GP.player2.power + instance.GP.player3.power + instance.GP.player4.power)/4;
+        return (instance.GP.players[0].power + instance.GP.players[1].power + instance.GP.players[2].power + instance.GP.players[3].power)/4;
     }
 
 
@@ -159,8 +159,8 @@ public class AIScript : MonoBehaviour
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
-        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
-        gamePlay.PlayerData[] players = {(gamePlay.PlayerData)instance.GP.player1, (gamePlay.PlayerData)instance.GP.player2, (gamePlay.PlayerData)instance.GP.player3, (gamePlay.PlayerData)instance.GP.player4};
+        /*/ Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
+        gamePlay.PlayerData[] players = {(gamePlay.PlayerData)instance.GP.players[0], (gamePlay.PlayerData)instance.GP.players[1], (gamePlay.PlayerData)instance.GP.players[2], (gamePlay.PlayerData)instance.GP.players[3]};
 
         // Search for player whose placement matches the searched place and return the player
         for(int i = 0; i < players.Length; i++)
@@ -173,7 +173,14 @@ public class AIScript : MonoBehaviour
             }
         }
 
-        //return players[0];
+        //return players[0];*/
+
+        foreach(var player in instance.GP.players){
+
+            if(player.placement == place){
+                return player;
+            }
+        }
         throw new System.Exception("Could not find player at placement " + place);
     }
 
@@ -184,7 +191,8 @@ public class AIScript : MonoBehaviour
     // Placeholder to set the state of the AI dephending on the player positioned the closest to the center (change to include other players and update once every 5 sec)
     public static void setState(AIScript instance){
 
-        switch(placementPlayer(instance, 1).position)   // Uses the player whose placement is 1:s position
+        //switch(placementPlayer(instance, 1).position)   // Uses the player whose placement is 1:s position
+        switch(placementPlayer(instance, 1).position)
         {
             case float n when n >= 0.46f:
                 instance.state = 3;
