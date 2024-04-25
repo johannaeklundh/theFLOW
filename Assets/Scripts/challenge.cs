@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic; 
 
 [ExecuteInEditMode]
 public class challenge : MonoBehaviour
@@ -11,7 +12,9 @@ public class challenge : MonoBehaviour
     public float timeLimit = 60f; // Time limit for the challenge
     public GameObject[] objectsToShow;
     public int numOfPlayers; 
-    public progress_bar1[] progressBars; // Declare the array
+    public GameObject[] progressBars;
+    public int count = 0; 
+      private HashSet<GameObject> countedBars = new HashSet<GameObject>();
 
     // This method will be called to finish the challenge
     public void Finish()
@@ -19,40 +22,64 @@ public class challenge : MonoBehaviour
         SceneManager.LoadSceneAsync(2); // Load scene 2 asynchronously
     }
 
-  
 
     void Start()
     {
+         
        
-        SendIntegerToProgressBars(); 
+        //SendIntegerToProgressBars(); 
         ShowObjects();
     }
 
-    // Method to send the integer value to all progress bars
-   private void SendIntegerToProgressBars()
-{
-    if (progressBars == null)
-    {
-        Debug.LogError("Progress bars array not initialized.");
-        return;
+    void Update () {
+
+       CheckSuccess(); 
+
     }
 
-    foreach (progress_bar1 progressBar in progressBars)
-    {
-        if (progressBar != null)
-        {
-            progressBar.getNumOfPlayers(numOfPlayers);
+private void CheckSuccess() {
+    Debug.Log($"Checking progress bars; Current count: {count}");
+
+    foreach (GameObject progressBar in progressBars) {
+        if (progressBar != null) {
+            if (progressBar.CompareTag("alpha")) {
+                alpha_bar alphaBarScript = progressBar.GetComponent<alpha_bar>();
+                if (alphaBarScript.alphaSuccess && !countedBars.Contains(progressBar)) {
+                    count++;
+                    countedBars.Add(progressBar);
+                    Debug.Log($"Counted Alpha bar: {progressBar.name}, Total count: {count}");
+                    alphaBarScript.ResetSuccess(); // Reset the success flag
+                }
+            } else if (progressBar.CompareTag("theta")) {
+                theta_bar thetaBarScript = progressBar.GetComponent<theta_bar>();
+                if (thetaBarScript.thetaSuccess && !countedBars.Contains(progressBar)) {
+                    count++;
+                    Debug.Log($"Counted Theta bar: {progressBar.name}, Total count: {count}");
+                    countedBars.Add(progressBar);
+                    thetaBarScript.ResetSuccess(); // Reset the success flag
+                }
+            }
         }
-        else
-        {
-            Debug.LogError("Progress bar reference not set in the array.");
-        }
+    }
+
+    if(count == numOfPlayers * 2) {
+        Debug.Log("Challenge completed successfully with count = " + count);
+        //Finish();
     }
 }
 
 
-    public void StartGame()
+
+
+    
+   
+
+
+
+    void StartGame()
     {
+        count = 0;  // Reset count at the start of the game
+    countedBars.Clear();  // Clear previously counted bars if needed
        
         if (timeBar != null)
         {
@@ -66,7 +93,7 @@ public class challenge : MonoBehaviour
     }
 
 
-    public IEnumerator StartTimeBar()
+   IEnumerator StartTimeBar()
     {
         float elapsed = 0f;
 
@@ -84,7 +111,7 @@ public class challenge : MonoBehaviour
     }
 
     // Function to show objects based on the value of ConnectedPlayers
-    void ShowObjects()
+  void ShowObjects()
     {
         Debug.Log(numOfPlayers);
         // Loop through all the objects in the objectsToShow array
@@ -103,5 +130,10 @@ public class challenge : MonoBehaviour
             }
         }
     }
+ }
 
-}
+
+
+
+
+

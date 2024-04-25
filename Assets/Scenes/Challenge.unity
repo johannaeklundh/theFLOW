@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 2481984}
   - component: {fileID: 2481983}
   - component: {fileID: 2481982}
-  - component: {fileID: 2481985}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -218,21 +217,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2481980}
   m_CullTransparentMesh: 1
---- !u!114 &2481985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2481980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25a06416ec2854214a3462a80ace2043, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  welcomeText: {fileID: 580982915}
-  countdownText: {fileID: 711637241}
-  gameUI: {fileID: 1804276559}
 --- !u!1 &69281606
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,10 +228,10 @@ GameObject:
   - component: {fileID: 69281607}
   - component: {fileID: 69281610}
   - component: {fileID: 69281609}
-  - component: {fileID: 69281608}
+  - component: {fileID: 69281611}
   m_Layer: 5
   m_Name: alpha_bar2
-  m_TagString: Untagged
+  m_TagString: alpha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -272,22 +256,6 @@ RectTransform:
   m_AnchoredPosition: {x: -389, y: -363}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &69281608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 69281606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 902432781}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &69281609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,6 +294,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 69281606}
   m_CullTransparentMesh: 1
+--- !u!114 &69281611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 69281606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54cea5f8d13e4cd9818a649f5e141bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerAlphaData: 
+  alphaMask: {fileID: 902432781}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &128617678
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,10 +458,10 @@ GameObject:
   - component: {fileID: 139560008}
   - component: {fileID: 139560011}
   - component: {fileID: 139560010}
-  - component: {fileID: 139560009}
+  - component: {fileID: 139560012}
   m_Layer: 5
   m_Name: theta_bar3
-  m_TagString: Untagged
+  m_TagString: theta
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -501,22 +486,6 @@ RectTransform:
   m_AnchoredPosition: {x: -235, y: -395}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &139560009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139560007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 1119615901}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &139560010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,6 +524,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139560007}
   m_CullTransparentMesh: 1
+--- !u!114 &139560012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139560007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88b294e61664b658d5bfa1c68197c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerThetaData: 
+  thetaMask: {fileID: 1119615901}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &162306600
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,10 +692,10 @@ GameObject:
   - component: {fileID: 164240828}
   - component: {fileID: 164240831}
   - component: {fileID: 164240830}
-  - component: {fileID: 164240829}
+  - component: {fileID: 164240832}
   m_Layer: 5
   m_Name: theta_bar4
-  m_TagString: Untagged
+  m_TagString: theta
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -734,22 +720,6 @@ RectTransform:
   m_AnchoredPosition: {x: -202, y: -396}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &164240829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 164240827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 1263694199}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &164240830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,6 +758,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164240827}
   m_CullTransparentMesh: 1
+--- !u!114 &164240832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164240827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88b294e61664b658d5bfa1c68197c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerThetaData: 
+  thetaMask: {fileID: 1263694199}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &200379206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,10 +2497,10 @@ GameObject:
   - component: {fileID: 696572776}
   - component: {fileID: 696572779}
   - component: {fileID: 696572778}
-  - component: {fileID: 696572777}
+  - component: {fileID: 696572780}
   m_Layer: 5
   m_Name: theta_bar2
-  m_TagString: Untagged
+  m_TagString: theta
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2538,22 +2525,6 @@ RectTransform:
   m_AnchoredPosition: {x: -264, y: -363}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &696572777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696572775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 591549209}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &696572778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2592,6 +2563,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696572775}
   m_CullTransparentMesh: 1
+--- !u!114 &696572780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696572775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88b294e61664b658d5bfa1c68197c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerThetaData: 
+  thetaMask: {fileID: 591549209}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &711637239
 GameObject:
   m_ObjectHideFlags: 0
@@ -3003,10 +2991,10 @@ GameObject:
   - component: {fileID: 992686888}
   - component: {fileID: 992686891}
   - component: {fileID: 992686890}
-  - component: {fileID: 992686889}
+  - component: {fileID: 992686892}
   m_Layer: 5
   m_Name: alpha_bar3
-  m_TagString: Untagged
+  m_TagString: alpha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3031,22 +3019,6 @@ RectTransform:
   m_AnchoredPosition: {x: -347, y: -395}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &992686889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 992686887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 651262799}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &992686890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3085,6 +3057,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 992686887}
   m_CullTransparentMesh: 1
+--- !u!114 &992686892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992686887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54cea5f8d13e4cd9818a649f5e141bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerAlphaData: 
+  alphaMask: {fileID: 651262799}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &1049380397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3174,7 +3163,7 @@ GameObject:
   - component: {fileID: 1060987495}
   m_Layer: 5
   m_Name: Mask_a1
-  m_TagString: Untagged
+  m_TagString: alpha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3264,7 +3253,7 @@ GameObject:
   - component: {fileID: 1082498469}
   m_Layer: 5
   m_Name: Mask_t1
-  m_TagString: Untagged
+  m_TagString: theta
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3441,10 +3430,10 @@ GameObject:
   - component: {fileID: 1130046612}
   - component: {fileID: 1130046615}
   - component: {fileID: 1130046614}
-  - component: {fileID: 1130046613}
+  - component: {fileID: 1130046616}
   m_Layer: 5
   m_Name: alpha_bar4
-  m_TagString: Untagged
+  m_TagString: alpha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3469,22 +3458,6 @@ RectTransform:
   m_AnchoredPosition: {x: -331, y: -396}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1130046613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1130046611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 458899296}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &1130046614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3523,6 +3496,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1130046611}
   m_CullTransparentMesh: 1
+--- !u!114 &1130046616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130046611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54cea5f8d13e4cd9818a649f5e141bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerAlphaData: 
+  alphaMask: {fileID: 458899296}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &1170448552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3609,10 +3599,10 @@ GameObject:
   - component: {fileID: 1236569916}
   - component: {fileID: 1236569919}
   - component: {fileID: 1236569918}
-  - component: {fileID: 1236569917}
+  - component: {fileID: 1236569920}
   m_Layer: 5
   m_Name: alpha_bar1
-  m_TagString: Untagged
+  m_TagString: alpha
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3637,22 +3627,6 @@ RectTransform:
   m_AnchoredPosition: {x: -778.99744, y: -362}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1236569917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236569915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 1060987496}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &1236569918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3691,6 +3665,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1236569915}
   m_CullTransparentMesh: 1
+--- !u!114 &1236569920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236569915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b54cea5f8d13e4cd9818a649f5e141bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerAlphaData: 
+  alphaMask: {fileID: 1060987496}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &1263694196
 GameObject:
   m_ObjectHideFlags: 0
@@ -5241,10 +5232,10 @@ GameObject:
   - component: {fileID: 1802909501}
   - component: {fileID: 1802909504}
   - component: {fileID: 1802909503}
-  - component: {fileID: 1802909502}
+  - component: {fileID: 1802909505}
   m_Layer: 5
   m_Name: theta_bar1
-  m_TagString: Untagged
+  m_TagString: theta
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5269,22 +5260,6 @@ RectTransform:
   m_AnchoredPosition: {x: -640, y: -362}
   m_SizeDelta: {x: 88.38281, y: 58.253098}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1802909502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802909500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30765864f98cf4e3fa657a9d235d5baa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVal: 100
-  mask: {fileID: 1082498470}
-  numPlayers: 4
-  updateInterval: 0.1
 --- !u!114 &1802909503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5323,6 +5298,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802909500}
   m_CullTransparentMesh: 1
+--- !u!114 &1802909505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802909500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88b294e61664b658d5bfa1c68197c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVal: 100
+  playerThetaData: 
+  thetaMask: {fileID: 1082498470}
+  updateInterval: 0.1
+  numPlayers: 0
 --- !u!1 &1804276559
 GameObject:
   m_ObjectHideFlags: 0
@@ -5335,7 +5327,6 @@ GameObject:
   - component: {fileID: 1804276562}
   - component: {fileID: 1804276561}
   - component: {fileID: 1804276563}
-  - component: {fileID: 1804276564}
   m_Layer: 5
   m_Name: GAME
   m_TagString: Untagged
@@ -5483,23 +5474,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a8e5e752b04df54380cb0e97c141bf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBar: {fileID: 0}
-  timeLimit: 60
-  objectsToShow: []
-  numOfPlayers: 0
-  progressBars: []
---- !u!114 &1804276564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804276559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a8e5e752b04df54380cb0e97c141bf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   timeBar: {fileID: 1685182571}
   timeLimit: 60
   objectsToShow:
@@ -5509,14 +5483,14 @@ MonoBehaviour:
   - {fileID: 1396283556}
   numOfPlayers: 2
   progressBars:
-  - {fileID: 1236569917}
-  - {fileID: 1802909502}
-  - {fileID: 69281608}
-  - {fileID: 696572777}
-  - {fileID: 992686889}
-  - {fileID: 139560009}
-  - {fileID: 1130046613}
-  - {fileID: 164240829}
+  - {fileID: 1236569915}
+  - {fileID: 1802909500}
+  - {fileID: 69281606}
+  - {fileID: 696572775}
+  - {fileID: 992686887}
+  - {fileID: 139560007}
+  - {fileID: 1130046611}
+  - {fileID: 164240827}
 --- !u!1 &1954259042
 GameObject:
   m_ObjectHideFlags: 0
@@ -5642,7 +5616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9245283, g: 0, b: 0.2995475, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
