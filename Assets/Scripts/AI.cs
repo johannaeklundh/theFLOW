@@ -15,6 +15,7 @@ public class AIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
     }
 
     // Update is called once per frame
@@ -59,8 +60,8 @@ public class AIScript : MonoBehaviour
 
 
     /************Things used obly to control update(), not relevant for behaviour************/
-    private bool canUpdate = true; // Decides weather a function can update in update()
-
+    private bool canUpdate = false; // Decides weather a function can update in update()
+    
     IEnumerator delayUpdate(){
 
         // Wait for 3 seconds
@@ -159,22 +160,6 @@ public class AIScript : MonoBehaviour
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
-        /*/ Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
-        gamePlay.PlayerData[] players = {(gamePlay.PlayerData)instance.GP.players[0], (gamePlay.PlayerData)instance.GP.players[1], (gamePlay.PlayerData)instance.GP.players[2], (gamePlay.PlayerData)instance.GP.players[3]};
-
-        // Search for player whose placement matches the searched place and return the player
-        for(int i = 0; i < players.Length; i++)
-        {
-            //Debug.Log("At player " + players[i].id + "!");
-            
-            if(players[i].placement == place){
-                //Debug.Log("Player whose ID is " + players[i].id + " has the placement "+ players[i].placement + " = " + place);
-                return players[i];
-            }
-        }
-
-        //return players[0];*/
-
         foreach(var player in instance.GP.players){
 
             if(player.placement == place){
@@ -271,7 +256,7 @@ public class AIScript : MonoBehaviour
         }
 
         Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
-        player.displayPlayerInfo();
+        // player.displayPlayerInfo();
 
         // Moving the player in question back "how" many steps
         gamePlay.calculatePosition(instance.GP, player, how);   // Updates unbothered of the player that got hit in gamePlay-class

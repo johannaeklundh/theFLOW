@@ -19,14 +19,10 @@ public class gamePlay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Instantiate players
-        players = new PlayerData[4];    // 4 may change dephening on nr of players
 
-        // Initiate players
-        players[0] = new PlayerData(1);
-        players[1] = new PlayerData(2);
-        players[2] = new PlayerData(3);
-        players[3] = new PlayerData(4);
+        createPlayers(4);   // Number of players given by EEGport
+
+        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
 
         updatePrevAndCurrent(this); // Update brainwves
         updatePlayerPosition(this); // Update positions
@@ -52,13 +48,12 @@ public class gamePlay : MonoBehaviour
             // setUnbothered is called upon in AI 
 
             players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            // players[1].displayPlayerInfo();
-            // players[2].displayPlayerInfo();
-            // players[3].displayPlayerInfo();
+            players[1].displayPlayerInfo();
+            players[2].displayPlayerInfo();
+            players[3].displayPlayerInfo();
                  
-
             canUpdate = false;  // Makes it so that each function doesn't update every frame
-
+            
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
             StartCoroutine(delayUpdate());
 
@@ -69,16 +64,19 @@ public class gamePlay : MonoBehaviour
 
 
 
-    /************Things used obly to control update(), not relevant for behaviour************/
-    private bool canUpdate = true; // Decides weather a function can update in update()
-
+    /************Things used obly to control delays, not relevant for behaviour************/
+    private bool canUpdate = false; // Decides weather a function can update in update()
+    
     IEnumerator delayUpdate(){
 
         // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.0f);
+
+        UnityEngine.Debug.Log("3 sec has passed!");
 
         // Allow updates to happen
         canUpdate = true;
+
     }
     /**************************************************************************************/
 
@@ -93,7 +91,7 @@ public class gamePlay : MonoBehaviour
         public float position;
         public int placement;
         public float power;
-        public float prevPower;   // Mathf.Abs(previous - current)
+        public float prevPower;
         public int alpha;
         public int prevAlpha;
         public int theta;
@@ -138,8 +136,8 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
             // UnityEngine.Debug.Log("Player Power: " + power);
-            UnityEngine.Debug.Log("Player Alpha: " + alpha);
-            UnityEngine.Debug.Log("Player Theta: " + theta);
+            // UnityEngine.Debug.Log("Player Alpha: " + alpha);
+            // UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
             // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
             // UnityEngine.Debug.Log("Player Consistency: " + consistency);
@@ -154,6 +152,19 @@ public class gamePlay : MonoBehaviour
     
     /**********************************Useful Functions**********************************/
 
+    // Function to create n (provided by EEGport) players and add them to the players array
+    void createPlayers(int n) { 
+        // Instantiate the players array with size n
+        players = new PlayerData[n];
+
+        // Loop to create n players and assign them to the array
+        for (int i = 0; i < n; i++) {
+
+            int id = i + 1; // Player ID starts from 1
+            players[i] = new PlayerData(id, id);
+        }
+    }
+    
     // Function that assign values to a specified field of PlayerData for each player in players
     void assignValuesToField(float[] values, string fieldName) {    // Must be called with an instance if within a function
 
@@ -166,8 +177,9 @@ public class gamePlay : MonoBehaviour
 
             // Use reflection to set the value of the specified field
             var field = typeof(PlayerData).GetField(fieldName);
-            if (field != null && field.FieldType == typeof(float)) {
-                field.SetValueDirect(__makeref(players[i]), values[i]);
+
+            if (field != null && field.FieldType == typeof(float)) {    // Test if field is possible and if it truly is a float
+                field.SetValueDirect(__makeref(players[i]), values[i]); // Set value 
             }
         }
     }
@@ -235,31 +247,24 @@ public class gamePlay : MonoBehaviour
 
     // Placeholder to decide the placement of the players, updates every 3 sec
     public static void setPlacements(gamePlay instance){
+
+        // Sort players based on their positions
+        System.Array.Sort(instance.players, (a, b) => a.position.CompareTo(b.position)); // Sorting in ascending order
         
-        // Create vector storing the current position of each player
-        Vector4 positions = new Vector4(instance.players[0].position, instance.players[1].position, instance.players[2].position, instance.players[3].position);
+        // Assign placements
+        int placement = 1;
 
-        // Convert to arry for easier sorting
-        float[] sortedPositions = {(float)positions.x, (float)positions.y, (float)positions.z, (float)positions.w};
+        for (int i = 0; i < instance.players.Length; i++) {  // Loop through all players
+            
+            instance.players[i].placement = placement;
 
-        // Sort new array
-        System.Array.Sort(sortedPositions, (x,y) => y.CompareTo(x));
-
-        // Update placements
-        for(int i = 0; i < instance.players.Length; i++)
-        {
-            for(int n = 0; n < sortedPositions.Length; n++)
-            {
-                if(instance.players[i].position == sortedPositions[n]){
-                    instance.players[i].placement = n + 1;
-                }
-            }
+            placement++;
+            
+            /*/ Check for ties for the last and second last player if it exist FIX
+            if (i < players.Length - 1 && players[i].position.y != players[i + 1].position.y) {
+                placement++;
+            }*/
         }
-
-        instance.players[0].placement = instance.players[0].placement;
-        instance.players[1].placement = instance.players[1].placement;
-        instance.players[2].placement = instance.players[2].placement;
-        instance.players[3].placement = instance.players[3].placement;
 
     }
 
@@ -410,21 +415,21 @@ public class gamePlay : MonoBehaviour
         // Normal increase/decrease dephending on power
         if(player.position < 2.0f){    // Must be less than 2
             if(player.power > instance.AI.power + 10){
-                position = position + 0.1f;
-            }
-            else if(player.power > instance.AI.power + 5){
                 position = position + 0.05f;
             }
+            else if(player.power > instance.AI.power + 5){
+                position = position + 0.03f;
+            }
             else if(player.power >= instance.AI.power){
-            position = position + 0.01f;
+            position = position + 0.005f;
             }
         }
         else if(player.position > 0.0f){   // Must be more than 0
             if(player.power < instance.AI.power - 5){
-                position = position - 0.05f;
+                position = position - 0.01f;
             }
             else if(player.power < instance.AI.power -10){
-                position = position -0.1f;
+                position = position -0.03f;
             }
         }
 
