@@ -102,7 +102,6 @@ public class AddForce : MonoBehaviour
     {
         if (canUpdate)
         {
-            UnityEngine.Debug.Log(" FORCE ");
             if (waveManager == null)
             {
                 UnityEngine.Debug.LogError("WaveManager is null. Make sure it is assigned or found on the same GameObject.");

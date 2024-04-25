@@ -27,8 +27,7 @@ public class ChangeSpeed : MonoBehaviour
     void Update()
     {
         if (canUpdate)
-        {
-            UnityEngine.Debug.Log("Speed>!!!");
+        {            
             //Press M to increase speed
             if (Input.GetKeyDown(KeyCode.M))
             {
