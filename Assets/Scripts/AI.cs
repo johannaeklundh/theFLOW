@@ -21,6 +21,7 @@ public class AIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
+
         if(canUpdate){
             calculatePower(this);   // Runs this function on start, see changes to the right
             setState(this);   // Test to set the state of the AI
@@ -89,14 +90,14 @@ public class AIScript : MonoBehaviour
 
     
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.15f;  
-    public const float MEDIUM = 0.25f;
-    public const float HARD = 0.35f;
+    public const float LIGHT = 0.015f;  
+    public const float MEDIUM = 0.025f;
+    public const float HARD = 0.035f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    public const int PerState1 = 50; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 75; // 8% chance of getting hit per second when state = 2
-    public const int PerState3 = 100; // 16% chance of getting hit per second when state = 3
+    public const int PerState1 = 10; // 4% chance of getting hit per second when state = 1
+    public const int PerState2 = 20; // 8% chance of getting hit per second when state = 2
+    public const int PerState3 = 30; // 16% chance of getting hit per second when state = 3
 
 
 
@@ -119,19 +120,19 @@ public class AIScript : MonoBehaviour
         if(instance.state == 3 && diffrencePlacement1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
             maxIncrease = 10;
             if(diffrencePlacement1_4 > 30.0f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
-                minDecrease = -7;
+                minDecrease = -4;
             }
             else{   // Otherwise it may push harder to not give a sudden boost that makes everyone finish.
-                minDecrease = -3; 
+                minDecrease = -1; 
             }
         }
         else if(instance.state == 2){
             maxIncrease = 7;
-            minDecrease = -5;
+            minDecrease = -3;
         }
         else if (instance.state == 1){
             maxIncrease = 6;
-            minDecrease = -4;
+            minDecrease = -2;
         }
         else{
             maxIncrease = 5;
@@ -233,8 +234,9 @@ public class AIScript : MonoBehaviour
 
         // Only the players placed 1-3 can get hit
 
-        // Generate random integer inbetween 1-3, decides what player at the generated placement got got hit
-        int placement = Random.Range(1, 4);
+        // Generate random integer inbetween 0-2 (placements 1-3), decides what player at the generated placement got hit
+        int placement = Random.Range(0, 3);
+
         //Debug.Log("Random placement between 1 and 3 is " + placement);
         gamePlay.PlayerData player = placementPlayer(instance, placement);
 
@@ -259,7 +261,16 @@ public class AIScript : MonoBehaviour
         // player.displayPlayerInfo();
 
         // Moving the player in question back "how" many steps
-        gamePlay.calculateRadius(instance.GP, player, how);   // Updates unbothered of the player that got hit in gamePlay-class
+        var field = typeof(gamePlay.PlayerData).GetField("radius"); 
+        field.SetValueDirect(__makeref(instance.GP.players[who]), instance.GP.players[who].radius - how); 
+
+        // Test if possible value
+        if(instance.GP.players[who].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
+            field.SetValueDirect(__makeref(instance.GP.players[who]), 2.0f);
+        }
+        else if(instance.GP.players[who].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
+            field.SetValueDirect(__makeref(instance.GP.players[who]), 0.0f);
+        }
 
 
         //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
