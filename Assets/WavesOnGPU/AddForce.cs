@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class AddForce : MonoBehaviour
@@ -25,13 +26,38 @@ public class AddForce : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(delayUpdate());
+
         // Ensure waveManager is assigned
         if (waveManager == null)
         {
             waveManager = GetComponent<WaveManager>();
             if (waveManager == null)
             {
-                Debug.LogError("WaveManager is not assigned and could not be found on the same GameObject.");
+                UnityEngine.Debug.LogError("WaveManager is not assigned and could not be found on the same GameObject.");
+                return;
+            }
+        }
+        //transform.localScale = new Vector3(1f, 1f, 1f); //THIS TO CHANGE SIZE
+
+        // Initialize centerPoint to origin
+        if (centerPoint == null)
+        {
+            centerPoint = new GameObject("CenterPoint").transform;
+            centerPoint.position = Vector3.zero;
+        }
+
+        currentAngle = startAngle;
+        targetRadius = radius;
+        targetCircularSpeed = DetermineSpeedBySpeedID(speedID);
+
+        // Ensure waveManager is assigned
+        if (waveManager == null)
+        {
+            waveManager = GetComponent<WaveManager>();
+            if (waveManager == null)
+            {
+                UnityEngine.Debug.LogError("WaveManager is not assigned and could not be found on the same GameObject.");
                 return;
             }
         }
@@ -49,6 +75,18 @@ public class AddForce : MonoBehaviour
         targetCircularSpeed = DetermineSpeedBySpeedID(speedID);
     }
 
+
+    private bool canUpdate = false; // Decides weather a function can update in update()
+
+    IEnumerator delayUpdate()
+    {
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(3f);
+
+        // Allow updates to happen
+        canUpdate = true;
+    }
+
     float DetermineSpeedBySpeedID(int id)
     {
         switch (id)
@@ -62,34 +100,39 @@ public class AddForce : MonoBehaviour
     //Called every frame
     void FixedUpdate()
     {
-        if (waveManager == null)
+        if (canUpdate)
         {
-            Debug.LogError("WaveManager is null. Make sure it is assigned or found on the same GameObject.");
-            return;
+            UnityEngine.Debug.Log(" FORCE ");
+            if (waveManager == null)
+            {
+                UnityEngine.Debug.LogError("WaveManager is null. Make sure it is assigned or found on the same GameObject.");
+                return;
+            }
+
+            if (circularSpeed < DetermineSpeedBySpeedID(speedID))
+            {
+                circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
+            }
+
+            if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID)) //Change direction quickly
+            {
+                if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; }
+
+                if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //100 change in circularspeed for a better effect
+                else if (targetCircularSpeed > 0) { targetCircularSpeed -= DetermineSpeedBySpeedID(speedID) * 2; }
+            }
+            else
+            {
+                //Change direction slowly
+                circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, speedAdjustmentRate * Time.deltaTime);
+            }
+
+            radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
+
+            // Calculate circular movement
+            RotateAroundCenter();
         }
-
-        if (circularSpeed < DetermineSpeedBySpeedID(speedID))
-        {
-            circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
-        }
-
-        if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID)) //Change direction quickly
-        {
-            if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; }
-
-            if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //100 change in circularspeed for a better effect
-            else if (targetCircularSpeed > 0) { targetCircularSpeed -= DetermineSpeedBySpeedID(speedID) * 2; }
-        }
-        else
-        {
-            //Change direction slowly
-            circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, speedAdjustmentRate * Time.deltaTime);
-        }
-
-        radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
-
-        // Calculate circular movement
-        RotateAroundCenter();
+        
     }
 
     void RotateAroundCenter()
