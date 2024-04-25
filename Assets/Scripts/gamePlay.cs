@@ -95,7 +95,9 @@ public class gamePlay : MonoBehaviour
 
     /*************************************Structs****************************************/
     public struct PlayerData{
-        public int id;
+        
+	// Values for gameplay
+	public int id;
         public float radius;
         public int placement;
         public float power;
@@ -104,8 +106,11 @@ public class gamePlay : MonoBehaviour
         public int prevAlpha;
         public int theta;
         public int prevTheta;
+	
+	    // Functionality
+	    public bool update;
         
-        
+        // Values for after game
         public float meanAlpha;
         public float meanTheta;
         public float consistency;
@@ -127,6 +132,9 @@ public class gamePlay : MonoBehaviour
             prevAlpha = 0;
             theta = 50;
             prevTheta = 0;
+
+            update = true;
+
             meanAlpha = playerAlphaMean;
             meanTheta = playerThetaMean;
             consistency = playerConsistency;
@@ -258,8 +266,8 @@ public class gamePlay : MonoBehaviour
     // Placeholder to decide the placement of the players, updates every 3 sec
     public static void setPlacements(gamePlay instance){
 
-        // Sort players based on their radiuss
-        System.Array.Sort(instance.players, (a, b) => a.radius.CompareTo(b.radius)); // Sorting in ascending order
+        // Sort players based on their radius
+        System.Array.Sort(instance.players, (a, b) => b.radius.CompareTo(a.radius)); // Sorting in descending order
         
         // Assign placements
         int placement = 1;
@@ -286,11 +294,10 @@ public class gamePlay : MonoBehaviour
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
-        // Search for player whose placement matches the searched place and return the player
-        for(int i = 0; i < instance.players.Length; i++)
-        {
-            if(instance.players[i].id == ID){
-                return instance.players[i];
+        foreach(var player in instance.players){
+
+            if(player.id == ID){
+                return player;
             }
         }
 
@@ -425,24 +432,24 @@ public class gamePlay : MonoBehaviour
         // Normal increase/decrease dephending on power
         if(player.radius < 2.0f){    // Must be less than 2
             if(player.power > instance.AI.power + 10){
-                radius = radius - 0.05f;
+                radius = radius - 0.5f;
             }
             else if(player.power > instance.AI.power + 5){
-                radius = radius - 0.03f;
+                radius = radius - 0.25f;
             }
             else if(player.power >= instance.AI.power){
-            radius = radius - 0.005f;
+            radius = radius - 0.1f;
             }
         }
         else if(player.radius > 0.0f){   // Must be more than 0
             if(player.power < instance.AI.power - 5){
-                radius = radius + 0.01f;
+                radius = radius + 0.25f;
             }
             else if(player.power < instance.AI.power -10){
-                radius = radius + 0.03f;
+                radius = radius + 0.5f;
             }
             else if(player.power >= instance.AI.power){
-            radius = radius + 0.005f;
+            radius = radius + 0.1f;
             }
         }
 

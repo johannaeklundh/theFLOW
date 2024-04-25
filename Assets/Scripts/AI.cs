@@ -89,9 +89,9 @@ public class AIScript : MonoBehaviour
 
     
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.1f;
-    public const float MEDIUM = 0.2f;
-    public const float HARD = 0.3f;
+    public const float LIGHT = 0.15f;  
+    public const float MEDIUM = 0.25f;
+    public const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
     public const int PerState1 = 50; // 4% chance of getting hit per second when state = 1
@@ -173,7 +173,7 @@ public class AIScript : MonoBehaviour
 
 
 
-    // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 5 sec)
+    // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
     public static void setState(AIScript instance){
 
         //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius

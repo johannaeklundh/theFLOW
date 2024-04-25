@@ -313,6 +313,7 @@ MonoBehaviour:
   speedAdjustmentRate: 10
   speedID: 1
   behaviorID: 0
+  playerID: 1
 --- !u!114 &321967207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,6 +756,7 @@ MonoBehaviour:
   speedAdjustmentRate: 10
   speedID: 1
   behaviorID: 0
+  playerID: 4
 --- !u!1 &884187393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,6 +1205,7 @@ MonoBehaviour:
   speedAdjustmentRate: 10
   speedID: 1
   behaviorID: 0
+  playerID: 3
 --- !u!1 &1486937030 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6167054303538224233, guid: 55f1e10601f8fe74cb2913dc1da15c7b, type: 3}
@@ -1283,6 +1286,7 @@ MonoBehaviour:
   speedAdjustmentRate: 10
   speedID: 1
   behaviorID: 0
+  playerID: 2
 --- !u!4 &1600163989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2407604758047532364, guid: ebc0be07968695b4e9b2118edfcfd0f3, type: 3}

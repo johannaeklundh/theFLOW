@@ -22,6 +22,7 @@ public class AddForce : MonoBehaviour
 
     public int speedID;
     public int behaviorID;
+    public int playerID;
 
     // Start is called before the first frame update
     void Start()
@@ -97,6 +98,20 @@ public class AddForce : MonoBehaviour
         }
     }
 
+    int DetermineRadiusByPlayerId(int id)
+    {
+
+        switch (id)
+        {
+            case 1: return 0;
+            case 2: return 1;
+            case 3: return 2;
+            case 4: return 3;
+            default : return 0;
+
+        }
+    }
+
     //Called every frame
     void FixedUpdate()
     {
@@ -124,6 +139,12 @@ public class AddForce : MonoBehaviour
             {
                 //Change direction slowly
                 circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, speedAdjustmentRate * Time.deltaTime);
+            }
+
+
+            if (behaviorID == 0)
+            {
+                targetRadius = GP.players[DetermineRadiusByPlayerId(playerID)].radius;
             }
 
             radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
