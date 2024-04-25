@@ -20,8 +20,6 @@ public class WaveManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Wait 3 seconds before game starts
-        StartCoroutine(delayUpdate());
         InitializeTexture(ref NState);
         InitializeTexture(ref Nm1State);
         InitializeTexture(ref Np1State);
@@ -30,19 +28,6 @@ public class WaveManager : MonoBehaviour
 
         //Debug.Assert(obstaclesTex.width == resolution.x && obstaclesTex.height == resolution.y);
         waveMaterial.mainTexture = NState;
-    }
-         
-    private bool canUpdate = false; // Decides weather a function can update in update()
-
-    IEnumerator delayUpdate()
-    {
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
-
-        // Allow updates to happen
-        canUpdate = true;   
-
-        UnityEngine.Debug.Log(" 3 seconds has passed");
     }
 
     void InitializeTexture(ref RenderTexture tex)
@@ -57,41 +42,31 @@ public class WaveManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (canUpdate)
+        render = !render;
+        if(!render) return;
+        Graphics.CopyTexture(NState, Nm1State);
+        Graphics.CopyTexture(Np1State, NState);
+
+        waveCompute.SetTexture(0, "NState", NState);
+        waveCompute.SetTexture(0, "Nm1State", Nm1State);
+        waveCompute.SetTexture(0, "Np1State", Np1State);
+
+        //Array
+        for (int i = 0; i < objects.Length; i++)
         {
-<<<<<<< Updated upstream
             if(i > 15) break;
             Vector2 pos = Remap(objects[i].position.x, objects[i].position.z);
             array[i] = new Vector4(pos.x, pos.y, size);
-=======
-            render = !render;
-            if (!render) return;
-            Graphics.CopyTexture(NState, Nm1State);
-            Graphics.CopyTexture(Np1State, NState);
-
-            waveCompute.SetTexture(0, "NState", NState);
-            waveCompute.SetTexture(0, "Nm1State", Nm1State);
-            waveCompute.SetTexture(0, "Np1State", Np1State);
-
-            //Array
-            for (int i = 0; i < objects.Length; i++)
-            {
-                if (i > 9) break;
-                Vector2 pos = Remap(objects[i].position.x, objects[i].position.z);
-                array[i] = new Vector4(pos.x, pos.y, size);
-            }
-            waveCompute.SetVectorArray("rippleObjs", array);
-            waveCompute.SetFloat("arrayLength", array.Length);
-            //waveCompute.SetVector("effect", effect);
-
-
-            waveCompute.SetInts("resolution", resolution.x, resolution.y);
-            waveCompute.SetFloat("dispersion", dispersion);
-            waveCompute.SetTexture(0, "obstaclesTex", obstaclesTex);
-            waveCompute.Dispatch(0, resolution.x / 8, resolution.y / 8, 1);
->>>>>>> Stashed changes
         }
-       
+        waveCompute.SetVectorArray("rippleObjs", array);
+        waveCompute.SetFloat("arrayLength", array.Length);
+        //waveCompute.SetVector("effect", effect);
+
+
+        waveCompute.SetInts("resolution", resolution.x, resolution.y);
+        waveCompute.SetFloat("dispersion", dispersion);
+        waveCompute.SetTexture(0, "obstaclesTex", obstaclesTex);
+        waveCompute.Dispatch(0, resolution.x / 8, resolution.y / 8, 1);
     }
     Vector2 Remap(float posX, float posZ)
     {
