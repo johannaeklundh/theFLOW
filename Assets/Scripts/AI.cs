@@ -89,9 +89,9 @@ public class AIScript : MonoBehaviour
 
     
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.1f;
-    public const float MEDIUM = 0.2f;
-    public const float HARD = 0.3f;
+    public const float LIGHT = 0.15f;  
+    public const float MEDIUM = 0.25f;
+    public const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
     public const int PerState1 = 50; // 4% chance of getting hit per second when state = 1

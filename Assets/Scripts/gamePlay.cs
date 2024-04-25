@@ -432,24 +432,24 @@ public class gamePlay : MonoBehaviour
         // Normal increase/decrease dephending on power
         if(player.radius < 2.0f){    // Must be less than 2
             if(player.power > instance.AI.power + 10){
-                radius = radius - 0.03f;
+                radius = radius - 0.5f;
             }
             else if(player.power > instance.AI.power + 5){
-                radius = radius - 0.015f;
+                radius = radius - 0.25f;
             }
             else if(player.power >= instance.AI.power){
-            radius = radius - 0.005f;
+            radius = radius - 0.1f;
             }
         }
         else if(player.radius > 0.0f){   // Must be more than 0
             if(player.power < instance.AI.power - 5){
-                radius = radius + 0.03f;
+                radius = radius + 0.25f;
             }
             else if(player.power < instance.AI.power -10){
-                radius = radius + 0.02f;
+                radius = radius + 0.5f;
             }
             else if(player.power >= instance.AI.power){
-            radius = radius + 0.005f;
+            radius = radius + 0.1f;
             }
         }
 
