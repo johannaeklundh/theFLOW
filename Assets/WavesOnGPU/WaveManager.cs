@@ -54,7 +54,7 @@ public class WaveManager : MonoBehaviour
         //Array
         for (int i = 0; i < objects.Length; i++)
         {
-            if(i > 9) break;
+            if(i > 15) break;
             Vector2 pos = Remap(objects[i].position.x, objects[i].position.z);
             array[i] = new Vector4(pos.x, pos.y, size);
         }
