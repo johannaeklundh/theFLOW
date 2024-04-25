@@ -13,6 +13,14 @@ public class gamePlay : MonoBehaviour
 
     public PlayerData[] players;    // Public array of all players
 
+    public int p1Alpha = 35;
+    public int p1Theta = 35;
+    public int p2Alpha = 45;
+    public int p2Theta = 45;
+    public int p3Alpha = 55;
+    public int p3Theta = 55;
+    public int p4Alpha = 65;
+    public int p4Theta = 65;
 
     /***********************************************************/
 
@@ -135,9 +143,9 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player Position: " + position);
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            // UnityEngine.Debug.Log("Player Power: " + power);
-            // UnityEngine.Debug.Log("Player Alpha: " + alpha);
-            // UnityEngine.Debug.Log("Player Theta: " + theta);
+            UnityEngine.Debug.Log("Player Power: " + power);
+            UnityEngine.Debug.Log("Player Alpha: " + alpha);
+            UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
             // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
             // UnityEngine.Debug.Log("Player Consistency: " + consistency);
@@ -210,8 +218,9 @@ public class gamePlay : MonoBehaviour
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
 
         // Assign alpha
-        int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
-        (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};
+        /*int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
+        (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};*/
+        int[] alphaValues = {instance.p1Alpha, instance.p2Alpha, instance.p3Alpha, instance.p4Alpha};
         instance.assignValuesToField(alphaValues, "alpha");
         
         // Assign prevTheta
@@ -219,8 +228,9 @@ public class gamePlay : MonoBehaviour
         instance.assignValuesToField(prevThetaValues, "prevTheta");
 
         // Assign theta
-        int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
-        (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};
+        /*int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
+        (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};*/
+        int[] thetaValues = {instance.p1Theta, instance.p2Theta, instance.p3Theta, instance.p4Theta};
         instance.assignValuesToField(thetaValues, "theta");
 
         // Assign prevPower
