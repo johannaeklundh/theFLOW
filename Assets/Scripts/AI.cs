@@ -173,7 +173,7 @@ public class AIScript : MonoBehaviour
 
 
 
-    // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 5 sec)
+    // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
     public static void setState(AIScript instance){
 
         //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
