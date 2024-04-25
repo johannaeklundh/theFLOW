@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Challenge.unity
     guid: 39b0bc756abab084e985f073df39878b
+  - enabled: 1
+    path: Assets/WavesOnGPU/Waves.unity
+    guid: 29e13adb5d0640047874c9ac0a84d6e7
   m_configObjects: {}
