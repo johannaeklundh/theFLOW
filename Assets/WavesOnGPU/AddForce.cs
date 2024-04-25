@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class AddForce : MonoBehaviour
 {
+    public gamePlay GP;
+
     public WaveManager waveManager;
     public Transform centerPoint; // The center point around which the objects will circle.
     public float circularSpeed = 0f; // The speed of the circular movement start at 0.
