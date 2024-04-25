@@ -144,7 +144,7 @@ public class AddForce : MonoBehaviour
 
             if (behaviorID == 0)
             {
-                radius = GP.players[DetermineRadiusByPlayerId(playerID)].radius;
+                targetRadius = GP.players[DetermineRadiusByPlayerId(playerID)].radius;
             }
 
             radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
