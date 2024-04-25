@@ -33,7 +33,7 @@ public class gamePlay : MonoBehaviour
         StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
 
         updatePrevAndCurrent(this); // Update brainwves
-        updatePlayerPosition(this); // Update positions
+        updatePlayerradius(this); // Update radiuss
         setPlacements(this);        // Set placements
 
     }
@@ -46,7 +46,7 @@ public class gamePlay : MonoBehaviour
         if(canUpdate){
 
             updatePrevAndCurrent(this);
-            updatePlayerPosition(this);
+            updatePlayerradius(this);
             setPlacements(this);
 
 
@@ -96,7 +96,7 @@ public class gamePlay : MonoBehaviour
     /*************************************Structs****************************************/
     public struct PlayerData{
         public int id;
-        public float position;
+        public float radius;
         public int placement;
         public float power;
         public float prevPower;
@@ -115,11 +115,11 @@ public class gamePlay : MonoBehaviour
         public float smallestDistance;
 
         // Constructor
-        public PlayerData(int playerID, float playerPosition = 0.0f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
+        public PlayerData(int playerID, float playerradius = 2.0f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
         float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f, float playerBalance = 0.0f)
         {
             id = playerID;
-            position = playerPosition;
+            radius = playerradius;
             placement = playerPlacement;
             power = playerPower;
             prevPower = 0;
@@ -140,7 +140,7 @@ public class gamePlay : MonoBehaviour
         public void displayPlayerInfo()
         {
             UnityEngine.Debug.Log("Player ID: " + id);
-            UnityEngine.Debug.Log("Player Position: " + position);
+            UnityEngine.Debug.Log("Player radius: " + radius);
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
             UnityEngine.Debug.Log("Player Power: " + power);
@@ -258,8 +258,8 @@ public class gamePlay : MonoBehaviour
     // Placeholder to decide the placement of the players, updates every 3 sec
     public static void setPlacements(gamePlay instance){
 
-        // Sort players based on their positions
-        System.Array.Sort(instance.players, (a, b) => a.position.CompareTo(b.position)); // Sorting in ascending order
+        // Sort players based on their radiuss
+        System.Array.Sort(instance.players, (a, b) => a.radius.CompareTo(b.radius)); // Sorting in ascending order
         
         // Assign placements
         int placement = 1;
@@ -271,7 +271,7 @@ public class gamePlay : MonoBehaviour
             placement++;
             
             /*/ Check for ties for the last and second last player if it exist FIX
-            if (i < players.Length - 1 && players[i].position.y != players[i + 1].position.y) {
+            if (i < players.Length - 1 && players[i].radius.y != players[i + 1].radius.y) {
                 placement++;
             }*/
         }
@@ -418,52 +418,55 @@ public class gamePlay : MonoBehaviour
     
     
     // returns a radious for each player, goes from 0 to 2
-    public static float calculatePosition(gamePlay instance, PlayerData player, float lightning = 0.0f){
+    public static float calculateRadius(gamePlay instance, PlayerData player, float lightning = 0.0f){
         
-        float position = player.position;
+        float radius = player.radius;
 
         // Normal increase/decrease dephending on power
-        if(player.position < 2.0f){    // Must be less than 2
+        if(player.radius < 2.0f){    // Must be less than 2
             if(player.power > instance.AI.power + 10){
-                position = position + 0.05f;
+                radius = radius - 0.05f;
             }
             else if(player.power > instance.AI.power + 5){
-                position = position + 0.03f;
+                radius = radius - 0.03f;
             }
             else if(player.power >= instance.AI.power){
-            position = position + 0.005f;
+            radius = radius - 0.005f;
             }
         }
-        else if(player.position > 0.0f){   // Must be more than 0
+        else if(player.radius > 0.0f){   // Must be more than 0
             if(player.power < instance.AI.power - 5){
-                position = position - 0.01f;
+                radius = radius + 0.01f;
             }
             else if(player.power < instance.AI.power -10){
-                position = position -0.03f;
+                radius = radius + 0.03f;
+            }
+            else if(player.power >= instance.AI.power){
+            radius = radius + 0.005f;
             }
         }
 
         // Lightning from AI 
-        position = position - lightning;
+        radius = radius + lightning;
         
 
-        // Keep positions inbetween possible values
-        if(player.position > 2.0f){
-            position = 2.0f;
+        // Keep radiuss inbetween possible values
+        if(player.radius > 2.0f){
+            radius = 2.0f;
         }
-        if(player.position < 0.0f){
-            position = 0.0f;
+        if(player.radius < 0.0f){
+            radius = 0.0f;
         }
 
-        return position;
+        return radius;
     }
     
-    // Updates the players current position (placeholder)
-    public static void updatePlayerPosition(gamePlay instance){
-        instance.players[0].position = calculatePosition(instance, instance.players[0]);
-        instance.players[1].position = calculatePosition(instance, instance.players[1]);
-        instance.players[2].position = calculatePosition(instance, instance.players[2]);
-        instance.players[3].position = calculatePosition(instance, instance.players[3]);
+    // Updates the players current radius (placeholder)
+    public static void updatePlayerradius(gamePlay instance){
+        instance.players[0].radius = calculateRadius(instance, instance.players[0]);
+        instance.players[1].radius = calculateRadius(instance, instance.players[1]);
+        instance.players[2].radius = calculateRadius(instance, instance.players[2]);
+        instance.players[3].radius = calculateRadius(instance, instance.players[3]);
     }
 
 

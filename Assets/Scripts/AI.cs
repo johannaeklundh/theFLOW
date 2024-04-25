@@ -47,7 +47,7 @@ public class AIScript : MonoBehaviour
 
     Necessary inputs from other code:
     - Power from the player-team
-    - Position of each player
+    - radius of each player
 
     Necessary outputs from this code:
     - Power from the AI
@@ -111,10 +111,10 @@ public class AIScript : MonoBehaviour
         int minDecrease = -5;   // Minimum amount of decrease in the power for the AI
 
         // How far apart the player placed in 1:st place is from the player placed in 4:th place
-        float diffrencePlacement1_4 = instance.GP.players[0].position - instance.GP.players[3].position;
+        float diffrencePlacement1_4 = instance.GP.players[0].radius - instance.GP.players[3].radius;
 
         // How far apart the player placed in 1:st place is from the player placed in 2:th place, small diffrence can result in big boost to the others
-        float diffrencePlacement1_2 = instance.GP.players[0].position - instance.GP.players[1].position;
+        float diffrencePlacement1_2 = instance.GP.players[0].radius - instance.GP.players[1].radius;
 
         if(instance.state == 3 && diffrencePlacement1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
             maxIncrease = 10;
@@ -173,11 +173,11 @@ public class AIScript : MonoBehaviour
 
 
 
-    // Placeholder to set the state of the AI dephending on the player positioned the closest to the center (change to include other players and update once every 5 sec)
+    // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 5 sec)
     public static void setState(AIScript instance){
 
-        //switch(placementPlayer(instance, 1).position)   // Uses the player whose placement is 1:s position
-        switch(placementPlayer(instance, 1).position)
+        //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
+        switch(placementPlayer(instance, 1).radius)
         {
             case float n when n >= 0.46f:
                 instance.state = 3;
@@ -259,7 +259,7 @@ public class AIScript : MonoBehaviour
         // player.displayPlayerInfo();
 
         // Moving the player in question back "how" many steps
-        gamePlay.calculatePosition(instance.GP, player, how);   // Updates unbothered of the player that got hit in gamePlay-class
+        gamePlay.calculateRadius(instance.GP, player, how);   // Updates unbothered of the player that got hit in gamePlay-class
 
 
         //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
