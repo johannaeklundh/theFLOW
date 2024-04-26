@@ -190,11 +190,14 @@ public class gamePlay : MonoBehaviour
         
         for (int i = 0; i < players.Length; i++) {  // Go through all players
 
-            // Use reflection to set the value of the specified field
-            var field = typeof(PlayerData).GetField(fieldName);
+            if(players[i].update){  // Test if player should update
 
-            if (field != null && field.FieldType == typeof(float)) {    // Test if field is possible and if it truly is a float
-                field.SetValueDirect(__makeref(players[i]), values[i]); // Set value 
+                // Use reflection to set the value of the specified field
+                var field = typeof(PlayerData).GetField(fieldName);
+
+                if (field != null && field.FieldType == typeof(float)) {    // Test if field is possible and if it truly is a float
+                    field.SetValueDirect(__makeref(players[i]), values[i]); // Set value 
+                }
             }
         }
     }
@@ -209,10 +212,14 @@ public class gamePlay : MonoBehaviour
         
         for (int i = 0; i < players.Length; i++) {  // Go through all players
 
-            // Use reflection to set the value of the specified field
-            var field = typeof(PlayerData).GetField(fieldName);
-            if (field != null && field.FieldType == typeof(int)) {
-                field.SetValueDirect(__makeref(players[i]), values[i]);
+            if(players[i].update){  // Test if player should update
+
+                // Use reflection to set the value of the specified field
+                var field = typeof(PlayerData).GetField(fieldName);
+
+                if (field != null && field.FieldType == typeof(int)) {  // Test if field is possible and if it truly is a float
+                    field.SetValueDirect(__makeref(players[i]), values[i]); // Set value
+                }
             }
         }
     }
@@ -295,15 +302,7 @@ public class gamePlay : MonoBehaviour
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
-        foreach(var player in instance.players){
-
-            if(player.id == ID){
-                return player;
-            }
-        }
-
-        //return players[0];
-        throw new System.Exception("Could not find player whose id is " + ID);
+        return instance.players[(ID-1)];
     }
 
 
@@ -320,29 +319,22 @@ public class gamePlay : MonoBehaviour
 
     // Set consistency of each player
     public static void setConsistency(gamePlay instance){
-        // Player 1
-        float consistency = derivatePower(instance.players[0]); // Calculate consistency for player
-        if(instance.players[0].consistency > consistency){ // Only keep the largest decending derivative (want player to get better)
-            instance.players[0].consistency = consistency; // Update
+
+        float[] consistencyValues = new float[instance.players.Length];
+
+        for (int i = 0; i < instance.players.Length; i++) {
+            
+            float con = derivatePower(instance.players[i]);
+
+            if(con > instance.players[i].consistency){
+                consistencyValues[i] = con;
+            }
+            else{
+                consistencyValues[i] = instance.players[i].consistency;
+            }
         }
 
-        // Player 2
-        consistency = derivatePower(instance.players[1]); // Calculate consistency for player
-        if(instance.players[1].consistency > consistency){ // Only keep the largest decending derivative
-            instance.players[1].consistency = consistency; // Update
-        }
-        
-        // Player 3
-        consistency = derivatePower(instance.players[2]); // Calculate consistency for player
-        if(instance.players[2].consistency > consistency){ // Only keep the largest decending derivative
-            instance.players[2].consistency = consistency; // Update
-        }
-        
-        // Player 4
-        consistency = derivatePower(instance.players[3]); // Calculate consistency for player
-        if(instance.players[3].consistency > consistency){ // Only keep the largest decending derivative
-            instance.players[3].consistency = consistency; // Update
-        }
+        instance.assignValuesToField(consistencyValues, "consistency"); //  Assign consistencyValues tto players
     }
 
     // Set unbothered of each player, is utilized in AI-class
@@ -352,18 +344,7 @@ public class gamePlay : MonoBehaviour
         float unbothered = derivatePower(p);
 
         if(unbothered < p.unbothered){ // Update to the largest decending value
-            if(id == 1){
-                instance.players[0].unbothered = unbothered;
-            }
-            else if(id == 2){
-                instance.players[1].unbothered = unbothered;
-            }
-            else if(id == 3){
-                instance.players[2].unbothered = unbothered;
-            }
-            else{
-                instance.players[3].unbothered = unbothered;
-            }
+            instance.players[(id-1)].unbothered = unbothered;
         }
 
         //player.displayPlayerInfo();
@@ -381,17 +362,20 @@ public class gamePlay : MonoBehaviour
     static void setMean(gamePlay instance)
     {
 
-        instance.players[0].meanAlpha = calculateMean(instance.players[0].meanAlpha, instance.players[0].alpha);
-        instance.players[0].meanTheta = calculateMean(instance.players[0].meanTheta, instance.players[0].theta);
-                                                     
-        instance.players[1].meanAlpha = calculateMean(instance.players[1].meanAlpha, instance.players[1].alpha);
-        instance.players[1].meanTheta = calculateMean(instance.players[1].meanTheta, instance.players[1].theta);
-                                                     
-        instance.players[2].meanAlpha = calculateMean(instance.players[2].meanAlpha, instance.players[2].alpha);
-        instance.players[2].meanTheta = calculateMean(instance.players[2].meanTheta, instance.players[2].theta);
-                                                    
-        instance.players[3].meanAlpha = calculateMean(instance.players[2].meanAlpha, instance.players[3].alpha);
-        instance.players[3].meanTheta = calculateMean(instance.players[2].meanTheta, instance.players[3].theta);
+        float[] meanAlphaValues = new float[instance.players.Length];
+        float[] meanThetaValues = new float[instance.players.Length];
+
+        for (int i = 0; i < instance.players.Length; i++) {
+            
+            float al = calculateMean(instance.players[i].meanAlpha, instance.players[i].alpha);
+            float th = calculateMean(instance.players[i].meanTheta, instance.players[i].theta);
+
+            meanAlphaValues[i] = al;
+            meanThetaValues[i] = th;
+        }
+
+        instance.assignValuesToField(meanAlphaValues, "meanAlpha"); //  Assign meanAlphaValues to players
+        instance.assignValuesToField(meanThetaValues, "meanTheta"); //  Assign meanThetaValues to players
     }
 
     // Returns the new calculated balnce (how close alpha and theta is)
@@ -416,17 +400,23 @@ public class gamePlay : MonoBehaviour
     // Set balance of all players
     public static void setBalance(gamePlay instance)
     {
-        instance.players[0].balance = calculateBalance(ref instance.players[0]);
-        instance.players[1].balance = calculateBalance(ref instance.players[1]);
-        instance.players[2].balance = calculateBalance(ref instance.players[2]);
-        instance.players[3].balance = calculateBalance(ref instance.players[3]);
+        float[] balanceValues = new float[instance.players.Length];
+       
+        for (int i = 0; i < instance.players.Length; i++) {
+            
+            float bal = calculateBalance(ref instance.players[i]);
+
+            balanceValues[i] = bal;
+        }
+
+        instance.assignValuesToField(balanceValues, "balance"); //  Assign meanAlphaValues to players
     }
 
     
     
     
     // returns a radious for each player, goes from 2 to 0
-    public static float calculateRadius(gamePlay instance, PlayerData player){
+    public static float calculateRadius(gamePlay instance, PlayerData player){  // FIX does not enter if at the end
 
         float addOn = 0.0f;
         
@@ -463,6 +453,9 @@ public class gamePlay : MonoBehaviour
         }
         if(player.radius < 0.0f){
             radius = 0.0f;
+            player.update = false;
+            UnityEngine.Debug.Log("Player " + player.id + "is finished!");
+
         }
 
         return radius;
