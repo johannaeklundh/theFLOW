@@ -90,14 +90,14 @@ public class AIScript : MonoBehaviour
 
     
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.015f;  
-    public const float MEDIUM = 0.025f;
-    public const float HARD = 0.035f;
+    public const float LIGHT = 0.15f;  
+    public const float MEDIUM = 0.25f;
+    public const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    public const int PerState1 = 10; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 20; // 8% chance of getting hit per second when state = 2
-    public const int PerState3 = 30; // 16% chance of getting hit per second when state = 3
+    public const int PerState1 = 4; // 4% chance of getting hit per second when state = 1
+    public const int PerState2 = 8; // 8% chance of getting hit per second when state = 2
+    public const int PerState3 = 16; // 16% chance of getting hit per second when state = 3
 
 
 
@@ -106,20 +106,22 @@ public class AIScript : MonoBehaviour
 
     // Placeholder to calcute the AIs power
     //[ContextMenu("CalculatePower")] // Makes it so that we can run the function on command when playing the game by pressing the 3 dot beside the script on the right (only work on non-static)
-    public static void calculatePower(AIScript instance){   
+    public static void calculatePower(AIScript instance){   // FIX so that it works for 1 or 2 players
         
         int maxIncrease = 5;    // Maximum amount of increase in power for the AI
         int minDecrease = -5;   // Minimum amount of decrease in the power for the AI
 
-        // How far apart the player placed in 1:st place is from the player placed in 4:th place
-        float diffrencePlacement1_4 = instance.GP.players[0].radius - instance.GP.players[3].radius;
+        // How far apart the player placed in 1:st place is from the player placed in last
+        float diff1_4 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, instance.GP.players.Length).radius);
 
         // How far apart the player placed in 1:st place is from the player placed in 2:th place, small diffrence can result in big boost to the others
-        float diffrencePlacement1_2 = instance.GP.players[0].radius - instance.GP.players[1].radius;
+        float diff1_2 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, 2).radius);
 
-        if(instance.state == 3 && diffrencePlacement1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
+
+        // Assign max and min distance
+        if(instance.state == 3 && diff1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
             maxIncrease = 10;
-            if(diffrencePlacement1_4 > 30.0f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
+            if(diff1_4 > 30.0f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
                 minDecrease = -4;
             }
             else{   // Otherwise it may push harder to not give a sudden boost that makes everyone finish.
@@ -145,9 +147,21 @@ public class AIScript : MonoBehaviour
         instance.power = (float)inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
     }
 
-    // Calculates the player-teams averge power
+    // Calculates the player-teams averge power of the currenlty active players
     public static float calculateTeamPower(AIScript instance){
-        return (instance.GP.players[0].power + instance.GP.players[1].power + instance.GP.players[2].power + instance.GP.players[3].power)/4;
+
+        float sum = 0.0f;   // Sum of all active players power
+        int nrOfActivePlayers = 0;
+
+        for(int i = 0; i < instance.GP.players.Length; i++){    // Loop through all players
+
+            if(instance.GP.players[i].update){  // Only update if the player is active
+                sum += instance.GP.players[i].power;
+                nrOfActivePlayers++;
+            }
+        }
+
+        return sum/nrOfActivePlayers;
     }
 
 
@@ -157,7 +171,7 @@ public class AIScript : MonoBehaviour
     public static gamePlay.PlayerData placementPlayer(AIScript instance, int place){
 
         // Test weather place is possible
-        if(place > 4){
+        if(place > instance.GP.players.Length){
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
@@ -230,51 +244,59 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to answer WHO got hit by lightning and HOW hard they got hit
-    public static void playerHit(AIScript instance){
+    public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player
 
-        // Only the players placed 1-3 can get hit
+        // Generate random integer inbetween 1 and the next last placement, decides what player at the generated placement got hit
+        
+        int secondLastPlayer = instance.GP.players.Length-1;
+        int placement = 1;
 
-        // Generate random integer inbetween 0-2 (placements 1-3), decides what player at the generated placement got hit
-        int placement = Random.Range(0, 3);
-
-        //Debug.Log("Random placement between 1 and 3 is " + placement);
-        gamePlay.PlayerData player = placementPlayer(instance, placement);
-
-        int who = player.id;    // Player whose id is the one who got hit
-
-        float how = 0;    // How hard the player got hit based on the state of the AI
-
-        switch(instance.state)
-        {
-            case int n when n == 3:
-                how = HARD;
-                break;
-            case int n when n == 2:
-                how = MEDIUM;
-                break;
-            default:
-                how = LIGHT;
-                break;
+        if(secondLastPlayer > 1){   // Check if more than 1 player
+            placement = Random.Range(1, secondLastPlayer);
         }
 
-        Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
-        // player.displayPlayerInfo();
+        Debug.Log("The placement who shall be hit is " + placement);
 
-        // Moving the player in question back "how" many steps
-        var field = typeof(gamePlay.PlayerData).GetField("radius"); 
-        field.SetValueDirect(__makeref(instance.GP.players[who]), instance.GP.players[who].radius - how); 
+        gamePlay.PlayerData player = placementPlayer(instance, placement);  // Find player
 
-        // Test if possible value
-        if(instance.GP.players[who].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
-            field.SetValueDirect(__makeref(instance.GP.players[who]), 2.0f);
+        if(player.update){  // Update only if the player hasn't finished (for safety) 
+
+            int who = player.id;    // Player whose id is the one who got hit
+
+            float how = 0;    // How hard the player got hit based on the state of the AI
+
+            switch(instance.state)
+            {
+                case int n when n == 3:
+                    how = HARD;
+                    break;
+                case int n when n == 2:
+                    how = MEDIUM;
+                    break;
+                default:
+                    how = LIGHT;
+                    break;
+            }
+
+            Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
+            // player.displayPlayerInfo();
+
+            // Moving the player in question back "how" many steps
+            var field = typeof(gamePlay.PlayerData).GetField("radius"); 
+            field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
+
+            // Test if possible value
+            if(instance.GP.players[who-1].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 2.0f);
+            }
+            else if(instance.GP.players[who-1].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
+            }
+
+
+            //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
+            gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay-class
         }
-        else if(instance.GP.players[who].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
-            field.SetValueDirect(__makeref(instance.GP.players[who]), 0.0f);
-        }
-
-
-        //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
-        gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay-class
     }
 
 }

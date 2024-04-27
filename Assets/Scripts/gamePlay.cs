@@ -15,8 +15,8 @@ public class gamePlay : MonoBehaviour
 
     public int p1Alpha = 35;
     public int p1Theta = 35;
-    public int p2Alpha = 40;
-    public int p2Theta = 40;
+    public int p2Alpha = 50;
+    public int p2Theta = 50;
     public int p3Alpha = 55;
     public int p3Theta = 55;
     public int p4Alpha = 45;
@@ -33,8 +33,6 @@ public class gamePlay : MonoBehaviour
         StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
 
         updatePrevAndCurrent(this); // Update brainwves
-        updatePlayerRadius(this); // Update radiuss
-        setPlacements(this);        // Set placements
 
     }
 
@@ -55,9 +53,9 @@ public class gamePlay : MonoBehaviour
             // setUnbothered is called upon in AI 
 
             players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            players[1].displayPlayerInfo();
-            players[2].displayPlayerInfo();
-            players[3].displayPlayerInfo();
+            // players[1].displayPlayerInfo();
+            // players[2].displayPlayerInfo();
+            // players[3].displayPlayerInfo();
                  
             canUpdate = false;  // Makes it so that each function doesn't update every frame
             
@@ -78,8 +76,6 @@ public class gamePlay : MonoBehaviour
 
         // Wait for 3 seconds
         yield return new WaitForSeconds(1.0f);
-
-        UnityEngine.Debug.Log("3 sec has passed!");
 
         // Allow updates to happen
         canUpdate = true;
@@ -132,7 +128,7 @@ public class gamePlay : MonoBehaviour
             theta = 50;
             prevTheta = 0;
 
-            update = true;  // FIX Implement
+            update = true;
 
             meanAlpha = playerAlphaMean;
             meanTheta = playerThetaMean;
@@ -150,7 +146,7 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player radius: " + radius);
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            // UnityEngine.Debug.Log("Player Power: " + power);
+            UnityEngine.Debug.Log("Player Power: " + power);
             // UnityEngine.Debug.Log("Player Alpha: " + alpha);
             // UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
@@ -180,7 +176,7 @@ public class gamePlay : MonoBehaviour
         }
     }
     
-    // Function that assign values to a specified field of PlayerData for each player in players, FIX implement everywhere
+    // Function that assign values to a specified field of PlayerData for each player in players
     void assignValuesToField(float[] values, string fieldName) {    // Must be called with an instance if within a function
 
         if (values.Length != players.Length) {  // Test if possible
@@ -294,17 +290,6 @@ public class gamePlay : MonoBehaviour
 
     }
 
-    // Find a what player whose id is searched for
-    public static PlayerData idPlayer(gamePlay instance, int ID){
-
-        // Test weather ID is possible
-        if(ID > 4){
-             throw new System.Exception("Invalid placement entered, try 1-4");
-        }
-
-        return instance.players[(ID-1)];
-    }
-
 
 
     // Returns the new calculated power (a mean of alpha and theta)
@@ -340,10 +325,9 @@ public class gamePlay : MonoBehaviour
     // Set unbothered of each player, is utilized in AI-class
     public static void setUnbothered(gamePlay instance, int id){
 
-        PlayerData p = idPlayer(instance, id);
-        float unbothered = derivatePower(p);
+        float unbothered = derivatePower(instance.players[(id-1)]);
 
-        if(unbothered < p.unbothered){ // Update to the largest decending value
+        if(unbothered < instance.players[(id-1)].unbothered){ // Update to the largest decending value
             instance.players[(id-1)].unbothered = unbothered;
         }
 
@@ -358,7 +342,7 @@ public class gamePlay : MonoBehaviour
         return mean;
     }
 
-   // Set mean of both alpha and theta of each player
+    // Set mean of both alpha and theta of each player
     static void setMean(gamePlay instance)
     {
 
@@ -409,53 +393,62 @@ public class gamePlay : MonoBehaviour
             balanceValues[i] = bal;
         }
 
-        instance.assignValuesToField(balanceValues, "balance"); //  Assign meanAlphaValues to players
+        instance.assignValuesToField(balanceValues, "balance"); //  Assign balanceValues to players
     }
 
-    
-    
-    
-    // returns a radious for each player, goes from 2 to 0
-    public static float calculateRadius(gamePlay instance, PlayerData player){  // FIX does not enter if at the end
+    public static float calculateRadius(gamePlay instance, int place){  // FIX so that other players get boost when winning
 
+        if(instance.players[place].update == false){
+             return 0.0f;
+        }
+        
         float addOn = 0.0f;
         
-        // Normal increase/decrease dephending on power
-        if(player.radius > 0.0f){    // Must be more than 0
-            if(player.power > instance.AI.power + 10){
-                addOn = -0.05f;
-            }
-            else if(player.power > instance.AI.power + 7){
-                addOn = -0.02f;
-            }
-            else if(player.power >= instance.AI.power){
-            addOn = -0.01f;
-            }
+        // Normal increase (closer to center)
+        if(instance.players[(place)].power > instance.AI.power + 15){
+            addOn = -0.08f;
         }
-        else if(player.radius < 2.0f){   // Must be less than 2
-            if(player.power < instance.AI.power - 12){
+        else if(instance.players[(place)].power > instance.AI.power + 10){
+            addOn = -0.05f;
+        }
+        else if(instance.players[(place)].power > instance.AI.power + 7){
+            addOn = -0.02f;
+        }
+        else if(instance.players[(place)].power >= instance.AI.power){
+        addOn = -0.01f;
+        }
+
+        // Normal decrease (further from center)
+        if(instance.players[(place)].radius < 2.0f){   // Must be less than 2
+
+            if(instance.players[(place)].power < instance.AI.power - 15){
+                addOn = 0.07f;
+            }
+            else if(instance.players[(place)].power < instance.AI.power - 12){
                 addOn = 0.04f;
             }
-            else if(player.power < instance.AI.power -9){
+            else if(instance.players[(place)].power < instance.AI.power -9){
                 addOn = 0.02f;
             }
-            else if(player.power >= instance.AI.power){
+            else if(instance.players[(place)].power <= instance.AI.power){
             addOn = 0.005f;
             }
         }
 
-        float radius = player.radius + addOn;
-        
+        /*if(instance.players[(place)].id == 4){  // Write out increase/decrease for player 4
+            UnityEngine.Debug.Log("addOn = " + addOn);
+        }*/
 
-        // Keep radiuss inbetween possible values
-        if(player.radius > 2.0f){
+        float radius = instance.players[(place)].radius + addOn;    // Calculate the new radius
+
+        // Keep radiuss inbetween possible values (aka 0 and 2)
+        if(radius > 2.0f){
             radius = 2.0f;
         }
-        if(player.radius < 0.0f){
+        else if(radius < 0.0f){
             radius = 0.0f;
-            player.update = false;
-            UnityEngine.Debug.Log("Player " + player.id + "is finished!");
-
+            instance.players[place].update = false;
+            UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
         }
 
         return radius;
@@ -464,10 +457,16 @@ public class gamePlay : MonoBehaviour
     // Updates the players current radius (placeholder)
     public static void updatePlayerRadius(gamePlay instance){
 
-        // Assign radius
-        float[] radiusValues = {calculateRadius(instance, instance.players[0]), calculateRadius(instance, instance.players[1]),
-         calculateRadius(instance, instance.players[2]), calculateRadius(instance, instance.players[3])};
-        instance.assignValuesToField(radiusValues, "radius");
+        float[] radiusValues = new float[instance.players.Length];
+       
+        for (int i = 0; i < instance.players.Length; i++) {
+            
+            float rad = calculateRadius(instance, i);
+
+            radiusValues[i] = rad;
+        }
+
+        instance.assignValuesToField(radiusValues, "radius"); //  Assign radiusValues to players
     }
 
 
