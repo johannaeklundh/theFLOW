@@ -24,33 +24,25 @@ public class AddForce : MonoBehaviour
     public int behaviorID;
     public int playerID;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        if (behaviorID == 1) //keep them invisible in the beginning
+        {
+            transform.position = new Vector3(-2f, -2f, -2f);
+        }
+        if (behaviorID == 0) { //right place in the start
+
+            transform.position = new Vector3(Mathf.Cos((float)Math.PI * startAngle / 180) * radius, 0,
+                                             Mathf.Sin((float)Math.PI * startAngle / 180) * radius);
+                                             
+
+        }
+
+        //Math.PI* angle / 180.0
+
         StartCoroutine(delayUpdate());
-
-        // Ensure waveManager is assigned
-        if (waveManager == null)
-        {
-            waveManager = GetComponent<WaveManager>();
-            if (waveManager == null)
-            {
-                UnityEngine.Debug.LogError("WaveManager is not assigned and could not be found on the same GameObject.");
-                return;
-            }
-        }
-        //transform.localScale = new Vector3(1f, 1f, 1f); //THIS TO CHANGE SIZE
-
-        // Initialize centerPoint to origin
-        if (centerPoint == null)
-        {
-            centerPoint = new GameObject("CenterPoint").transform;
-            centerPoint.position = Vector3.zero;
-        }
-
-        currentAngle = startAngle;
-        targetRadius = radius;
-        targetCircularSpeed = DetermineSpeedBySpeedID(speedID);
 
         // Ensure waveManager is assigned
         if (waveManager == null)
@@ -100,7 +92,6 @@ public class AddForce : MonoBehaviour
 
     int DetermineRadiusByPlayerId(int id)
     {
-
         switch (id)
         {
             case 1: return 0;
@@ -108,7 +99,6 @@ public class AddForce : MonoBehaviour
             case 3: return 2;
             case 4: return 3;
             default : return 0;
-
         }
     }
 
@@ -167,7 +157,7 @@ public class AddForce : MonoBehaviour
 
         // Apply the new position (and noise)
 
-        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 20f && behaviorID == 1)
+        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 40f && behaviorID == 1)
         {
             float noiseX = RandomGen();
             float noiseZ = RandomGen();
