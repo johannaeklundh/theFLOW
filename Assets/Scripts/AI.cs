@@ -7,33 +7,24 @@ using UnityEngine;
 
 public class AIScript : MonoBehaviour
 {
+    /********Refrence instances to other classes/scripts********/
+    public gamePlay GP;
+
+    /***********************************************************/
     
     // Start is called before the first frame update
     void Start()
     {
-        calculatePower(this);   // Runs this function on start, see changes to the right
-        setPlacements(this);    // Test to set the correct placements of the players, must always intialize or all placements will be wrong
-        setState(this);   // Test to set the state of the AI
-        player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
-        player2.DisplayPlayerInfo();
-        player3.DisplayPlayerInfo();
-        player4.DisplayPlayerInfo();
-        //Debug.Log("The player whose placement is 1 is player nr: " + placementPlayer(this, 1).id);  // Tests the search for player at placement function by writing out who is currently in placement 1
-        isHit(this);
+        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
     }
 
     // Update is called once per frame
     void Update()
     {  
+
         if(canUpdate){
             calculatePower(this);   // Runs this function on start, see changes to the right
-            setPlacements(this);    // Test to set the correct placements of the players, must always intialize or all placements will be wrong
             setState(this);   // Test to set the state of the AI
-            player1.DisplayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            player2.DisplayPlayerInfo();
-            player3.DisplayPlayerInfo();
-            player4.DisplayPlayerInfo();
-            //Debug.Log("The player whose placement is 1 is player nr: " + placementPlayer(this, 1).id);  // Tests the search for player at placement function by writing out who is currently in placement 1
             isHit(this);
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -57,7 +48,7 @@ public class AIScript : MonoBehaviour
 
     Necessary inputs from other code:
     - Power from the player-team
-    - Position of each player
+    - radius of each player
 
     Necessary outputs from this code:
     - Power from the AI
@@ -70,8 +61,8 @@ public class AIScript : MonoBehaviour
 
 
     /************Things used obly to control update(), not relevant for behaviour************/
-    private bool canUpdate = true; // Decides weather a function can update in update()
-
+    private bool canUpdate = false; // Decides weather a function can update in update()
+    
     IEnumerator delayUpdate(){
 
         // Wait for 3 seconds
@@ -95,60 +86,13 @@ public class AIScript : MonoBehaviour
     public float power = 50; // The AIs restitance against the players, starts at 50
 
 
-
-
-    /***********Inputs(placeholders)*********/
-    
-    // Current position of each player, 0 = outer edge, 51 = center (GOAL), placeholder taken from FLOW - EN VIRVEL
-    public int pos1 = 35;   // current position for player 1
-    public int pos2 = 26;   // current position for player 2
-    public int pos3 = 41;   // current position for player 3 (diffrent from paper due to wanting to test setPlacements)
-    public int pos4 = 0;    // current position for player 4
-
-    // Handles all data unique to each player
-    public struct PlayerData{
-        public int id;
-        public int position;
-        public int placement;
-        
-        // Constructor
-        public PlayerData(int playerID, int playerPosition, int playerPlacement)
-        {
-            id = playerID;
-            position = playerPosition;
-            placement = playerPlacement;
-        }
-
-        // A way to display each player info in the console
-        public void DisplayPlayerInfo()
-        {
-            Debug.Log("Player ID: " + id);
-            Debug.Log("Player Position: " + position);
-            Debug.Log("Player Placement: " + placement);
-        }
-    }
-
-    // Create the 4 players (may change due to the number of players beign flexible)
-    PlayerData player1 = new PlayerData(1, 0, 1);
-    PlayerData player2 = new PlayerData(2, 0, 2);
-    PlayerData player3 = new PlayerData(3, 0, 3);
-    PlayerData player4 = new PlayerData(4, 0, 4);
-
-
-    public float teamPower = 47.5F; // current power of the player-team
-
-
     /***********Constants*********/
-    
-    // Max/Min Power Constants
-    public const int MaxPower = 100;    // Maximum POWER-output by the AI dephending on players performance
-    public const int MinPower = 0;      // Minimum POWER-output by the AI dephending on players performance
 
     
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const int LIGHT = 1;
-    public const int MEDIUM = 2;
-    public const int HARD = 3;
+    public const float LIGHT = 0.15f;  
+    public const float MEDIUM = 0.25f;
+    public const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
     public const int PerState1 = 4; // 4% chance of getting hit per second when state = 1
@@ -160,85 +104,37 @@ public class AIScript : MonoBehaviour
 
     /**********************Functions************************/
 
-
-    // Takes in the position of a player in x- and y-direction and makes it a distance from center, assumes center of screen is (0,0) (maybe move to gameLogic)
-    public static int setPosition(AIScript instance, int x, int y){
-        float position = Mathf.Sqrt(Mathf.Abs(x) + Mathf.Abs(y));    // Pythtagoras theorem to get distance from center
-        return (int)position;
-    }   // Add more things dephending on overall performance based of of gameLogic
-
-
-
-    // Placeholder to decide the placement of the players, change to update every 5 sec or smth
-    public static void setPlacements(AIScript instance){
-
-        instance.player1.position = instance.pos1;
-        instance.player2.position = instance.pos2;
-        instance.player3.position = instance.pos3;
-        instance.player4.position = instance.pos4;
-        
-        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
-        PlayerData[] players = {(PlayerData)instance.player1, (PlayerData)instance.player2, (PlayerData)instance.player3, (PlayerData)instance.player4};
-        
-        // Create vector storing the current position of each player
-        Vector4 positions = new Vector4(instance.player1.position, instance.player2.position, instance.player3.position, instance.player4.position);
-
-        // Convert to arry for easier sorting
-        int[] sortedPositions = {(int)positions.x, (int)positions.y, (int)positions.z, (int)positions.w};
-
-        // Sort new array
-        System.Array.Sort(sortedPositions, (x,y) => y.CompareTo(x));
-
-        // Update placements
-        for(int i = 0; i < players.Length; i++)
-        {
-            for(int n = 0; n < sortedPositions.Length; n++)
-            {
-                if(players[i].position == sortedPositions[n]){
-                    players[i].placement = n + 1;
-                }
-            }
-        }
-
-        instance.player1.placement = players[0].placement;
-        instance.player2.placement = players[1].placement;
-        instance.player3.placement = players[2].placement;
-        instance.player4.placement = players[3].placement;
-
-    }
-    
-
-
-    
     // Placeholder to calcute the AIs power
     //[ContextMenu("CalculatePower")] // Makes it so that we can run the function on command when playing the game by pressing the 3 dot beside the script on the right (only work on non-static)
-    public static void calculatePower(AIScript instance){   
+    public static void calculatePower(AIScript instance){   // FIX so that it works for 1 or 2 players
         
         int maxIncrease = 5;    // Maximum amount of increase in power for the AI
         int minDecrease = -5;   // Minimum amount of decrease in the power for the AI
 
-        // How far apart the player placed in 1:st place is from the player placed in 4:th place
-        int diffrencePlacement1_4 = instance.player1.position - instance.player4.position;
+        // How far apart the player placed in 1:st place is from the player placed in last
+        float diff1_4 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, instance.GP.players.Length).radius);
 
         // How far apart the player placed in 1:st place is from the player placed in 2:th place, small diffrence can result in big boost to the others
-        int diffrencePlacement1_2 = instance.player1.position - instance.player2.position;
+        float diff1_2 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, 2).radius);
 
-        if(instance.state == 3 && diffrencePlacement1_2 < 10){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
+
+        // Assign max and min distance
+        if(instance.state == 3 && diff1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
             maxIncrease = 10;
-            if(diffrencePlacement1_4 > 30){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
-                minDecrease = -7;
+            if(diff1_4 > 30.0f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
+                minDecrease = -4;
             }
             else{   // Otherwise it may push harder to not give a sudden boost that makes everyone finish.
-                minDecrease = -3; 
+                minDecrease = -1; 
             }
         }
         else if(instance.state == 2){
             maxIncrease = 7;
-            minDecrease = -5;
+            minDecrease = -3;
         }
         else if (instance.state == 1){
             maxIncrease = 6;
-            minDecrease = -4;
+            minDecrease = -2;
         }
         else{
             maxIncrease = 5;
@@ -248,34 +144,43 @@ public class AIScript : MonoBehaviour
         // Generate random integer inbetween min and max, decides how much the AI:s power will increase/decrease
         int inc_dec = Random.Range(minDecrease, maxIncrease);
 
-        instance.power = (float)inc_dec + instance.teamPower;
+        instance.power = (float)inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
+    }
+
+    // Calculates the player-teams averge power of the currenlty active players
+    public static float calculateTeamPower(AIScript instance){
+
+        float sum = 0.0f;   // Sum of all active players power
+        int nrOfActivePlayers = 0;
+
+        for(int i = 0; i < instance.GP.players.Length; i++){    // Loop through all players
+
+            if(instance.GP.players[i].update){  // Only update if the player is active
+                sum += instance.GP.players[i].power;
+                nrOfActivePlayers++;
+            }
+        }
+
+        return sum/nrOfActivePlayers;
     }
 
 
 
 
-
-
     // Find a what player holds a certain placement
-    public static PlayerData placementPlayer(AIScript instance, int place){
+    public static gamePlay.PlayerData placementPlayer(AIScript instance, int place){
 
         // Test weather place is possible
-        if(place > 4){
+        if(place > instance.GP.players.Length){
              throw new System.Exception("Invalid placement entered, try 1-4");
         }
 
-        // Create an array containing each player (put this in a sepperate create-player funtion for when you can add less than 4 players)
-        PlayerData[] players = {(PlayerData)instance.player1, (PlayerData)instance.player2, (PlayerData)instance.player3, (PlayerData)instance.player4};
+        foreach(var player in instance.GP.players){
 
-        // Search for player whose placement matches the searched place and return the player
-        for(int i = 0; i < players.Length; i++)
-        {
-            if(players[i].placement == place){
-                return players[i];
+            if(player.placement == place){
+                return player;
             }
         }
-
-        //return players[0];
         throw new System.Exception("Could not find player at placement " + place);
     }
 
@@ -283,18 +188,19 @@ public class AIScript : MonoBehaviour
 
 
 
-    // Placeholder to set the state of the AI dephending on the player positioned the closest to the center (change to include other players and update once every 5 sec)
+    // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
     public static void setState(AIScript instance){
 
-        switch(placementPlayer(instance, 1).position)   // Uses the player whose placement is 1:s position
+        //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
+        switch(placementPlayer(instance, 1).radius)
         {
-            case int n when n >= 46:
+            case float n when n >= 0.46f:
                 instance.state = 3;
                 break;
-            case int n when n >= 40:
+            case float n when n >= 0.40f:
                 instance.state = 2;
                 break;
-            case int n when n >= 33:
+            case float n when n >= 0.33f:
                 instance.state = 1;
                 break;
             default:
@@ -338,31 +244,59 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to answer WHO got hit by lightning and HOW hard they got hit
-    public static (int, int) playerHit(AIScript instance){
+    public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player
 
-        // Only the players placed 1-3 can get hit
+        // Generate random integer inbetween 1 and the next last placement, decides what player at the generated placement got hit
+        
+        int secondLastPlayer = instance.GP.players.Length-1;
+        int placement = 1;
 
-        // Generate random integer inbetween 1-3, decides what player at the generated placement got got hit
-        int placement = Random.Range(1, 3);
-        int who = placementPlayer(instance, placement).id;
-
-        int how = 0;    // How hard the player got hit based on the state of the AI
-
-        switch(instance.state)
-        {
-            case int n when n == 3:
-                how = HARD;
-                break;
-            case int n when n == 2:
-                how = MEDIUM;
-                break;
-            default:
-                how = LIGHT;
-                break;
+        if(secondLastPlayer > 1){   // Check if more than 1 player
+            placement = Random.Range(1, secondLastPlayer);
         }
 
-        // Debug.Log("Player ID: " + who + ", how hard: " + how);
-        return (who, how);
+        Debug.Log("The placement who shall be hit is " + placement);
+
+        gamePlay.PlayerData player = placementPlayer(instance, placement);  // Find player
+
+        if(player.update){  // Update only if the player hasn't finished (for safety) 
+
+            int who = player.id;    // Player whose id is the one who got hit
+
+            float how = 0;    // How hard the player got hit based on the state of the AI
+
+            switch(instance.state)
+            {
+                case int n when n == 3:
+                    how = HARD;
+                    break;
+                case int n when n == 2:
+                    how = MEDIUM;
+                    break;
+                default:
+                    how = LIGHT;
+                    break;
+            }
+
+            Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
+            // player.displayPlayerInfo();
+
+            // Moving the player in question back "how" many steps
+            var field = typeof(gamePlay.PlayerData).GetField("radius"); 
+            field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
+
+            // Test if possible value
+            if(instance.GP.players[who-1].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 2.0f);
+            }
+            else if(instance.GP.players[who-1].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
+            }
+
+
+            //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
+            gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay-class
+        }
     }
 
 }

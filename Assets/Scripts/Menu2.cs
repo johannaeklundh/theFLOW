@@ -21,7 +21,7 @@ public class Menu2 : MonoBehaviour
         ShowObjects();
     }
 
-    // Function to show objects based on the value of ConnectedPlayers
+    //Function to show objects based on the value of ConnectedPlayers
     void ShowObjects()
     {
         // Loop through all the objects in the objectsToShow array
@@ -43,7 +43,7 @@ public class Menu2 : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadSceneAsync(2); 
+        SceneManager.LoadSceneAsync(6); 
     }
 
     public void Back()
