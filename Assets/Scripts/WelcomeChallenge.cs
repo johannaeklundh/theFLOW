@@ -12,7 +12,6 @@ public class WelcomeChallenge : MonoBehaviour
 
     void Start()
     {
-        //welcomeText.text = "Welcome to the rematch! Try to get your alpha and theta values to..";
         countdownText.text = countdown.ToString("F0");
         StartCoroutine(CountdownAndStart());
     }
@@ -28,7 +27,7 @@ public class WelcomeChallenge : MonoBehaviour
 
         // When countdown is over, hide the welcome panel and activate the GameUI
         gameObject.SetActive(false); // Deactivates the welcome panel
-       
+
         if (gameUI != null)
         {
             gameUI.SetActive(true); // Activates the GameUI
