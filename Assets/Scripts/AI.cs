@@ -15,7 +15,7 @@ public class AIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate(3.0f)); // Delay Start() by 3 seconds
     }
 
     // Update is called once per frame
@@ -30,7 +30,7 @@ public class AIScript : MonoBehaviour
             canUpdate = false;  // Makes it so that each function doesn't update every frame
 
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
-            StartCoroutine(delayUpdate());
+            StartCoroutine(delayUpdate(delay));
 
         }
         
@@ -61,15 +61,21 @@ public class AIScript : MonoBehaviour
 
 
     /************Things used obly to control update(), not relevant for behaviour************/
-    private bool canUpdate = false; // Decides weather a function can update in update()
-    
-    IEnumerator delayUpdate(){
+    public bool canUpdate = false; // Decides weather a function can update in update()
 
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
+    public float delay = 1.0f;
+    
+    public IEnumerator delayUpdate(float d){
+
+        // Wait for d seconds
+        yield return new WaitForSeconds(d);
 
         // Allow updates to happen
         canUpdate = true;
+
+        delay = 1.0f;   // Reset delay
+
+        Debug.Log("Reached delayUpdate!");
     }
 
     /***********************************************************/
@@ -189,23 +195,28 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
-    public static void setState(AIScript instance){
+    public static void setState(AIScript instance, int s = 4){
 
-        //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
-        switch(placementPlayer(instance, 1).radius)
-        {
-            case float n when n >= 0.46f:
-                instance.state = 3;
-                break;
-            case float n when n >= 0.40f:
-                instance.state = 2;
-                break;
-            case float n when n >= 0.33f:
-                instance.state = 1;
-                break;
-            default:
-                instance.state = 0;
-                break;
+        if(s == 4){
+            //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
+            switch(placementPlayer(instance, 1).radius)
+            {
+                case float n when n <= 0.3f:
+                    instance.state = 3;
+                    break;
+                case float n when n <= 0.9f:
+                    instance.state = 2;
+                    break;
+                case float n when n <= 1.3f:
+                    instance.state = 1;
+                    break;
+                default:
+                    instance.state = 0;
+                    break;
+            }
+        }
+        else{
+            instance.state = s;
         }
     }
 
