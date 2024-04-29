@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - 1
-  - 2
-  - 3
-  - 4
+
+  - theta
+  - alpha
+
   layers:
   - Default
   - TransparentFX
