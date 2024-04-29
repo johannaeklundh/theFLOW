@@ -13,14 +13,10 @@ public class gamePlay : MonoBehaviour
 
     public PlayerData[] players;    // Public array of all players
 
-    public int p1Alpha = 35;
-    public int p1Theta = 35;
-    public int p2Alpha = 50;
-    public int p2Theta = 50;
-    public int p3Alpha = 55;
-    public int p3Theta = 55;
-    public int p4Alpha = 45;
-    public int p4Theta = 45;
+    public int p1Power = 35;
+    public int p2Power = 50;
+    public int p3Power = 55;
+    public int p4Power = 57;
 
     /***********************************************************/
 
@@ -230,7 +226,7 @@ public class gamePlay : MonoBehaviour
         // Assign alpha
         /*int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
         (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};*/
-        int[] alphaValues = {instance.p1Alpha, instance.p2Alpha, instance.p3Alpha, instance.p4Alpha};
+        int[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
         instance.assignValuesToField(alphaValues, "alpha");
         
         // Assign prevTheta
@@ -240,7 +236,7 @@ public class gamePlay : MonoBehaviour
         // Assign theta
         /*int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
         (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};*/
-        int[] thetaValues = {instance.p1Theta, instance.p2Theta, instance.p3Theta, instance.p4Theta};
+        int[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
         instance.assignValuesToField(thetaValues, "theta");
 
         // Assign prevPower
@@ -298,6 +294,23 @@ public class gamePlay : MonoBehaviour
         float power = (alpha + theta) / 2;
         return power;
     }
+
+    /*/ Gives boost to remaining players when ones finsihes
+    public static void radiusBoost(gamePlay instance){
+        
+        float[] radiusValues = new float[instance.players.Length];
+       
+        float boost = 0.2;
+
+        for (int i = 0; i < instance.players.Length; i++) {
+            
+            float rad = calculateRadius(instance, i);
+
+            radiusValues[i] = rad;
+        }
+
+        instance.assignValuesToField(radiusValues, "radius"); //  Assign radiusValues to players
+    }*/
 
 
     /**********************************Main Functions*************************************/
@@ -441,7 +454,7 @@ public class gamePlay : MonoBehaviour
 
         float radius = instance.players[(place)].radius + addOn;    // Calculate the new radius
 
-        // Keep radiuss inbetween possible values (aka 0 and 2)
+        // Keep radius inbetween possible values (aka 0 and 2)
         if(radius > 2.0f){
             radius = 2.0f;
         }
