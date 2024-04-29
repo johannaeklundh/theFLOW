@@ -2118,16 +2118,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae dictum
-    enim, eget congue urna. Pellentesque rhoncus scelerisque magna at imperdiet.
-    Donec tempus consequat tellus, nec varius mauris feugiat quis. In porttitor eros
-    augue. Nullam luctus leo purus, quis faucibus dolor congue id. Phasellus eget
-    pharetra ligula, at dictum nulla. Nam laoreet accumsan dolor, eu eleifend est
-    sagittis sodales. Nulla sit amet tempus metus. \n\nNam eget ipsum nisl. Suspendisse
-    finibus est vel ipsum blandit rhoncus. Curabitur eget turpis ante. Morbi id malesuada
-    dolor. Sed eu tempus augue, nec congue sem. Integer urna purus, rhoncus in arcu
-    eu, tincidunt scelerisque felis. Duis posuere purus nulla, sit amet scelerisque
-    lectus tincidunt et.\r\n"
+  m_text: "In a playful and pedagogic way this game visualizes your mental state,
+    exploring and encouraging the balance between both focus and relaxation - finding
+    The FLOW. \r\n\r\nLet\xB4s get started!\r\n\r\n1. Put your headbands on. \r\nThey
+    will register your Alpha- and Theta-brainwaves, meaning they measure how relaxed
+    and focused you are. \r\nThe player who is BOTH relaxed and focused at the same
+    time wins.\r\n\r\n2. The game is about to begin. \r\nYou can compete alone or
+    together but always against an interfering AI situated in the center of a vortex.
+    \r\n\r\n3. Between each game, you can try the exercises suggested to reach a
+    deeper relaxation and focus.\r\n\r\nResearch shows that, when the brain is in
+    a competing mode, the recognition of being in \"flow\" is created as an emotional
+    memory in the body. This memory is stored and can be used as a tool in everyday
+    life. \r\n\r\nThe FLOW was created by artist and innovator Martin Lima de Faria
+    and built in collaboration with engineer Fredrik Borg, AI-researchers at Uppsala
+    University and brain researchers and visualizations students at Link\xF6pings
+    University in Sweden. \r\n\r\nHave a good run!\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2154,8 +2159,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
