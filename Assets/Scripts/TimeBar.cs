@@ -11,6 +11,10 @@ public class TimeBar : MonoBehaviour
     public Image timeBar; // Reference to the time bar Image
     public float timeLimit = 60f; // Time limit for the challenge
 
+ public void Finish()
+    {
+        SceneManager.LoadSceneAsync(2); // Load scene 2 asynchronously
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +44,7 @@ public class TimeBar : MonoBehaviour
     }
 
          timeBar.fillAmount = 0;
+          Finish(); 
          
     }
 }
