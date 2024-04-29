@@ -85,6 +85,7 @@ public class AddForce : MonoBehaviour
         {
             case 1: return 20f;
             case 2: return 40f;
+            case 3: return 60f;
             default: return 10f;
         }
     }
@@ -134,6 +135,11 @@ public class AddForce : MonoBehaviour
             if (behaviorID == 0)
             {
                 targetRadius = GP.players[DetermineRadiusByPlayerId(playerID)].radius;
+                //if (targetRadius < 1) { 
+                //    if(behaviorID == 3) {
+                //        targetCircularSpeed
+                //    } 
+                //}
             }
 
             radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
@@ -149,6 +155,8 @@ public class AddForce : MonoBehaviour
 
             //    }
             //}
+
+            //if (behaviorID == 0) { }
         }
 
     }
