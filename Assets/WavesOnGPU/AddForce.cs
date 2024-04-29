@@ -18,7 +18,7 @@ public class AddForce : MonoBehaviour
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate; // Rate of speed change per second
-    private float radiusAdjustmentRate = 0.5f;
+    private float radiusAdjustmentRate = 0.1f;
 
     public int speedID;
     public int behaviorID;
@@ -28,16 +28,15 @@ public class AddForce : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (behaviorID == 1) //keep them invisible in the beginning
+        if (behaviorID == 1) //keep the waves invisible in the beginning
         {
             transform.position = new Vector3(-2f, -2f, -2f);
         }
-        if (behaviorID == 0) { //right place in the start
+        if (behaviorID == 0) { //right place for players in the start
 
             transform.position = new Vector3(Mathf.Cos((float)Math.PI * startAngle / 180) * radius, 0,
                                              Mathf.Sin((float)Math.PI * startAngle / 180) * radius);
                                              
-
         }
 
         //Math.PI* angle / 180.0
@@ -141,6 +140,15 @@ public class AddForce : MonoBehaviour
 
             // Calculate circular movement
             RotateAroundCenter();
+            //if (behaviorID == 0) { //Change size if closer to the center
+            //    if (radius < 1) { 
+            //        transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+            //    }
+            //    else {
+            //        transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+            //    }
+            //}
         }
 
     }
