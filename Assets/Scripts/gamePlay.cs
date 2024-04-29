@@ -26,7 +26,7 @@ public class gamePlay : MonoBehaviour
 
         createPlayers(4);   // Number of players given by EEGport
 
-        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate(3.0f)); // Delay Start() by 3 seconds
 
         updatePrevAndCurrent(this); // Update brainwves
 
@@ -48,7 +48,7 @@ public class gamePlay : MonoBehaviour
             setBalance(this);
             // setUnbothered is called upon in AI 
 
-            players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
             // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
             // players[3].displayPlayerInfo();
@@ -56,7 +56,7 @@ public class gamePlay : MonoBehaviour
             canUpdate = false;  // Makes it so that each function doesn't update every frame
             
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
-            StartCoroutine(delayUpdate());
+            StartCoroutine(delayUpdate(delay));
 
         }
     }
@@ -67,14 +67,18 @@ public class gamePlay : MonoBehaviour
 
     /************Things used obly to control delays, not relevant for behaviour************/
     private bool canUpdate = false; // Decides weather a function can update in update()
+
+    public float delay = 1.0f;
     
-    IEnumerator delayUpdate(){
+    IEnumerator delayUpdate(float d){
 
         // Wait for 3 seconds
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(d);
 
         // Allow updates to happen
         canUpdate = true;
+
+        delay = 1.0f;   // Reset delay
 
     }
     /**************************************************************************************/
@@ -247,6 +251,7 @@ public class gamePlay : MonoBehaviour
         float[] powerValues = {calculatePower(instance.players[0].alpha, instance.players[0].theta), calculatePower(instance.players[1].alpha, instance.players[1].theta),
          calculatePower(instance.players[2].alpha, instance.players[2].theta),calculatePower(instance.players[3].alpha, instance.players[3].theta)};
         instance.assignValuesToField(powerValues, "power");
+
     }
     
     // Calculates change
@@ -295,22 +300,17 @@ public class gamePlay : MonoBehaviour
         return power;
     }
 
-    /*/ Gives boost to remaining players when ones finsihes
-    public static void radiusBoost(gamePlay instance){
+    // Gives boost to remaining players when ones finishes by nerfing AI for a while
+    public static void boost(gamePlay instance){
         
-        float[] radiusValues = new float[instance.players.Length];
-       
-        float boost = 0.2;
+        instance.AI.canUpdate = false;
 
-        for (int i = 0; i < instance.players.Length; i++) {
-            
-            float rad = calculateRadius(instance, i);
+        instance.AI.state = 0;      // AI-state at 0, no lightning can occur
+        AIScript.calculatePower(instance.AI);
+        instance.AI.power = instance.AI.power - 20.0f;    // AI-power goes down to give lesser furtunate players chance
 
-            radiusValues[i] = rad;
-        }
-
-        instance.assignValuesToField(radiusValues, "radius"); //  Assign radiusValues to players
-    }*/
+        instance.AI.delayUpdate(5.0f);
+    }
 
 
     /**********************************Main Functions*************************************/
@@ -462,6 +462,7 @@ public class gamePlay : MonoBehaviour
             radius = 0.0f;
             instance.players[place].update = false;
             UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
+            boost(instance);
         }
 
         return radius;
