@@ -84,8 +84,8 @@ public class AddForce : MonoBehaviour
     {
         switch (id)
         {
-            case 1: return 25f;
-            case 2: return 50f;
+            case 1: return 20f;
+            case 2: return 40f;
             default: return 10f;
         }
     }
