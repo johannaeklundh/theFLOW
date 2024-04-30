@@ -393,11 +393,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
       propertyPath: speedID
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
       propertyPath: behaviorID
-      value: 3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
+      propertyPath: startAngle
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
       propertyPath: centerPoint
@@ -469,6 +473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1784316010405884100, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
+    - {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8829126287294850581, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
@@ -704,6 +709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
+  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -907,9 +913,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4006a54c1970c384d98df60b618fd898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 10
-  shakeMagnitude: 10
-  dampingSpeed: 5.47
+  shakeDuration: 0.08
+  shakeMagnitude: 0.08
+  dampingSpeed: 1
 --- !u!4 &814114182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4181500375152505230, guid: 01d267accbca58444843ee24460c1fbe, type: 3}
@@ -1163,6 +1169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
+  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -1612,6 +1619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
+  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -1693,6 +1701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
+  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
