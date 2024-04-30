@@ -709,7 +709,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
-  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -1169,7 +1168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
-  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -1619,7 +1617,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
-  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -1701,7 +1698,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
-  AI: {fileID: 0}
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
@@ -2005,6 +2001,10 @@ PrefabInstance:
       value: CircleBottomInner
       objectReference: {fileID: 0}
     - target: {fileID: 4279861500325030568, guid: b05f14c79524ccb4895d4004a8db2761, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
+    - target: {fileID: 4279861500325030568, guid: b05f14c79524ccb4895d4004a8db2761, type: 3}
       propertyPath: GP
       value: 
       objectReference: {fileID: 1741228514}
@@ -2097,6 +2097,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 4386840806030428576, guid: 01d267accbca58444843ee24460c1fbe, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
     - target: {fileID: 4386840806030428576, guid: 01d267accbca58444843ee24460c1fbe, type: 3}
       propertyPath: GP
       value: 
@@ -2229,6 +2233,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1852943460}
     m_Modifications:
+    - target: {fileID: 1113455141649480010, guid: d813d359470886b42927784d4055fed0, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
     - target: {fileID: 1113455141649480010, guid: d813d359470886b42927784d4055fed0, type: 3}
       propertyPath: GP
       value: 
@@ -2469,6 +2477,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7480404289834776690, guid: 65fb9fc886ee8b844986ff4bd50c9723, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
+    - target: {fileID: 7480404289834776690, guid: 65fb9fc886ee8b844986ff4bd50c9723, type: 3}
       propertyPath: GP
       value: 
       objectReference: {fileID: 1741228514}
@@ -2570,6 +2582,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8990576538236653043, guid: 96e38dcedb76d2e4886ddbd1f02d9149, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
+    - target: {fileID: 8990576538236653043, guid: 96e38dcedb76d2e4886ddbd1f02d9149, type: 3}
       propertyPath: GP
       value: 
       objectReference: {fileID: 1741228514}
@@ -2614,6 +2630,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CircleTop
       objectReference: {fileID: 0}
+    - target: {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
     - target: {fileID: 507555488672844442, guid: 639a39b31366f3a4a8f09276c8dcb781, type: 3}
       propertyPath: GP
       value: 
@@ -2763,6 +2783,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CircleLeftInner
       objectReference: {fileID: 0}
+    - target: {fileID: 6993078103699587037, guid: 55f1e10601f8fe74cb2913dc1da15c7b, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
     - target: {fileID: 6993078103699587037, guid: 55f1e10601f8fe74cb2913dc1da15c7b, type: 3}
       propertyPath: GP
       value: 
@@ -3249,6 +3273,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CircleRightInner
       objectReference: {fileID: 0}
+    - target: {fileID: 8475655746951827855, guid: ebc0be07968695b4e9b2118edfcfd0f3, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1741228515}
     - target: {fileID: 8475655746951827855, guid: ebc0be07968695b4e9b2118edfcfd0f3, type: 3}
       propertyPath: GP
       value: 
