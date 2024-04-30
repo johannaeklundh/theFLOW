@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 321967201}
-  maxJitter: 0.2
+  maxJitter: 0.5
   triggerKey: 32
   players:
   - {fileID: 0}
@@ -513,6 +513,7 @@ MonoBehaviour:
   - {fileID: 1583370988}
   - {fileID: 1275965110}
   - {fileID: 845564347}
+  cameraShake: {fileID: 657586992}
 --- !u!120 &88874522
 LineRenderer:
   serializedVersion: 2
@@ -745,6 +746,7 @@ GameObject:
   - component: {fileID: 657586989}
   - component: {fileID: 657586990}
   - component: {fileID: 657586991}
+  - component: {fileID: 657586992}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -893,6 +895,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 825855677}
+--- !u!114 &657586992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657586985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4006a54c1970c384d98df60b618fd898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 10
+  shakeMagnitude: 10
+  dampingSpeed: 5.47
 --- !u!4 &814114182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4181500375152505230, guid: 01d267accbca58444843ee24460c1fbe, type: 3}
@@ -2871,7 +2888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6619365453227761158, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 6619365453227761158, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: m_LocalScale.y
@@ -2879,7 +2896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6619365453227761158, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 6619365453227761158, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: m_LocalPosition.x

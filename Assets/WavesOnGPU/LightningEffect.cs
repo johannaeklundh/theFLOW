@@ -11,8 +11,8 @@ public class LightningEffect : MonoBehaviour
     public float maxJitter = 0.2f;
     private LineRenderer lineRenderer;
     public KeyCode triggerKey = KeyCode.Space; // Key to trigger the lightning
-
     public Transform[] players;
+    public CameraShake cameraShake;
 
     void Start()
     {
@@ -38,19 +38,19 @@ public class LightningEffect : MonoBehaviour
 
     public void ActivateLightning()
     {
+        if (cameraShake != null)
+            cameraShake.TriggerShake(); // Trigger camera shake
+
         StartCoroutine(TriggerLightning());
     }
 
     public void ActivateLightning(int playerID)
     {
-        // Access the player using the static array in AddForce
-        //if (playerID > 0 && playerID < AddForce.players.Length)
-        //{
-        //    target = AddForce.players[playerID].transform;
-        //    StartCoroutine(TriggerLightning());
-        //}
-
         target = players[playerID];
+
+        if (cameraShake != null)
+            cameraShake.TriggerShake(); // Trigger camera shake
+
         StartCoroutine(TriggerLightning());
     }
 
