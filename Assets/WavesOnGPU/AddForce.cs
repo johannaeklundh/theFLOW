@@ -7,6 +7,7 @@ using UnityEngine;
 public class AddForce : MonoBehaviour
 {
     public gamePlay GP;
+    //public LightningEffect lightningEffect;
 
     public WaveManager waveManager;
     public Transform centerPoint; // The center point around which the objects will circle.
@@ -24,6 +25,7 @@ public class AddForce : MonoBehaviour
     public int behaviorID;
     public int playerID;
 
+    //public static AddForce[] players;
 
     // Start is called before the first frame update
     void Start()
@@ -141,6 +143,8 @@ public class AddForce : MonoBehaviour
                 //    } 
                 //}
             }
+
+            if (behaviorID == 3) { }
 
             radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
 

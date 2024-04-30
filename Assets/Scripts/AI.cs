@@ -10,8 +10,10 @@ public class AIScript : MonoBehaviour
     /********Refrence instances to other classes/scripts********/
     public gamePlay GP;
 
+    public LightningEffect lightningEffect;
+
     /***********************************************************/
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +77,7 @@ public class AIScript : MonoBehaviour
 
         delay = 1.0f;   // Reset delay
 
-        Debug.Log("Reached delayUpdate!");
+       // Debug.Log("Reached delayUpdate!");
     }
 
     /***********************************************************/
@@ -291,6 +293,12 @@ public class AIScript : MonoBehaviour
 
             Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
             // player.displayPlayerInfo();
+
+            if (instance.lightningEffect != null)
+            {
+                instance.lightningEffect.ActivateLightning(player.id);
+
+            }
 
             // Moving the player in question back "how" many steps
             var field = typeof(gamePlay.PlayerData).GetField("radius"); 
