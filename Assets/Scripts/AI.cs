@@ -11,6 +11,7 @@ public class AIScript : MonoBehaviour
     public gamePlay GP;
 
     public LightningEffect lightningEffect;
+    //public ChangeSpeed changeSpeed; 
 
     /***********************************************************/
 
@@ -153,6 +154,8 @@ public class AIScript : MonoBehaviour
         int inc_dec = Random.Range(minDecrease, maxIncrease);
 
         instance.power = (float)inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
+
+        //UnityEngine.Debug.Log("AI Power: " + instance.power);
     }
 
     // Calculates the player-teams averge power of the currenlty active players
@@ -169,6 +172,9 @@ public class AIScript : MonoBehaviour
             }
         }
 
+        //instance.changeSpeed.leading(sum / nrOfActivePlayers, instance.power);
+
+        UnityEngine.Debug.Log("TEAM Power: " + sum / nrOfActivePlayers + "\nAI Power: " + instance.power);
         return sum/nrOfActivePlayers;
     }
 
@@ -294,7 +300,7 @@ public class AIScript : MonoBehaviour
             Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
             // player.displayPlayerInfo();
 
-            if (instance.lightningEffect != null)
+            if (instance.lightningEffect != null) //Lightning when player gets hit
             {
                 instance.lightningEffect.ActivateLightning(player.id);
 

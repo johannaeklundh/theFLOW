@@ -27,7 +27,7 @@ public class ChangeSpeed : MonoBehaviour
     void Update()
     {
         if (canUpdate)
-        {            
+        {
             //Press M to increase speed
             if (Input.GetKeyDown(KeyCode.M))
             {
@@ -37,6 +37,8 @@ public class ChangeSpeed : MonoBehaviour
             {
                 changeForce.targetCircularSpeed -= step;
             }
+
+
             if (changeForce.behaviorID == 0)
             {
                 //Press S for smaller radius
@@ -49,7 +51,18 @@ public class ChangeSpeed : MonoBehaviour
                     changeForce.targetRadius += radiusChange;
                 }
 
+
+
             }
         }
     }
+
+    public bool leading(float player, float AI) //Was meant to check if the player or AI was leading, NOT USED AS OF NOW
+    {
+
+        if (player < AI) { return true; }
+        else { return false; }
+        //return 0f;
+    }
+
 }

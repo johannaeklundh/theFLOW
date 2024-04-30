@@ -507,6 +507,12 @@ MonoBehaviour:
   target: {fileID: 321967201}
   maxJitter: 0.2
   triggerKey: 32
+  players:
+  - {fileID: 0}
+  - {fileID: 321967201}
+  - {fileID: 1583370988}
+  - {fileID: 1275965110}
+  - {fileID: 845564347}
 --- !u!120 &88874522
 LineRenderer:
   serializedVersion: 2
@@ -1788,6 +1794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
+  lightningEffect: {fileID: 88874521}
   canUpdate: 0
   delay: 1
   state: 0
@@ -3000,7 +3007,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 08824e6e966546041810945bca8abbca, type: 2}
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: objects.Array.size
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8395500756949780909, guid: aea5c6eb5f656b54facae18a31306945, type: 3}
       propertyPath: objects.Array.data[0]
