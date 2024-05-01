@@ -7,7 +7,7 @@ using UnityEngine;
 public class AddForce : MonoBehaviour
 {
     public gamePlay GP;
-
+    //public LightningEffect lightningEffect;
     public WaveManager waveManager;
     public Transform centerPoint; // The center point around which the objects will circle.
     public float circularSpeed = 0f; // The speed of the circular movement start at 0.
@@ -24,6 +24,7 @@ public class AddForce : MonoBehaviour
     public int behaviorID;
     public int playerID;
 
+    //public static AddForce[] players;
 
     // Start is called before the first frame update
     void Start()
@@ -85,7 +86,7 @@ public class AddForce : MonoBehaviour
         {
             case 1: return 20f;
             case 2: return 40f;
-            case 3: return 60f;
+
             default: return 10f;
         }
     }
@@ -157,6 +158,7 @@ public class AddForce : MonoBehaviour
             //}
 
             //if (behaviorID == 0) { }
+
         }
 
     }

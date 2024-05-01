@@ -10,8 +10,11 @@ public class AIScript : MonoBehaviour
     /********Refrence instances to other classes/scripts********/
     public gamePlay GP;
 
+    public LightningEffect lightningEffect;
+    //public ChangeSpeed changeSpeed; 
+
     /***********************************************************/
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +78,7 @@ public class AIScript : MonoBehaviour
 
         delay = 1.0f;   // Reset delay
 
-        Debug.Log("Reached delayUpdate!");
+       // Debug.Log("Reached delayUpdate!");
     }
 
     /***********************************************************/
@@ -94,9 +97,9 @@ public class AIScript : MonoBehaviour
 
     /***********Constants*********/
 
-    
+
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.15f;  
+    public const float LIGHT = 0.15f;
     public const float MEDIUM = 0.25f;
     public const float HARD = 0.35f;
 
@@ -151,6 +154,8 @@ public class AIScript : MonoBehaviour
         int inc_dec = Random.Range(minDecrease, maxIncrease);
 
         instance.power = (float)inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
+
+        //UnityEngine.Debug.Log("AI Power: " + instance.power);
     }
 
     // Calculates the player-teams averge power of the currenlty active players
@@ -167,6 +172,9 @@ public class AIScript : MonoBehaviour
             }
         }
 
+        //instance.changeSpeed.leading(sum / nrOfActivePlayers, instance.power);
+
+        UnityEngine.Debug.Log("TEAM Power: " + sum / nrOfActivePlayers + "\nAI Power: " + instance.power);
         return sum/nrOfActivePlayers;
     }
 
@@ -255,7 +263,7 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to answer WHO got hit by lightning and HOW hard they got hit
-    public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player
+    public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player <--LOVE THIS
 
         // Generate random integer inbetween 1 and the next last placement, decides what player at the generated placement got hit
         
@@ -291,6 +299,12 @@ public class AIScript : MonoBehaviour
 
             Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
             // player.displayPlayerInfo();
+
+            if (instance.lightningEffect != null) //Lightning when player gets hit
+            {
+                instance.lightningEffect.ActivateLightning(player.id);
+
+            }
 
             // Moving the player in question back "how" many steps
             var field = typeof(gamePlay.PlayerData).GetField("radius"); 
