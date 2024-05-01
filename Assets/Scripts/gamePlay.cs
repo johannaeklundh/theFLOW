@@ -51,7 +51,7 @@ public class gamePlay : MonoBehaviour
             // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
             // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
-            // players[3].displayPlayerInfo();
+            players[3].displayPlayerInfo();
                  
             canUpdate = false;  // Makes it so that each function doesn't update every frame
             
@@ -303,13 +303,22 @@ public class gamePlay : MonoBehaviour
     // Gives boost to remaining players when ones finishes by nerfing AI for a while
     public static void boost(gamePlay instance){
         
-        instance.AI.canUpdate = false;
+        instance.AI.canUpdate = false;  // Stop update() AI
 
         instance.AI.state = 0;      // AI-state at 0, no lightning can occur
         AIScript.calculatePower(instance.AI);
         instance.AI.power = instance.AI.power - 20.0f;    // AI-power goes down to give lesser furtunate players chance
 
-        instance.AI.delayUpdate(5.0f);
+        instance.AI.StartCoroutine(instance.AI.delayUpdate(5.0f, 20.0f, 0)); // Pause for 5 seconds, decrease power by 20, and set state to 0
+    }
+
+    // Triggers when a player finishes the game, aka radius = 0.0f
+    public static void playerFinished(gamePlay instance, int place){
+
+            instance.players[place].update = false;
+            UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
+            
+            boost(instance);
     }
 
 
@@ -418,14 +427,17 @@ public class gamePlay : MonoBehaviour
         float addOn = 0.0f;
         
         // Normal increase (closer to center)
-        if(instance.players[(place)].power > instance.AI.power + 15){
-            addOn = -0.08f;
+        if(instance.players[(place)].power > instance.AI.power + 20){
+            addOn = -0.25f;
+        }
+        else if(instance.players[(place)].power > instance.AI.power + 15){
+            addOn = -0.17f;
         }
         else if(instance.players[(place)].power > instance.AI.power + 10){
-            addOn = -0.05f;
+            addOn = -0.1f;
         }
         else if(instance.players[(place)].power > instance.AI.power + 7){
-            addOn = -0.02f;
+            addOn = -0.06f;
         }
         else if(instance.players[(place)].power >= instance.AI.power){
         addOn = -0.01f;
@@ -434,14 +446,17 @@ public class gamePlay : MonoBehaviour
         // Normal decrease (further from center)
         if(instance.players[(place)].radius < 2.0f){   // Must be less than 2
 
-            if(instance.players[(place)].power < instance.AI.power - 15){
-                addOn = 0.07f;
+            if(instance.players[(place)].power < instance.AI.power - 22){
+                addOn = 0.17f;
+            }
+            else if(instance.players[(place)].power < instance.AI.power - 15){
+                addOn = 0.14f;
             }
             else if(instance.players[(place)].power < instance.AI.power - 12){
-                addOn = 0.04f;
+                addOn = 0.1f;
             }
             else if(instance.players[(place)].power < instance.AI.power -9){
-                addOn = 0.02f;
+                addOn = 0.06f;
             }
             else if(instance.players[(place)].power <= instance.AI.power){
             addOn = 0.005f;
@@ -460,9 +475,7 @@ public class gamePlay : MonoBehaviour
         }
         else if(radius < 0.0f){
             radius = 0.0f;
-            instance.players[place].update = false;
-            UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
-            boost(instance);
+            playerFinished(instance, place);    // Triggers boost effect
         }
 
         return radius;

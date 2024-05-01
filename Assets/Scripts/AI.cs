@@ -81,6 +81,19 @@ public class AIScript : MonoBehaviour
        // Debug.Log("Reached delayUpdate!");
     }
 
+    // Overloaded function that pauses update() for d sec and changes some things (get called from gamePlay)
+    public IEnumerator delayUpdate(float d, float powerChange, int newState)
+    {
+        // Wait for d seconds
+        Debug.Log("Waiting for " + d + " seconds...");
+        yield return new WaitForSeconds(d);
+
+        // Allow updates to happen
+        canUpdate = true;
+
+        delay = 1.0f;   // Reset delay
+    }
+
     /***********************************************************/
 
 
@@ -104,9 +117,9 @@ public class AIScript : MonoBehaviour
     public const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    public const int PerState1 = 4; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 8; // 8% chance of getting hit per second when state = 2
-    public const int PerState3 = 16; // 16% chance of getting hit per second when state = 3
+    public const int PerState1 = 10; // 4% chance of getting hit per second when state = 1
+    public const int PerState2 = 20; // 8% chance of getting hit per second when state = 2
+    public const int PerState3 = 30; // 16% chance of getting hit per second when state = 3
 
 
 
@@ -174,7 +187,7 @@ public class AIScript : MonoBehaviour
 
         //instance.changeSpeed.leading(sum / nrOfActivePlayers, instance.power);
 
-        UnityEngine.Debug.Log("TEAM Power: " + sum / nrOfActivePlayers + "\nAI Power: " + instance.power);
+        // UnityEngine.Debug.Log("TEAM Power: " + sum / nrOfActivePlayers + "\nAI Power: " + instance.power);
         return sum/nrOfActivePlayers;
     }
 
@@ -209,13 +222,13 @@ public class AIScript : MonoBehaviour
             //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
             switch(placementPlayer(instance, 1).radius)
             {
-                case float n when n <= 0.3f:
+                case float n when n <= 0.6f:
                     instance.state = 3;
                     break;
                 case float n when n <= 0.9f:
                     instance.state = 2;
                     break;
-                case float n when n <= 1.3f:
+                case float n when n <= 1.5f:
                     instance.state = 1;
                     break;
                 default:
@@ -267,7 +280,7 @@ public class AIScript : MonoBehaviour
 
         // Generate random integer inbetween 1 and the next last placement, decides what player at the generated placement got hit
         
-        int secondLastPlayer = instance.GP.players.Length-1;
+        int secondLastPlayer = instance.GP.players.Length;
         int placement = 1;
 
         if(secondLastPlayer > 1){   // Check if more than 1 player
@@ -278,7 +291,7 @@ public class AIScript : MonoBehaviour
 
         gamePlay.PlayerData player = placementPlayer(instance, placement);  // Find player
 
-        if(player.update){  // Update only if the player hasn't finished (for safety) 
+        if(player.update && player.radius < 1.4f){  // Update only if the player hasn't finished (for safety) 
 
             int who = player.id;    // Player whose id is the one who got hit
 
@@ -300,12 +313,6 @@ public class AIScript : MonoBehaviour
             Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
             // player.displayPlayerInfo();
 
-            if (instance.lightningEffect != null) //Lightning when player gets hit
-            {
-                instance.lightningEffect.ActivateLightning(player.id);
-
-            }
-
             // Moving the player in question back "how" many steps
             var field = typeof(gamePlay.PlayerData).GetField("radius"); 
             field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
@@ -318,6 +325,12 @@ public class AIScript : MonoBehaviour
                 field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
             }
 
+            // Visual effect of getting hit by lightning (add sound)
+            if (instance.lightningEffect != null) //Lightning when player gets hit
+            {
+                instance.lightningEffect.ActivateLightning(player.id);
+
+            }
 
             //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
             gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay-class
