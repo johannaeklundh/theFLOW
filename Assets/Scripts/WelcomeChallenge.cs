@@ -14,7 +14,7 @@ public class WelcomeChallenge : MonoBehaviour
     private string[] tips;
 
 
-    private float countdown = 20f; // 10 seconds countdown
+    private float countdown = 20f; // 10 or 20 seconds countdown
 
     void Start()
 
@@ -64,17 +64,6 @@ public class WelcomeChallenge : MonoBehaviour
         if (gameUI != null)
         {
             gameUI.SetActive(true); // Activates the GameUI
-
-            /*challenge challengeScript = gameUI.GetComponent<challenge>();
-            if (challengeScript != null)
-            {
-                challengeScript.StartGame(); // Should call the public method
-            }
-            else
-            {
-                Debug.LogError("Challenge script not found on gameUI GameObject");
-            } */
-
            
            
         }

@@ -33,7 +33,7 @@ public class alpha_bar : MonoBehaviour
 
         for (int j = 0; j < 10; j++)
         {
-            playerAlphaData[j] = Random.Range(0, 101); // Random value between 0 and 100
+            playerAlphaData[j] = Random.Range(0, 50); // Random value between 0 and 100
             Debug.Log("Player " + " Alpha Data[" + j + "]: " + playerAlphaData[j]);
         }
     }
@@ -69,7 +69,7 @@ public class alpha_bar : MonoBehaviour
         }
     }
 
-    //Inter
+    //Interpolating 
 
     IEnumerator InterpolateFillAmount(Image mask, float targetFillAmount, int dataIndex)
     {
@@ -88,7 +88,7 @@ public class alpha_bar : MonoBehaviour
         mask.fillAmount = targetFillAmount; // Ensure final fill amount is set accurately
     }
 
-      // Set the position of the line indicator
+      
     // Set the position of the line indicator at 60% horizontally across the parent container
 void SetLineIndicatorPosition()
 {
