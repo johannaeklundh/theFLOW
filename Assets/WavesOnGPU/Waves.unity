@@ -714,7 +714,7 @@ MonoBehaviour:
   circularSpeed: 0
   radius: 2.7
   targetRadius: 0
-  startAngle: 135
+  startAngle: 315
   targetCircularSpeed: 0
   speedAdjustmentRate: 10
   speedID: 1
@@ -729,7 +729,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 321967197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9f091ba9503483db33aa83bf924b02, type: 3}
+  m_Script: {fileID: 11500000, guid: 22d1237ef08e64f6f94e35ee1b1d266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: 84ad738add6e74ceebd39349c914b551, type: 2}
@@ -1186,7 +1186,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 845564343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9f091ba9503483db33aa83bf924b02, type: 3}
+  m_Script: {fileID: 11500000, guid: 22d1237ef08e64f6f94e35ee1b1d266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: b89da0aadb2774c5fb6ff42e6e604347, type: 2}
@@ -1651,7 +1651,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1275965106}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9f091ba9503483db33aa83bf924b02, type: 3}
+  m_Script: {fileID: 11500000, guid: 22d1237ef08e64f6f94e35ee1b1d266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: 92c5b8b572be24fd2b0267b0bcd010ca, type: 2}
@@ -1733,7 +1733,7 @@ MonoBehaviour:
   circularSpeed: 0
   radius: 2.7
   targetRadius: 0
-  startAngle: 315
+  startAngle: 135
   targetCircularSpeed: 0
   speedAdjustmentRate: 10
   speedID: 1
@@ -1748,7 +1748,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1583370984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9f091ba9503483db33aa83bf924b02, type: 3}
+  m_Script: {fileID: 11500000, guid: 22d1237ef08e64f6f94e35ee1b1d266f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: 382f5d9c9bb9c42cfb93bf8ef74cebe1, type: 2}
