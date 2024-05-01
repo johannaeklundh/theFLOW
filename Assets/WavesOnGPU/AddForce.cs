@@ -7,12 +7,11 @@ using UnityEngine;
 public class AddForce : MonoBehaviour
 {
     public gamePlay GP;
-    //public LightningEffect lightningEffect;
     public WaveManager waveManager;
     public Transform centerPoint; // The center point around which the objects will circle.
     public float circularSpeed = 0f; // The speed of the circular movement start at 0.
     public float radius; // The radius of the circular movement
-    public float targetRadius;
+    public float targetRadius; 
     public float startAngle; // The initial angle for this object
     private float currentAngle; // Current angle of rotation around the center
     private Vector3 randomNoise;
@@ -23,8 +22,6 @@ public class AddForce : MonoBehaviour
     public int speedID;
     public int behaviorID;
     public int playerID;
-
-    //public static AddForce[] players;
 
     // Start is called before the first frame update
     void Start()
@@ -39,8 +36,6 @@ public class AddForce : MonoBehaviour
                                              Mathf.Sin((float)Math.PI * startAngle / 180) * radius);
                                              
         }
-
-        //Math.PI* angle / 180.0
 
         StartCoroutine(delayUpdate());
 
@@ -119,11 +114,11 @@ public class AddForce : MonoBehaviour
                 circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
             }
 
-            if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID)) //Change direction quickly
+            if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID))
             {
-                if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; }
+                if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; } //Change direction quickly
 
-                if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //100 change in circularspeed for a better effect
+                if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //Change targetspeed quickly
                 else if (targetCircularSpeed > 0) { targetCircularSpeed -= DetermineSpeedBySpeedID(speedID) * 2; }
             }
             else
@@ -136,28 +131,13 @@ public class AddForce : MonoBehaviour
             if (behaviorID == 0)
             {
                 targetRadius = GP.players[DetermineRadiusByPlayerId(playerID)].radius;
-                //if (targetRadius < 1) { 
-                //    if(behaviorID == 3) {
-                //        targetCircularSpeed
-                //    } 
-                //}
+
             }
 
             radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
 
             // Calculate circular movement
             RotateAroundCenter();
-            //if (behaviorID == 0) { //Change size if closer to the center
-            //    if (radius < 1) { 
-            //        transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-            //    }
-            //    else {
-            //        transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-
-            //    }
-            //}
-
-            //if (behaviorID == 0) { }
 
         }
 
@@ -175,7 +155,7 @@ public class AddForce : MonoBehaviour
 
         // Apply the new position (and noise)
 
-        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 40f && behaviorID == 1)
+        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 10f && behaviorID == 1)
         {
             float noiseX = RandomGen();
             float noiseZ = RandomGen();
