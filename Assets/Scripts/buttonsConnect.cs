@@ -30,7 +30,7 @@ public class buttonsConnect : MonoBehaviour
     // public EEGport p3;
     // public EEGport p4;
 
-    //public TextMeshProUGUI[] stats;
+    public TextMeshProUGUI[] stats;
     public Button[] connectButtons;
     public Button[] disconnectButtons;
     public GameObject[] playersGameObject;
@@ -122,7 +122,7 @@ public class buttonsConnect : MonoBehaviour
         // p1Connect.onClick.AddListener(() => ConnectClicked()); 
         // p1Disconnect.onClick.AddListener(()=> DisconnectClicked());
 
-        // p2Stats.text = "";
+        //p2Stats.text = "";
         // p2Connect.onClick.AddListener(() => ConnectClicked()); 
         // p2Disconnect.onClick.AddListener(()=> DisconnectClicked());
         
@@ -138,8 +138,8 @@ public class buttonsConnect : MonoBehaviour
         
         for (int index = 0; index < playersGameObject.Length; index++)
         {
-            //stats[index].text = "";
-            int i = index; // Capture the index for the lambda expression
+            stats[index].text = "";
+            
             connectButtons[index].onClick.AddListener(() => ConnectClicked());
             disconnectButtons[index].onClick.AddListener(() => DisconnectClicked());
         }
@@ -195,17 +195,10 @@ public class buttonsConnect : MonoBehaviour
             if(clickedButton == connectButtons[index].gameObject){
             
                 players[index].connect();
-                if (players[index].errCodeConnect == 0)
+                if(players[index].errCodeConnect == 0)
                 {
                     connectButtons[index].gameObject.SetActive(false);
                     disconnectButtons[index].gameObject.SetActive(true);
-                }
-                else
-                {
-                    players[index].disconnect();
-                    players[index].errCodeConnect = 2;
-                    players[index].errCodeAutoRead = 2;
-                    
                 }
             }
         }
@@ -261,15 +254,11 @@ public class buttonsConnect : MonoBehaviour
         for(int index = 0; index < disconnectButtons.Length; index++){
             if(clickedButton == disconnectButtons[index].gameObject){
                 players[index].disconnect();
-                if (players[index].errCodeConnect != 0)
+                if (players[index].errCodeConnect == 2)
                 {
                     disconnectButtons[index].gameObject.SetActive(false);
                     connectButtons[index].gameObject.SetActive(true);
-                    //stats[index].text = "";
-                }
-                else
-                {
-                    // Handle error message
+                    stats[index].text = "";
                 }
             }
         }
@@ -290,13 +279,16 @@ public class buttonsConnect : MonoBehaviour
         //     p4Stats.text = p4.getAttention().ToString();
         // }
 
-        // for (int index = 0; index < stats.Length; index++)
-        // {
-        //     if (!connectButtons[index].gameObject.activeSelf)
-        //     {
-        //         stats[index].text = players[index].getAttention().ToString();
-        //     }
-        // }
+        for (int index = 0; index < stats.Length; index++)
+        {
+            if (!connectButtons[index].gameObject.activeSelf)
+            {
+                stats[index].text = "Attention: " + players[index].getAttention().ToString() + "\nMeditation: " + players[index].getMeditation().ToString();
+            }
+        }
+
+            //p2Stats.text = players[1].getAttention().ToString();
+    
     }
 
     void deleteAllConnections()
@@ -336,6 +328,6 @@ public class buttonsConnect : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        //displayStats();
+        displayStats();
     }
 }
