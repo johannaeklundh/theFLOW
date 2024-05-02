@@ -8,7 +8,7 @@ using EEG;
 public class buttonsConnect : MonoBehaviour
 {
     // public TextMeshProUGUI p1Stats;
-    public TextMeshProUGUI p2Stats;
+    // public TextMeshProUGUI p2Stats;
     // public TextMeshProUGUI p3Stats;
     // public TextMeshProUGUI p4Stats;
     // public Button p1Connect;
@@ -30,7 +30,7 @@ public class buttonsConnect : MonoBehaviour
     // public EEGport p3;
     // public EEGport p4;
 
-    //public TextMeshProUGUI[] stats;
+    public TextMeshProUGUI[] stats;
     public Button[] connectButtons;
     public Button[] disconnectButtons;
     public GameObject[] playersGameObject;
@@ -122,7 +122,7 @@ public class buttonsConnect : MonoBehaviour
         // p1Connect.onClick.AddListener(() => ConnectClicked()); 
         // p1Disconnect.onClick.AddListener(()=> DisconnectClicked());
 
-        p2Stats.text = "";
+        //p2Stats.text = "";
         // p2Connect.onClick.AddListener(() => ConnectClicked()); 
         // p2Disconnect.onClick.AddListener(()=> DisconnectClicked());
         
@@ -138,7 +138,7 @@ public class buttonsConnect : MonoBehaviour
         
         for (int index = 0; index < playersGameObject.Length; index++)
         {
-            //stats[index].text = "";
+            stats[index].text = "";
             
             connectButtons[index].onClick.AddListener(() => ConnectClicked());
             disconnectButtons[index].onClick.AddListener(() => DisconnectClicked());
@@ -258,7 +258,7 @@ public class buttonsConnect : MonoBehaviour
                 {
                     disconnectButtons[index].gameObject.SetActive(false);
                     connectButtons[index].gameObject.SetActive(true);
-                    //stats[index].text = "";
+                    stats[index].text = "";
                 }
             }
         }
@@ -279,15 +279,15 @@ public class buttonsConnect : MonoBehaviour
         //     p4Stats.text = p4.getAttention().ToString();
         // }
 
-        // for (int index = 0; index < stats.Length; index++)
-        // {
-        //     if (!connectButtons[index].gameObject.activeSelf)
-        //     {
-        //         stats[index].text = players[index].getAttention().ToString();
-        //     }
-        // }
+        for (int index = 0; index < stats.Length; index++)
+        {
+            if (!connectButtons[index].gameObject.activeSelf)
+            {
+                stats[index].text = "Attention: " + players[index].getAttention().ToString() + "\nMeditation: " + players[index].getMeditation().ToString();
+            }
+        }
 
-            p2Stats.text = players[1].getAttention().ToString();
+            //p2Stats.text = players[1].getAttention().ToString();
     
     }
 
@@ -327,14 +327,7 @@ public class buttonsConnect : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
-
-         if(!connectButtons[1].gameObject.activeSelf){
-            displayStats();
-         }
-        // if(players[1].errCodeAutoRead == 0){
-        // Debug.Log(players[1].getAttention());
-        //}
-        //displayStats();
+    { 
+        displayStats();
     }
 }
