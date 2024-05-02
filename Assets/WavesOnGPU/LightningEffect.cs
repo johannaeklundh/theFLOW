@@ -73,7 +73,7 @@ public class LightningEffect : MonoBehaviour
             else
             {
                 float offsetAmount = Random.Range(-maxJitter, maxJitter);
-                Vector3 offset = new Vector3(offsetAmount, offsetAmount, offsetAmount);
+                Vector3 offset = new Vector3(offsetAmount, 0, offsetAmount);
                 currentPos += direction;
                 lineRenderer.SetPosition(i, currentPos + offset);
             }

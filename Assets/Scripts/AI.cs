@@ -66,7 +66,7 @@ public class AIScript : MonoBehaviour
     /************Things used obly to control update(), not relevant for behaviour************/
     public bool canUpdate = false; // Decides weather a function can update in update()
 
-    public float delay = 1.0f;
+    public float delay = 0.25f;
     
     public IEnumerator delayUpdate(float d){
 
@@ -76,22 +76,9 @@ public class AIScript : MonoBehaviour
         // Allow updates to happen
         canUpdate = true;
 
-        delay = 1.0f;   // Reset delay
+        delay = 0.25f;   // Reset delay
 
        // Debug.Log("Reached delayUpdate!");
-    }
-
-    // Overloaded function that pauses update() for d sec and changes some things (get called from gamePlay)
-    public IEnumerator delayUpdate(float d, float powerChange, int newState)
-    {
-        // Wait for d seconds
-        Debug.Log("Waiting for " + d + " seconds...");
-        yield return new WaitForSeconds(d);
-
-        // Allow updates to happen
-        canUpdate = true;
-
-        delay = 1.0f;   // Reset delay
     }
 
     /***********************************************************/
@@ -318,8 +305,8 @@ public class AIScript : MonoBehaviour
             field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
 
             // Test if possible value
-            if(instance.GP.players[who-1].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
-                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 2.0f);
+            if(instance.GP.players[who-1].radius > 3.0f){    // If larger than 2, set to 2 (min-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 3.0f);
             }
             else if(instance.GP.players[who-1].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
                 field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
