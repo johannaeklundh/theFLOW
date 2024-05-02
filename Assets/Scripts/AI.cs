@@ -109,6 +109,8 @@ public class AIScript : MonoBehaviour
     public const int PerState3 = 30; // 16% chance of getting hit per second when state = 3
 
 
+    // Other
+    private const float LightningRadious = 2.0f;    // The radius a player have to be within to be able to get hit by lightning
 
 
     /**********************Functions************************/
@@ -278,7 +280,7 @@ public class AIScript : MonoBehaviour
 
         gamePlay.PlayerData player = placementPlayer(instance, placement);  // Find player
 
-        if(player.update && player.radius < 1.4f){  // Update only if the player hasn't finished (for safety) 
+        if(player.update && player.radius < LightningRadious){  // Update only if the player hasn't finished (for safety) 
 
             int who = player.id;    // Player whose id is the one who got hit
 

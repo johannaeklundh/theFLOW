@@ -36,28 +36,56 @@ public class gamePlay : MonoBehaviour
     void Update()
     {
    
-        // Put functions inside this to delay the update to every 3 sec
+        // Put functions inside this to delay the update to every delay sec
         if(canUpdate){
 
+            
+            // Main GamePlay-Functions
             updatePrevAndCurrent(this);
             updatePlayerRadius(this);
             setPlacements(this);
 
+            // Aftermatch-Functions
             setConsistency(this);
             setMean(this);
             setBalance(this);
             // setUnbothered is called upon in AI 
 
+            // Write out in console..
             // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
             // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
             players[3].displayPlayerInfo();
-                 
+
+
             canUpdate = false;  // Makes it so that each function doesn't update every frame
             
-            // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
+            // Start the coroutine (allows to delay update or execute over several frames) to enable updates after delay seconds
             StartCoroutine(delayUpdate(delay));
 
+        }
+
+        // Functions that can update every 1 sec
+        if(canUpdate1sec){
+
+            set10Vectors(this); // Updates the vectors to decide whose winning, AI or players
+
+            canUpdate1sec = false;
+
+            // Start the coroutine (allows to delay update or execute over several frames) to enable updates after delay1 seconds
+            StartCoroutine(delayUpdate(delay1));
+        }
+
+        // Functions that can update every 10 sec
+        if(canUpdate10sec){
+
+            whoseWinning(this); // Returns how the vortex spins, -1, 0 or 1 dephending on who is winning
+
+            // Stop update
+            canUpdate10sec = false;
+
+            // Start the coroutine (allows to delay update or execute over several frames) to enable updates after delay10 seconds
+            StartCoroutine(delayUpdate(delay10));
         }
     }
 
@@ -65,11 +93,23 @@ public class gamePlay : MonoBehaviour
 
 
 
-    /************Things used obly to control delays, not relevant for behaviour************/
+    /************Things used obly to control delays, not relevant for overall behaviour************/
+    
+    // Variables
     private bool canUpdate = false; // Decides weather a function can update in update()
 
+    private bool canUpdate1sec = false;
+
+    private bool canUpdate10sec = false;
+
     public float delay = 0.25f;
+
+    public float delay1 = 1.0f;
+
+    private float delay10 = 10.0f;
     
+    
+    // Functions
     IEnumerator delayUpdate(float d){
 
         // Wait for 3 seconds
@@ -79,6 +119,36 @@ public class gamePlay : MonoBehaviour
         canUpdate = true;
 
         delay = 0.25f;   // Reset delay
+
+        // UnityEngine.Debug.Log(delay + " seconds has passed!");
+
+    }
+
+    IEnumerator delayUpdate1Sec(float d){
+
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(d);
+
+        // Allow whoseWinning to happen
+        canUpdate10sec = true;
+
+        delay1 = 1.0f;   // Reset delay10
+
+        // UnityEngine.Debug.Log("1 seconds has passed!");
+
+    }
+    
+    IEnumerator delayUpdate10Sec(float d){
+
+        // Wait for 3 seconds
+        yield return new WaitForSeconds(d);
+
+        // Allow whoseWinning to happen
+        canUpdate10sec = true;
+
+        delay10 = 10.0f;   // Reset delay10
+
+        UnityEngine.Debug.Log("10 seconds has passed!");
 
     }
     /**************************************************************************************/
@@ -159,7 +229,27 @@ public class gamePlay : MonoBehaviour
 
     /************************************************************************************/
 
-    
+
+
+
+
+
+    /******************************Class-unique Variables********************************/
+
+    // Saves 10 latest power-values for players
+    public List<float> players10Power = new List<float>();
+
+    // Saves 10 latest power-values for AI
+    public List<float> ai10Power = new List<float>();
+
+
+
+    /************************************************************************************/
+
+
+
+
+
     
     /**********************************Useful Functions**********************************/
 
@@ -502,12 +592,30 @@ public class gamePlay : MonoBehaviour
     }
 
 
-    // Returns the power in which the vortex will spin in, positive means players are winning, negative means Ai is winning
-    public static int whoseWinning(gamePlay instance, int teamPower, int aiPower){
-        
-        int rotate = 50;
+    public static void set10Vectors(gamePlay instance){
 
-        return rotate;
+        instance.players10Power.Add(AIScript.calculateTeamPower(instance.AI));    // Add latest teamPower last
+        instance.ai10Power.Add(instance.AI.power);    // Add latest AI-power last
+    }
+    
+    // Decides who is currently winning return either 1, 0 or -1 based on status of the game, updates every 10 sec FIX
+    public static int whoseWinning(gamePlay instance){
+        // 1 = players are winning
+
+        // -1 = AI is winning
+
+        // 0 = game is over
+        
+        float aiPowerSum = 0.0f;
+        float playerPowerSum = 0.0f;
+        
+        for(int i = 0; i < instance.ai10Power.Count; i++){
+            aiPowerSum += instance.ai10Power[i];
+            playerPowerSum += instance.players10Power[i];
+        }
+
+
+        return 1;
     }
      
     /************************************************************************************/
