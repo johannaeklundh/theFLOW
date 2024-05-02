@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class TimeBar : MonoBehaviour
 {
     public Image timeBar; // Reference to the time bar Image
-    public float timeLimit = 60f; // Time limit for the challenge
+    public float timeLimit = 4*60f; // Time limit for the challenge
 
     public void Finish()
     {
-        SceneManager.LoadSceneAsync(2); // Load scene 2 asynchronously
+        SceneManager.LoadSceneAsync(3); // Load scene 2 asynchronously
     }
 
    
