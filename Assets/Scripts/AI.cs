@@ -10,12 +10,15 @@ public class AIScript : MonoBehaviour
     /********Refrence instances to other classes/scripts********/
     public gamePlay GP;
 
+    public LightningEffect lightningEffect;
+    //public ChangeSpeed changeSpeed; 
+
     /***********************************************************/
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate(3.0f)); // Delay Start() by 3 seconds
     }
 
     // Update is called once per frame
@@ -30,7 +33,7 @@ public class AIScript : MonoBehaviour
             canUpdate = false;  // Makes it so that each function doesn't update every frame
 
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
-            StartCoroutine(delayUpdate());
+            StartCoroutine(delayUpdate(delay));
 
         }
         
@@ -61,15 +64,21 @@ public class AIScript : MonoBehaviour
 
 
     /************Things used obly to control update(), not relevant for behaviour************/
-    private bool canUpdate = false; // Decides weather a function can update in update()
-    
-    IEnumerator delayUpdate(){
+    public bool canUpdate = false; // Decides weather a function can update in update()
 
-        // Wait for 3 seconds
-        yield return new WaitForSeconds(3f);
+    public float delay = 0.25f;
+    
+    public IEnumerator delayUpdate(float d){
+
+        // Wait for d seconds
+        yield return new WaitForSeconds(d);
 
         // Allow updates to happen
         canUpdate = true;
+
+        delay = 0.25f;   // Reset delay
+
+       // Debug.Log("Reached delayUpdate!");
     }
 
     /***********************************************************/
@@ -88,16 +97,16 @@ public class AIScript : MonoBehaviour
 
     /***********Constants*********/
 
-    
+
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.15f;  
+    public const float LIGHT = 0.15f;
     public const float MEDIUM = 0.25f;
     public const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    public const int PerState1 = 4; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 8; // 8% chance of getting hit per second when state = 2
-    public const int PerState3 = 16; // 16% chance of getting hit per second when state = 3
+    public const int PerState1 = 10; // 4% chance of getting hit per second when state = 1
+    public const int PerState2 = 20; // 8% chance of getting hit per second when state = 2
+    public const int PerState3 = 30; // 16% chance of getting hit per second when state = 3
 
 
 
@@ -145,6 +154,8 @@ public class AIScript : MonoBehaviour
         int inc_dec = Random.Range(minDecrease, maxIncrease);
 
         instance.power = (float)inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
+
+        //UnityEngine.Debug.Log("AI Power: " + instance.power);
     }
 
     // Calculates the player-teams averge power of the currenlty active players
@@ -161,6 +172,9 @@ public class AIScript : MonoBehaviour
             }
         }
 
+        //instance.changeSpeed.leading(sum / nrOfActivePlayers, instance.power);
+
+        // UnityEngine.Debug.Log("TEAM Power: " + sum / nrOfActivePlayers + "\nAI Power: " + instance.power);
         return sum/nrOfActivePlayers;
     }
 
@@ -189,23 +203,28 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
-    public static void setState(AIScript instance){
+    public static void setState(AIScript instance, int s = 4){
 
-        //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
-        switch(placementPlayer(instance, 1).radius)
-        {
-            case float n when n >= 0.46f:
-                instance.state = 3;
-                break;
-            case float n when n >= 0.40f:
-                instance.state = 2;
-                break;
-            case float n when n >= 0.33f:
-                instance.state = 1;
-                break;
-            default:
-                instance.state = 0;
-                break;
+        if(s == 4){
+            //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
+            switch(placementPlayer(instance, 1).radius)
+            {
+                case float n when n <= 0.6f:
+                    instance.state = 3;
+                    break;
+                case float n when n <= 0.9f:
+                    instance.state = 2;
+                    break;
+                case float n when n <= 1.5f:
+                    instance.state = 1;
+                    break;
+                default:
+                    instance.state = 0;
+                    break;
+            }
+        }
+        else{
+            instance.state = s;
         }
     }
 
@@ -244,11 +263,11 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to answer WHO got hit by lightning and HOW hard they got hit
-    public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player
+    public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player <--LOVE THIS
 
         // Generate random integer inbetween 1 and the next last placement, decides what player at the generated placement got hit
         
-        int secondLastPlayer = instance.GP.players.Length-1;
+        int secondLastPlayer = instance.GP.players.Length;
         int placement = 1;
 
         if(secondLastPlayer > 1){   // Check if more than 1 player
@@ -259,7 +278,7 @@ public class AIScript : MonoBehaviour
 
         gamePlay.PlayerData player = placementPlayer(instance, placement);  // Find player
 
-        if(player.update){  // Update only if the player hasn't finished (for safety) 
+        if(player.update && player.radius < 1.4f){  // Update only if the player hasn't finished (for safety) 
 
             int who = player.id;    // Player whose id is the one who got hit
 
@@ -286,13 +305,19 @@ public class AIScript : MonoBehaviour
             field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
 
             // Test if possible value
-            if(instance.GP.players[who-1].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
-                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 2.0f);
+            if(instance.GP.players[who-1].radius > 3.0f){    // If larger than 2, set to 2 (min-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 3.0f);
             }
             else if(instance.GP.players[who-1].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
                 field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
             }
 
+            // Visual effect of getting hit by lightning (add sound)
+            if (instance.lightningEffect != null) //Lightning when player gets hit
+            {
+                instance.lightningEffect.ActivateLightning(player.id);
+
+            }
 
             //gamePlay.PlayerData player = gamePlay.idPlayer(instance.GP, who);
             gamePlay.setUnbothered(instance.GP, who);   // Updates unbothered of the player that got hit in gamePlay-class

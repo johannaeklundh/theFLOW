@@ -6,53 +6,123 @@ using UnityEngine.Rendering.Universal;
 
 public class LightSourceBehaviour : MonoBehaviour
 {
-    public Light sphereLight; // Ljuset som är associerat med den lysande sfären
-    public float minSize = 1f; // Minsta storlek på sfären
-    public float maxSize = 5f; // Största storlek på sfären
-    public float minIntensity = 1f; // Minsta intensitet på ljuset
-    public float maxIntensity = 5f; // Största intensitet på ljuset
-    public float duration = 5f; // Total tid för övergången (för både storlek och intensitet)
+    public Material emissiveMaterial;   //player material
+    public Color originalBaseColor;     //player color
+    public Color originalEmissionColor; //player emission color
+    public float intensity = 1.0f;      //intensity factor
 
-    private float timer = 0f; // Timer för att spåra övergången
 
-    private Volume volume; // Post Processing Volym som innehåller Bloom-inställningar
-    private Bloom bloom; // Bloom-inställningar
+    /*----------- Advanced version ----------*/
 
-    // private PlayerPerformance playerPerformance; // Referens till spelarens prestandahantering
+    /*
+    public Material emissiveMaterial;
+    public Color originalBaseColor;
+    public Color originalEmissionColor;
+
+    // Parameters for each player
+    public float alpha = 50.0f; // Default value
+    public float theta = 50.0f; // Default value
+
+    // Mapping from alpha and theta to emission intensity and object size
+    public AnimationCurve intensityCurve;
+    public AnimationCurve sizeCurve;
+
+    */
+
+
+    /*---------------------------------------*/
+
 
     void Start()
     {
-        // Hämta den associerade post processing volymen och Bloom-inställningarna
-        volume = GetComponent<Volume>();
-       // volume.profile.TryGet(out bloom);
+        // Store the original base color and emission color
+        originalBaseColor = emissiveMaterial.color;
+        originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
 
-        // Hämta referensen till spelarens prestandahantering
-        // playerPerformance = FindObjectOfType<PlayerPerformance>();
+
+        /*----------- Advanced version --------------------*/
+
+        /*
+        
+        // Store the original base color and emission color
+        originalBaseColor = emissiveMaterial.color;
+        originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
+        
+        */
+
+
+        /*--------------------------------------------------*/
+
     }
 
     void Update()
     {
-        // Uppdatera övergången
-        timer += Time.deltaTime;
+        // Calculate the final emissive color with the desired intensity
+        Color finalEmissiveColor = originalEmissionColor * intensity;
 
-        // Beräkna progressen av övergången
-        float progress = Mathf.Clamp01(timer / duration);
+        // Set the emissive color of the material
+        emissiveMaterial.SetColor("_EmissionColor", finalEmissiveColor);
 
-        // Beräkna storlek och intensitet baserat på progressen och spelarens prestanda
-       // float size = Mathf.Lerp(minSize, maxSize, progress) * playerPerformance.GetPerformance();
-       // float intensity = Mathf.Lerp(minIntensity, maxIntensity, progress) * playerPerformance.GetPerformance();
+        // Enable emission on the material (required for emission to be visible)
+        emissiveMaterial.EnableKeyword("_EMISSION");
 
-        // Uppdatera storleken på sfären och intensiteten på ljuset
-       // sphereLight.range = size;
-       // sphereLight.intensity = intensity;
+        
+        /*---------------- Advanced version ------------------------------------*/
 
-        // Uppdatera Bloom-inställningarna för intensitet baserat på intensiteten och spelarens prestanda
-       // bloom.intensity.value = intensity;
+        /*
 
-        // Återställ timer när övergången är klar
-        if (timer >= duration)
-        {
-            timer = 0f;
-        }
+        // Calculate emission intensity based on alpha value
+        float emissionIntensity = intensityCurve.Evaluate(alpha / 100f);
+
+        // Calculate object size based on theta value
+        float objectSize = sizeCurve.Evaluate(theta / 100f);
+
+        //---------INTENSITY------------
+
+        // Adjust the emissive intensity based on the desired intensity range
+        float finalIntensity = Mathf.Lerp(5.0f, 10.0f, emissionIntensity);
+
+        // Calculate the final emissive color with the desired intensity
+        Color finalEmissiveColor = originalEmissionColor * finalIntensity;
+
+        // Set the emissive color of the material
+        emissiveMaterial.SetColor("_EmissionColor", finalEmissiveColor);
+
+        // Enable emission on the material (required for emission to be visible)
+        emissiveMaterial.EnableKeyword("_EMISSION");
+
+
+        //------------SIZE---------------
+
+        // Set the object size
+        transform.localScale = new Vector3(objectSize, objectSize, objectSize);
+
+        */
+
+        /*-----------------------------------------------------------------------*/
     }
+
+    /*----------- Advanced version --------------------*/
+
+        // Method to update player performance parameters
+        
+        /*
+        
+        public void UpdatePerformance(float newAlpha, float newTheta)
+        {
+            // Update alpha and theta values
+            alpha = newAlpha;
+            theta = newTheta;
+        }
+
+        */
+
+
+    /*--------------------------------------------------*/
+
 }
+
+
+
+
+

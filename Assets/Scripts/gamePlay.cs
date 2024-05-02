@@ -26,7 +26,7 @@ public class gamePlay : MonoBehaviour
 
         createPlayers(4);   // Number of players given by EEGport
 
-        StartCoroutine(delayUpdate()); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate(3.0f)); // Delay Start() by 3 seconds
 
         updatePrevAndCurrent(this); // Update brainwves
 
@@ -48,15 +48,15 @@ public class gamePlay : MonoBehaviour
             setBalance(this);
             // setUnbothered is called upon in AI 
 
-            players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
             // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
-            // players[3].displayPlayerInfo();
+            players[3].displayPlayerInfo();
                  
             canUpdate = false;  // Makes it so that each function doesn't update every frame
             
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
-            StartCoroutine(delayUpdate());
+            StartCoroutine(delayUpdate(delay));
 
         }
     }
@@ -67,14 +67,18 @@ public class gamePlay : MonoBehaviour
 
     /************Things used obly to control delays, not relevant for behaviour************/
     private bool canUpdate = false; // Decides weather a function can update in update()
+
+    public float delay = 0.25f;
     
-    IEnumerator delayUpdate(){
+    IEnumerator delayUpdate(float d){
 
         // Wait for 3 seconds
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(d);
 
         // Allow updates to happen
         canUpdate = true;
+
+        delay = 0.25f;   // Reset delay
 
     }
     /**************************************************************************************/
@@ -111,7 +115,7 @@ public class gamePlay : MonoBehaviour
         public float smallestDistance;
 
         // Constructor
-        public PlayerData(int playerID, float playerradius = 2.0f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
+        public PlayerData(int playerID, float playerradius = 1.5f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
         float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f, float playerBalance = 0.0f)
         {
             id = playerID;
@@ -247,6 +251,7 @@ public class gamePlay : MonoBehaviour
         float[] powerValues = {calculatePower(instance.players[0].alpha, instance.players[0].theta), calculatePower(instance.players[1].alpha, instance.players[1].theta),
          calculatePower(instance.players[2].alpha, instance.players[2].theta),calculatePower(instance.players[3].alpha, instance.players[3].theta)};
         instance.assignValuesToField(powerValues, "power");
+
     }
     
     // Calculates change
@@ -295,22 +300,31 @@ public class gamePlay : MonoBehaviour
         return power;
     }
 
-    /*/ Gives boost to remaining players when ones finsihes
-    public static void radiusBoost(gamePlay instance){
+    // Gives boost to remaining players when ones finishes by nerfing AI for a while, no lightning, lesser power for 5 sec
+    public static void boost(gamePlay instance){
         
-        float[] radiusValues = new float[instance.players.Length];
-       
-        float boost = 0.2;
+        instance.AI.canUpdate = false;  // Stop update() AI
 
-        for (int i = 0; i < instance.players.Length; i++) {
+        instance.AI.state = 0;      // AI-state at 0, no lightning can occur
+        AIScript.calculatePower(instance.AI);
+        instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;    // AI-power reduced to last placed players power minus 10
+
+        instance.AI.StartCoroutine(instance.AI.delayUpdate(5.0f)); // Pause AI for 5 seconds
+    }
+
+
+    // Triggers when a player finishes the game, aka radius = 0.0f
+    public static void playerFinished(gamePlay instance, int place){
+
+            var field = typeof(PlayerData).GetField("radius");
+            field.SetValueDirect(__makeref(instance.players[(place)]), 0.0f); // Set radius to 0.0f
+
             
-            float rad = calculateRadius(instance, i);
-
-            radiusValues[i] = rad;
-        }
-
-        instance.assignValuesToField(radiusValues, "radius"); //  Assign radiusValues to players
-    }*/
+            instance.players[place].update = false;
+            UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
+            
+            boost(instance);
+    }
 
 
     /**********************************Main Functions*************************************/
@@ -418,30 +432,36 @@ public class gamePlay : MonoBehaviour
         float addOn = 0.0f;
         
         // Normal increase (closer to center)
-        if(instance.players[(place)].power > instance.AI.power + 15){
-            addOn = -0.08f;
+        if(instance.players[(place)].power > instance.AI.power + 20){
+            addOn = -0.25f;
+        }
+        else if(instance.players[(place)].power > instance.AI.power + 15){
+            addOn = -0.17f;
         }
         else if(instance.players[(place)].power > instance.AI.power + 10){
-            addOn = -0.05f;
+            addOn = -0.1f;
         }
         else if(instance.players[(place)].power > instance.AI.power + 7){
-            addOn = -0.02f;
+            addOn = -0.06f;
         }
         else if(instance.players[(place)].power >= instance.AI.power){
         addOn = -0.01f;
         }
 
         // Normal decrease (further from center)
-        if(instance.players[(place)].radius < 2.0f){   // Must be less than 2
+        if(instance.players[(place)].radius < 3.0f){   // Must be less than 2
 
-            if(instance.players[(place)].power < instance.AI.power - 15){
-                addOn = 0.07f;
+            if(instance.players[(place)].power < instance.AI.power - 22){
+                addOn = 0.17f;
+            }
+            else if(instance.players[(place)].power < instance.AI.power - 15){
+                addOn = 0.14f;
             }
             else if(instance.players[(place)].power < instance.AI.power - 12){
-                addOn = 0.04f;
+                addOn = 0.1f;
             }
             else if(instance.players[(place)].power < instance.AI.power -9){
-                addOn = 0.02f;
+                addOn = 0.06f;
             }
             else if(instance.players[(place)].power <= instance.AI.power){
             addOn = 0.005f;
@@ -455,13 +475,12 @@ public class gamePlay : MonoBehaviour
         float radius = instance.players[(place)].radius + addOn;    // Calculate the new radius
 
         // Keep radius inbetween possible values (aka 0 and 2)
-        if(radius > 2.0f){
-            radius = 2.0f;
+        if(radius > 3.0f){
+            radius = 3.0f;
         }
         else if(radius < 0.0f){
             radius = 0.0f;
-            instance.players[place].update = false;
-            UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
+            playerFinished(instance, place);    // Triggers boost effect
         }
 
         return radius;
