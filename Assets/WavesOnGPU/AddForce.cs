@@ -17,7 +17,7 @@ public class AddForce : MonoBehaviour
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate; // Rate of speed change per second
-    private float radiusAdjustmentRate = 0.1f;
+    private float radiusAdjustmentRate = 1.0f;  // Maybe remove
 
     public int speedID;
     public int behaviorID;
