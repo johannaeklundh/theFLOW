@@ -713,7 +713,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2.7
+  radius: 6
   targetRadius: 0
   startAngle: 315
   targetCircularSpeed: 0
@@ -1170,7 +1170,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2.7
+  radius: 6
   targetRadius: 0
   startAngle: 225
   targetCircularSpeed: 0
@@ -1635,7 +1635,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2.7
+  radius: 6
   targetRadius: 0
   startAngle: 45
   targetCircularSpeed: 0
@@ -1732,7 +1732,7 @@ MonoBehaviour:
   waveManager: {fileID: 10292190}
   centerPoint: {fileID: 10292194}
   circularSpeed: 0
-  radius: 2.7
+  radius: 6
   targetRadius: 0
   startAngle: 135
   targetCircularSpeed: 0
