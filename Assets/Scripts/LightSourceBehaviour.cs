@@ -6,10 +6,10 @@ using UnityEngine.Rendering.Universal;
 
 public class LightSourceBehaviour : MonoBehaviour
 {
-    public Material emissiveMaterial;
-    public Color originalBaseColor;
-    public Color originalEmissionColor;
-    public float intensity = 1.0f;
+    public Material emissiveMaterial;   //player material
+    public Color originalBaseColor;     //player color
+    public Color originalEmissionColor; //player emission color
+    public float intensity = 1.0f;      //intensity factor
 
 
     /*----------- Advanced version ----------*/
@@ -77,6 +77,8 @@ public class LightSourceBehaviour : MonoBehaviour
         // Calculate object size based on theta value
         float objectSize = sizeCurve.Evaluate(theta / 100f);
 
+        //---------INTENSITY------------
+
         // Adjust the emissive intensity based on the desired intensity range
         float finalIntensity = Mathf.Lerp(5.0f, 10.0f, emissionIntensity);
 
@@ -88,6 +90,9 @@ public class LightSourceBehaviour : MonoBehaviour
 
         // Enable emission on the material (required for emission to be visible)
         emissiveMaterial.EnableKeyword("_EMISSION");
+
+
+        //------------SIZE---------------
 
         // Set the object size
         transform.localScale = new Vector3(objectSize, objectSize, objectSize);
