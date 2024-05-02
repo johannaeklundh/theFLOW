@@ -8,7 +8,7 @@ using EEG;
 public class buttonsConnect : MonoBehaviour
 {
     // public TextMeshProUGUI p1Stats;
-    // public TextMeshProUGUI p2Stats;
+    public TextMeshProUGUI p2Stats;
     // public TextMeshProUGUI p3Stats;
     // public TextMeshProUGUI p4Stats;
     // public Button p1Connect;
@@ -122,7 +122,7 @@ public class buttonsConnect : MonoBehaviour
         // p1Connect.onClick.AddListener(() => ConnectClicked()); 
         // p1Disconnect.onClick.AddListener(()=> DisconnectClicked());
 
-        // p2Stats.text = "";
+        p2Stats.text = "";
         // p2Connect.onClick.AddListener(() => ConnectClicked()); 
         // p2Disconnect.onClick.AddListener(()=> DisconnectClicked());
         
@@ -139,7 +139,7 @@ public class buttonsConnect : MonoBehaviour
         for (int index = 0; index < playersGameObject.Length; index++)
         {
             //stats[index].text = "";
-            int i = index; // Capture the index for the lambda expression
+            
             connectButtons[index].onClick.AddListener(() => ConnectClicked());
             disconnectButtons[index].onClick.AddListener(() => DisconnectClicked());
         }
@@ -195,17 +195,10 @@ public class buttonsConnect : MonoBehaviour
             if(clickedButton == connectButtons[index].gameObject){
             
                 players[index].connect();
-                if (players[index].errCodeConnect == 0)
+                if(players[index].errCodeConnect == 0)
                 {
                     connectButtons[index].gameObject.SetActive(false);
                     disconnectButtons[index].gameObject.SetActive(true);
-                }
-                else
-                {
-                    players[index].disconnect();
-                    players[index].errCodeConnect = 2;
-                    players[index].errCodeAutoRead = 2;
-                    
                 }
             }
         }
@@ -261,15 +254,11 @@ public class buttonsConnect : MonoBehaviour
         for(int index = 0; index < disconnectButtons.Length; index++){
             if(clickedButton == disconnectButtons[index].gameObject){
                 players[index].disconnect();
-                if (players[index].errCodeConnect != 0)
+                if (players[index].errCodeConnect == 2)
                 {
                     disconnectButtons[index].gameObject.SetActive(false);
                     connectButtons[index].gameObject.SetActive(true);
                     //stats[index].text = "";
-                }
-                else
-                {
-                    // Handle error message
                 }
             }
         }
@@ -297,6 +286,9 @@ public class buttonsConnect : MonoBehaviour
         //         stats[index].text = players[index].getAttention().ToString();
         //     }
         // }
+
+            p2Stats.text = players[1].getAttention().ToString();
+    
     }
 
     void deleteAllConnections()
@@ -335,7 +327,14 @@ public class buttonsConnect : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {   
+
+         if(!connectButtons[1].gameObject.activeSelf){
+            displayStats();
+         }
+        // if(players[1].errCodeAutoRead == 0){
+        // Debug.Log(players[1].getAttention());
+        //}
         //displayStats();
     }
 }
