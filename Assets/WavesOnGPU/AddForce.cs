@@ -11,13 +11,14 @@ public class AddForce : MonoBehaviour
     public Transform centerPoint; // The center point around which the objects will circle.
     public float circularSpeed = 0f; // The speed of the circular movement start at 0.
     public float radius; // The radius of the circular movement
-    public float targetRadius; 
+    public float targetRadius;
     public float startAngle; // The initial angle for this object
     private float currentAngle; // Current angle of rotation around the center
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate; // Rate of speed change per second
     private float radiusAdjustmentRate = 1.0f;  // Maybe remove
+    public int direction = 1; //direction of vortex determined from gameplayScript
 
     public int speedID;
     public int behaviorID;
@@ -30,11 +31,12 @@ public class AddForce : MonoBehaviour
         {
             transform.position = new Vector3(-2f, -2f, -2f);
         }
-        if (behaviorID == 0) { //right place for players in the start
+        if (behaviorID == 0)
+        { //right place for players in the start
 
             transform.position = new Vector3(Mathf.Cos((float)Math.PI * startAngle / 180) * radius, 0,
                                              Mathf.Sin((float)Math.PI * startAngle / 180) * radius);
-                                             
+
         }
 
         StartCoroutine(delayUpdate());
@@ -94,7 +96,7 @@ public class AddForce : MonoBehaviour
             case 2: return 1;
             case 3: return 2;
             case 4: return 3;
-            default : return 0;
+            default: return 0;
         }
     }
 
@@ -112,6 +114,15 @@ public class AddForce : MonoBehaviour
             if (circularSpeed < DetermineSpeedBySpeedID(speedID))
             {
                 circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
+            }
+
+            //direction = GP.whoseWinning(); //-1 = AI leading, 0 = gameover , 1 = player leading
+
+            if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); }
+            else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); }
+            else
+            {
+                if (behaviorID == 1) { radius = 100; } //out of screen
             }
 
             if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID))
