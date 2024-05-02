@@ -26,9 +26,9 @@ public class PentagonFillOutline : MonoBehaviour
 
         inputs[0] = gamePlay.Instance.players[NumberPlayer].balance;
         inputs[1] = gamePlay.Instance.players[NumberPlayer].meanAlpha;
-        inputs[2] = gamePlay.Instance.players[NumberPlayer].meanTheta;
+        inputs[2] = gamePlay.Instance.players[NumberPlayer].unbothered;
         inputs[3] = gamePlay.Instance.players[NumberPlayer].consistency;
-        inputs[4] = gamePlay.Instance.players[NumberPlayer].unbothered;
+        inputs[4] = gamePlay.Instance.players[NumberPlayer].meanTheta;
 
     }
 
