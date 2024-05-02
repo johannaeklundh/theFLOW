@@ -68,7 +68,7 @@ public class gamePlay : MonoBehaviour
     /************Things used obly to control delays, not relevant for behaviour************/
     private bool canUpdate = false; // Decides weather a function can update in update()
 
-    public float delay = 1.0f;
+    public float delay = 0.25f;
     
     IEnumerator delayUpdate(float d){
 
@@ -78,7 +78,7 @@ public class gamePlay : MonoBehaviour
         // Allow updates to happen
         canUpdate = true;
 
-        delay = 1.0f;   // Reset delay
+        delay = 0.25f;   // Reset delay
 
     }
     /**************************************************************************************/
@@ -300,21 +300,26 @@ public class gamePlay : MonoBehaviour
         return power;
     }
 
-    // Gives boost to remaining players when ones finishes by nerfing AI for a while
+    // Gives boost to remaining players when ones finishes by nerfing AI for a while, no lightning, lesser power for 5 sec
     public static void boost(gamePlay instance){
         
         instance.AI.canUpdate = false;  // Stop update() AI
 
         instance.AI.state = 0;      // AI-state at 0, no lightning can occur
         AIScript.calculatePower(instance.AI);
-        instance.AI.power = instance.AI.power - 20.0f;    // AI-power goes down to give lesser furtunate players chance
+        instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;    // AI-power reduced to last placed players power minus 10
 
-        instance.AI.StartCoroutine(instance.AI.delayUpdate(5.0f, 20.0f, 0)); // Pause for 5 seconds, decrease power by 20, and set state to 0
+        instance.AI.StartCoroutine(instance.AI.delayUpdate(5.0f)); // Pause AI for 5 seconds
     }
+
 
     // Triggers when a player finishes the game, aka radius = 0.0f
     public static void playerFinished(gamePlay instance, int place){
 
+            var field = typeof(PlayerData).GetField("radius");
+            field.SetValueDirect(__makeref(instance.players[(place)]), 0.0f); // Set radius to 0.0f
+
+            
             instance.players[place].update = false;
             UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
             
