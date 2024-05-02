@@ -18,7 +18,25 @@ public class gamePlay : MonoBehaviour
     public int p3Power = 55;
     public int p4Power = 57;
 
+    // Declare the singleton instance
+    public static gamePlay Instance { get; private set; }
+
     /***********************************************************/
+
+    // Awake is called before Start
+    void Awake()
+    {
+        // Ensure only one instance of gamePlay exists
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Persist between scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instances
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
