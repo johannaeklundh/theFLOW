@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class challenge : MonoBehaviour
 {
     public Image timeBar; // Reference to the time bar Image
-    public float timeLimit = 60f; // Time limit for the challenge
+    public float timeLimit = 2*60f; // Time limit for the challenge
     public GameObject[] objectsToShow;
     public int numOfPlayers;
     public GameObject[] progressBars;
@@ -31,7 +31,7 @@ public class challenge : MonoBehaviour
     // Set up active progress bars
     void SetUpProgressBars()
     {
-        // Assuming each player should have one alpha and one theta bar.
+        // Each player should have one alpha and one theta bar.
         int barsToActivate = numOfPlayers * 2; // 2 bars per player
 
         for (int i = 0; i < progressBars.Length; i++)
