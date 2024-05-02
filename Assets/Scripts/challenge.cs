@@ -18,7 +18,7 @@ public class challenge : MonoBehaviour
     // This method will be called to finish the challenge
     public void Finish()
     {
-        SceneManager.LoadSceneAsync(2); // Load scene 2 asynchronously
+        SceneManager.LoadSceneAsync(6); // Load scene 2 asynchronously
     }
 
     void Start()
