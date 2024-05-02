@@ -27,9 +27,10 @@ namespace EEG
         public static GameObject PlayerObject2;
         public static GameObject PlayerObject3;
         public static GameObject PlayerObject4;
+        public float barStatus;
 
-        public static GameObject[] playerObjects;
-        public static EEGport[] ports;
+        //public static GameObject[] playerObjects;
+        //public static EEGport[] ports;
 
         public EEGport(string s)
         {
@@ -51,20 +52,22 @@ namespace EEG
             if(errCodeAutoRead == 0){
             numPlayers++;
             }
+            else{
+                NativeThinkgear.TG_EnableAutoRead(connectionID, disable);
+                errCodeAutoRead = 2;
+            }
         }
 
         public void disconnect()
         {
-            if(errCodeAutoRead == 0){
+            
             NativeThinkgear.TG_EnableAutoRead(connectionID, disable);
             errCodeAutoRead = 2;
-            }
 
-            if(errCodeConnect == 0){
-                NativeThinkgear.TG_Disconnect(connectionID);
-                errCodeConnect = 2;
-                numPlayers--;
-            }
+            NativeThinkgear.TG_Disconnect(connectionID);
+            errCodeConnect = 2;
+            numPlayers--;
+            
         }
 
         public void deleteConnection() // När applikationen ska stängas ner
@@ -95,7 +98,7 @@ namespace EEG
             if(PlayerObject4 == null){
                 PlayerObject4 = new GameObject("PlayerObject4");
                 EEGport p4 = PlayerObject4.AddComponent<EEGport>();
-                p4.comPortName = "COM4";
+                p4.comPortName = "COM3";
                 p4.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p4.errCodeConnect = 2;
                 p4.errCodeAutoRead = 2;
