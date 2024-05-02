@@ -115,7 +115,7 @@ public class gamePlay : MonoBehaviour
         public float smallestDistance;
 
         // Constructor
-        public PlayerData(int playerID, float playerradius = 2.0f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
+        public PlayerData(int playerID, float playerradius = 1.5f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
         float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f, float playerBalance = 0.0f)
         {
             id = playerID;
@@ -449,7 +449,7 @@ public class gamePlay : MonoBehaviour
         }
 
         // Normal decrease (further from center)
-        if(instance.players[(place)].radius < 2.0f){   // Must be less than 2
+        if(instance.players[(place)].radius < 3.0f){   // Must be less than 2
 
             if(instance.players[(place)].power < instance.AI.power - 22){
                 addOn = 0.17f;
@@ -475,8 +475,8 @@ public class gamePlay : MonoBehaviour
         float radius = instance.players[(place)].radius + addOn;    // Calculate the new radius
 
         // Keep radius inbetween possible values (aka 0 and 2)
-        if(radius > 2.0f){
-            radius = 2.0f;
+        if(radius > 3.0f){
+            radius = 3.0f;
         }
         else if(radius < 0.0f){
             radius = 0.0f;

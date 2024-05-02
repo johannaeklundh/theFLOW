@@ -305,8 +305,8 @@ public class AIScript : MonoBehaviour
             field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
 
             // Test if possible value
-            if(instance.GP.players[who-1].radius > 2.0f){    // If larger than 2, set to 2 (min-value)
-                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 2.0f);
+            if(instance.GP.players[who-1].radius > 3.0f){    // If larger than 2, set to 2 (min-value)
+                field.SetValueDirect(__makeref(instance.GP.players[who-1]), 3.0f);
             }
             else if(instance.GP.players[who-1].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
                 field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
