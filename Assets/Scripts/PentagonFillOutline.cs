@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class PentagonFillOutline : MonoBehaviour
 {
-
+    public int NumberPlayer;
     public float radius = 1f; // Radius of the pentagon
     public float offsetX = 0f; // Offset in the x-direction
     public float offsetY = 0f; // Offset in the y-direction
@@ -24,7 +24,12 @@ public class PentagonFillOutline : MonoBehaviour
         // Set the number of positions for the LineRenderer
         lineRenderer.positionCount = 11; // 5 corners + 5 lines + 1 to close the loop
 
-        
+        inputs[0] = gamePlay.Instance.players[NumberPlayer].balance;
+        inputs[1] = gamePlay.Instance.players[NumberPlayer].meanAlpha;
+        inputs[2] = gamePlay.Instance.players[NumberPlayer].meanTheta;
+        inputs[3] = gamePlay.Instance.players[NumberPlayer].consistency;
+        inputs[4] = gamePlay.Instance.players[NumberPlayer].unbothered;
+
     }
 
     void Update()
