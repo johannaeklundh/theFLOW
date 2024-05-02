@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 //using System.Runtime.Remoting.Channels;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class gamePlay : MonoBehaviour
 {
@@ -53,7 +54,11 @@ public class gamePlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-   
+        //Dont destroy causes problems when reloading game.....
+        if(SceneManager.GetActiveScene().buildIndex==0) 
+        { Destroy(gameObject); }
+
+
         // Put functions inside this to delay the update to every delay sec
         if(canUpdate){
 

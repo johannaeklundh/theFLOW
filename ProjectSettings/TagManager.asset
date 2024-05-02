@@ -4,10 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-
-  - theta
   - alpha
-
+  - theta
+  - 3
+  - 2
+  - 4
+  - 1
+  - audio
   layers:
   - Default
   - TransparentFX

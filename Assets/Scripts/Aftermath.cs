@@ -42,17 +42,20 @@ public class Aftermath: MonoBehaviour
 
     public void StartMenu()
     {
-        SceneManager.LoadSceneAsync(0); // Can also use 1;
+        SceneManager.LoadScene(0); // Can also use 1;
+        
     }
 
     public void ConnectMenu()
     {
-        SceneManager.LoadSceneAsync(1); // Can also use 1;
+        SceneManager.LoadScene(1); // Can also use 1;
+        
     }
 
     public void Restart()
     {
-        SceneManager.LoadSceneAsync(5); // Can also use 1;
+        SceneManager.LoadScene(5); // Can also use 1;
+       
     }
 
 }
