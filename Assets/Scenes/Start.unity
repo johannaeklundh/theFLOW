@@ -603,7 +603,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Start
+  m_text: 'START
 
 '
   m_isRightToLeft: 0
@@ -632,7 +632,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 104.05
+  m_fontSize: 96.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1177,13 +1177,7 @@ MonoBehaviour:
     time wins.\r\n\r\n2. The game is about to begin. \r\nYou can compete alone or
     together but always against an interfering AI situated in the center of a vortex.
     \r\n\r\n3. Between each game, you can try the exercises suggested to reach a
-    deeper relaxation and focus.\r\n\r\nResearch shows that, when the brain is in
-    a competing mode, the recognition of being in \"flow\" is created as an emotional
-    memory in the body. This memory is stored and can be used as a tool in everyday
-    life. \r\n\r\nThe FLOW was created by artist and innovator Martin Lima de Faria
-    and built in collaboration with engineer Fredrik Borg, AI-researchers at Uppsala
-    University and brain researchers and visualizations students at Link\xF6pings
-    University in Sweden. \r\n\r\nHave a good run!\r\n"
+    deeper relaxation and focus.\r\n \r\n\r\nHave a good run!\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ca365bb8de77742a280297737e7efefa, type: 2}
   m_sharedMaterial: {fileID: 2326351258092716362, guid: ca365bb8de77742a280297737e7efefa, type: 2}
@@ -1210,13 +1204,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23
-  m_fontSizeBase: 23
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1344,8 +1338,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
-  m_fontSizeBase: 52
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
