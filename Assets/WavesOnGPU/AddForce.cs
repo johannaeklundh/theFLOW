@@ -7,7 +7,6 @@ using UnityEngine;
 public class AddForce : MonoBehaviour
 {
     public gamePlay GP;
-
     public WaveManager waveManager;
     public Transform centerPoint; // The center point around which the objects will circle.
     public float circularSpeed = 0f; // The speed of the circular movement start at 0.
@@ -18,29 +17,27 @@ public class AddForce : MonoBehaviour
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate; // Rate of speed change per second
-    private float radiusAdjustmentRate = 0.5f;
+    private float radiusAdjustmentRate = 1.0f;  // Maybe remove
+    public int direction = 1; //direction of vortex determined from gameplayScript
 
     public int speedID;
     public int behaviorID;
     public int playerID;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        if (behaviorID == 1) //keep them invisible in the beginning
+        if (behaviorID == 1) //keep the waves invisible in the beginning
         {
             transform.position = new Vector3(-2f, -2f, -2f);
         }
-        if (behaviorID == 0) { //right place in the start
+        if (behaviorID == 0)
+        { //right place for players in the start
 
             transform.position = new Vector3(Mathf.Cos((float)Math.PI * startAngle / 180) * radius, 0,
                                              Mathf.Sin((float)Math.PI * startAngle / 180) * radius);
-                                             
 
         }
-
-        //Math.PI* angle / 180.0
 
         StartCoroutine(delayUpdate());
 
@@ -86,6 +83,7 @@ public class AddForce : MonoBehaviour
         {
             case 1: return 20f;
             case 2: return 40f;
+
             default: return 10f;
         }
     }
@@ -98,7 +96,7 @@ public class AddForce : MonoBehaviour
             case 2: return 1;
             case 3: return 2;
             case 4: return 3;
-            default : return 0;
+            default: return 0;
         }
     }
 
@@ -118,11 +116,20 @@ public class AddForce : MonoBehaviour
                 circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
             }
 
-            if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID)) //Change direction quickly
-            {
-                if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; }
+            //direction = GP.whoseWinning(); //-1 = AI leading, 0 = gameover , 1 = player leading
 
-                if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //100 change in circularspeed for a better effect
+            if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); }
+            else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); }
+            else
+            {
+                if (behaviorID == 1) { radius = 100; } //out of screen
+            }
+
+            if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID))
+            {
+                if (behaviorID == 1) { circularSpeed = -1 * circularSpeed; } //Change direction quickly
+
+                if (targetCircularSpeed < 0) { targetCircularSpeed += DetermineSpeedBySpeedID(speedID) * 2; } //Change targetspeed quickly
                 else if (targetCircularSpeed > 0) { targetCircularSpeed -= DetermineSpeedBySpeedID(speedID) * 2; }
             }
             else
@@ -135,12 +142,14 @@ public class AddForce : MonoBehaviour
             if (behaviorID == 0)
             {
                 targetRadius = GP.players[DetermineRadiusByPlayerId(playerID)].radius;
+
             }
 
             radius = Mathf.MoveTowards(radius, targetRadius, radiusAdjustmentRate * Time.deltaTime);
 
             // Calculate circular movement
             RotateAroundCenter();
+
         }
 
     }
@@ -157,7 +166,7 @@ public class AddForce : MonoBehaviour
 
         // Apply the new position (and noise)
 
-        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 40f && behaviorID == 1)
+        if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 10f && behaviorID == 1)
         {
             float noiseX = RandomGen();
             float noiseZ = RandomGen();
