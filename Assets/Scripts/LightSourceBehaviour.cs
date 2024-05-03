@@ -70,14 +70,12 @@ public class LightSourceBehaviour : MonoBehaviour
             intensity = 3.0f;
             // Calculate the final emissive color with the desired intensity
             finalEmissiveColor = originalEmissionColor * intensity;
-
         }
 
         else {
-            intensity = -3.0f;
+            intensity = 1.0f;
             // Calculate the final emissive color with the desired intensity
             finalEmissiveColor = originalEmissionColor * intensity;
-
         }
 
         // Set the emissive color of the material
