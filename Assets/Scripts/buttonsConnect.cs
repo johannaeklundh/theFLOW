@@ -316,11 +316,13 @@ public class buttonsConnect : MonoBehaviour
 
         for (int index = 0; index < disconnectButtons.Length; index++)
         {
-            if (players[index].errCodeConnect == 0 || players[index].errCodeConnect == 2)
+            if (players[index].errCodeConnect <= 2 || -2 <= players[index].errCodeConnect)
             {
                 connectButtons[index].gameObject.SetActive(true);
                 disconnectButtons[index].gameObject.SetActive(false);
                 players[index].deleteConnection();
+                
+                Destroy(playersGameObject[index]);
             }
         }
     }

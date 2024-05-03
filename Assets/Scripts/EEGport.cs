@@ -27,7 +27,12 @@ namespace EEG
         public static GameObject PlayerObject2;
         public static GameObject PlayerObject3;
         public static GameObject PlayerObject4;
+
+        //public static int numConn = 0;
         public float barStatus;
+
+        public float att = 0;
+        public float med = 0;
 
         //public static GameObject[] playerObjects;
         //public static EEGport[] ports;
@@ -93,43 +98,57 @@ namespace EEG
 
         void Awake(){
 
-                        /*AVKOMMENTERA OM ANDRA KODSTYCKET INTE FUNGERAR*/
+            // if(numConn  == 4){
+            //     deleteConnection();
+            //     PlayerObject2.deleteConnection();
+            //     PlayerObject3.deleteConnection();
+            //     PlayerObject4.deleteConnection();
 
-            if(PlayerObject4 == null){
-                PlayerObject4 = new GameObject("PlayerObject4");
-                EEGport p4 = PlayerObject4.AddComponent<EEGport>();
-                p4.comPortName = "COM3";
-                p4.connectionID = NativeThinkgear.TG_GetNewConnectionId();
-                p4.errCodeConnect = 2;
-                p4.errCodeAutoRead = 2;
-                DontDestroyOnLoad(PlayerObject4);
-            }
-            if(PlayerObject3 == null){
-                PlayerObject3 = new GameObject("PlayerObject3");
-                EEGport p3 = PlayerObject3.AddComponent<EEGport>();
-                p3.comPortName = "COM1";
-                p3.connectionID = NativeThinkgear.TG_GetNewConnectionId();
-                p3.errCodeConnect = 2;
-                p3.errCodeAutoRead = 2;
-                DontDestroyOnLoad(PlayerObject3);
-            }
-            if(PlayerObject2 == null){
-                PlayerObject2 = new GameObject("PlayerObject2");
-                EEGport p2 = PlayerObject2.AddComponent<EEGport>();
-                p2.comPortName = "COM4";
-                p2.connectionID = NativeThinkgear.TG_GetNewConnectionId();
-                p2.errCodeConnect = 2;
-                p2.errCodeAutoRead = 2;
-                DontDestroyOnLoad(PlayerObject2);
-            }
-            if(PlayerObject1 == null){
-                PlayerObject1 = new GameObject("PlayerObject1");
-                EEGport p1 = PlayerObject1.AddComponent<EEGport>();
-                p1.comPortName = "COM7";
-                p1.connectionID = NativeThinkgear.TG_GetNewConnectionId();
-                p1.errCodeConnect = 2;
-                p1.errCodeAutoRead = 2;
-                DontDestroyOnLoad(PlayerObject1);
+            //     Destroy(PlayerObject1);
+            //     Destroy(PlayerObject2);
+            //     Destroy(PlayerObject3);
+            //     Destroy(PlayerObject4);
+            //     numConn = 0;
+            // }
+
+                if(PlayerObject4 == null){
+                    PlayerObject4 = new GameObject("PlayerObject4");
+                    EEGport p4 = PlayerObject4.AddComponent<EEGport>();
+                    p4.comPortName = "COM3";
+                    p4.connectionID = NativeThinkgear.TG_GetNewConnectionId();
+                    p4.errCodeConnect = 2;
+                    p4.errCodeAutoRead = 2;
+                    DontDestroyOnLoad(PlayerObject4);
+                }
+
+                if(PlayerObject3 == null){
+                    PlayerObject3 = new GameObject("PlayerObject3");
+                    EEGport p3 = PlayerObject3.AddComponent<EEGport>();
+                    p3.comPortName = "COM1";
+                    p3.connectionID = NativeThinkgear.TG_GetNewConnectionId();
+                    p3.errCodeConnect = 2;
+                    p3.errCodeAutoRead = 2;
+                    DontDestroyOnLoad(PlayerObject3);
+                }
+                if(PlayerObject2 == null){
+                    PlayerObject2 = new GameObject("PlayerObject2");
+                    EEGport p2 = PlayerObject2.AddComponent<EEGport>();
+                    p2.comPortName = "COM4";
+                    p2.connectionID = NativeThinkgear.TG_GetNewConnectionId();
+                    p2.errCodeConnect = 2;
+                    p2.errCodeAutoRead = 2;
+                    DontDestroyOnLoad(PlayerObject2);
+                }
+                if(PlayerObject1 == null){
+                    PlayerObject1 = new GameObject("PlayerObject1");
+                    EEGport p1 = PlayerObject1.AddComponent<EEGport>();
+                    p1.comPortName = "COM7";
+                    p1.connectionID = NativeThinkgear.TG_GetNewConnectionId();
+                    p1.errCodeConnect = 2;
+                    p1.errCodeAutoRead = 2;
+                    DontDestroyOnLoad(PlayerObject1);
+                
+                //numConn = 4;
             }
 
         //     playerObjects = new GameObject[4];
@@ -160,6 +179,8 @@ namespace EEG
 
         void Update()
         { 
+            att = NativeThinkgear.TG_GetValue(connectionID, NativeThinkgear.DataType.TG_DATA_ATTENTION);
+            med = NativeThinkgear.TG_GetValue(connectionID, NativeThinkgear.DataType.TG_DATA_MEDITATION);
         }
 
     }

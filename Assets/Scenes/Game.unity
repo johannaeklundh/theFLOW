@@ -154,13 +154,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GP: {fileID: 412569084}
+  lightningEffect: {fileID: 0}
+  canUpdate: 0
+  delay: 0.25
   state: 0
   power: 50
-  pos1: 35
-  pos2: 26
-  pos3: 41
-  pos4: 0
-  teamPower: 47.5
 --- !u!114 &412569084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,8 +172,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AI: {fileID: 412569083}
-  alphaChange: 50
-  thetaChange: 40
+  p1Power: 35
+  p2Power: 50
+  p3Power: 55
+  p4Power: 57
+  delay: 0.25
+  delay1: 1
+  players10Power: []
+  ai10Power: []
 --- !u!4 &412569085
 Transform:
   m_ObjectHideFlags: 0
