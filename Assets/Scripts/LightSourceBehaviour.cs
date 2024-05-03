@@ -101,7 +101,40 @@ public class LightSourceBehaviour : MonoBehaviour
         }
     }
 
+/*
 
+    // Update appearance based on alpha (intensity) and theta (size) values
+    void UpdateAppearance(float alpha, float theta)
+    {
+        // Clamp alpha and theta values between 0 and 100
+        alpha = Mathf.Clamp(alpha, 0f, 100f);
+        theta = Mathf.Clamp(theta, 0f, 100f);
+
+        // Calculate intensity and size based on alpha and theta values
+        currentIntensity = Mathf.Lerp(3f, 9f, alpha / 100f);
+        currentSize = Vector3.Lerp(new Vector3(0.2f, 0.2f, 0.2f), new Vector3(0.4f, 0.4f, 0.4f), theta / 100f);
+
+        // Update appearance
+        emissiveMaterial.SetColor("_EmissionColor", originalEmissionColor * currentIntensity);
+        transform.localScale = currentSize;
+    }
+
+    // Reset appearance to initial values
+    public void ResetAppearance()
+    {
+        currentIntensity = initialIntensity;
+        currentSize = initialSize;
+
+        UpdateAppearance(testAlpha, testTheta);
+    }
+
+    // Reset appearance when the script is disabled (game ends or resets)
+    void OnDisable()
+    {
+        ResetAppearance();
+    }
+
+*/
 }
 
 
