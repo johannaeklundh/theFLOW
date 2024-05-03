@@ -769,8 +769,9 @@ MonoBehaviour:
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  currentIntensity: 0
   sphereSize: {x: 0.3, y: 0.3, z: 0.3}
-  testAlpha: 52.3
+  testAlpha: 50
   testTheta: 50
 --- !u!1 &657586985
 GameObject:
@@ -1230,6 +1231,7 @@ MonoBehaviour:
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  currentIntensity: 0
   sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
@@ -1548,9 +1550,13 @@ MonoBehaviour:
   m_FillCenter: 1
   m_FillMethod: 0
 
+
   m_FillAmount: 0.9874167
   m_FillAmount: 0.9770296
   m_FillAmount: 0.99707866
+
+  m_FillAmount: 0.9999167
+
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1793,6 +1799,7 @@ MonoBehaviour:
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  currentIntensity: 0
   sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
@@ -1990,6 +1997,7 @@ MonoBehaviour:
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  currentIntensity: 0
   sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
@@ -2144,6 +2152,10 @@ MonoBehaviour:
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  currentIntensity: 0
+  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
+  testAlpha: 50
+  testTheta: 50
 --- !u!1 &1836533402
 GameObject:
   m_ObjectHideFlags: 0
