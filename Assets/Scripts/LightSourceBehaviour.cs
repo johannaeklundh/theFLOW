@@ -65,7 +65,31 @@ public class LightSourceBehaviour : MonoBehaviour
         //int alphaTransform = alpha/100f + 1;
         Color finalEmissiveColor;
 
-        if(alpha > 50){
+        if(alpha > 80){
+
+            intensity = 3.0f;
+            // Calculate the final emissive color with the desired intensity
+            finalEmissiveColor = originalEmissionColor * intensity;
+        }
+        if(60 < alpha && alpha > 80){
+
+            intensity = 3.0f;
+            // Calculate the final emissive color with the desired intensity
+            finalEmissiveColor = originalEmissionColor * intensity;
+        }
+        else if(60 < alpha && alpha > 80){
+
+            intensity = 3.0f;
+            // Calculate the final emissive color with the desired intensity
+            finalEmissiveColor = originalEmissionColor * intensity;
+        }
+        else if(40 < alpha && alpha > 60){
+
+            intensity = 3.0f;
+            // Calculate the final emissive color with the desired intensity
+            finalEmissiveColor = originalEmissionColor * intensity;
+        }
+        else if(60 < alpha && alpha > 80){
 
             intensity = 3.0f;
             // Calculate the final emissive color with the desired intensity
