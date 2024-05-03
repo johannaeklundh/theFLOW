@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 
 public class LightSourceBehaviour : MonoBehaviour
 {
-    
+
     public Material emissiveMaterial;   //player material
 
     //original colors 
@@ -15,6 +15,9 @@ public class LightSourceBehaviour : MonoBehaviour
     public Color originalEmissionColor; //player emission color
     public float initialIntensity = 4.0f;      //intensity factor
     public Vector3 initialSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
+
+    public int playerID;
+    public gamePlay GP;
 
 
     // Current colors and properties
@@ -28,6 +31,9 @@ public class LightSourceBehaviour : MonoBehaviour
 
     [Range(0f, 100f)]
     public float testTheta = 50f;
+
+
+
 
 
     void Start()
@@ -46,25 +52,45 @@ public class LightSourceBehaviour : MonoBehaviour
 
     void Update()
     {
+        testAlpha = GP.players[getPlayerID(playerID)].alpha;
+        testTheta = GP.players[getPlayerID(playerID)].theta;
+
         changeIntensity(testAlpha);
         changeSize(testTheta);
     }
 
 
-    public void changeIntensity(float alpha) {
+    int getPlayerID(int id)
+    {
+        switch (id)
+        {
+            case 1: return 0;
+            case 2: return 1;
+            case 3: return 2;
+            case 4: return 3;
+            default: return 0;
+        }
+    }
+
+    public void changeIntensity(float alpha)
+    {
 
         Color finalEmissiveColor;
 
-        if(alpha > 80){
+        if (alpha > 80)
+        {
             currentIntensity = 10.0f;
         }
-        else if(60 < alpha && alpha > 80){
+        else if (60 < alpha && alpha > 80)
+        {
             currentIntensity = 8.0f;
         }
-        else if(40 < alpha && alpha > 60){
+        else if (40 < alpha && alpha > 60)
+        {
             currentIntensity = 6.0f;
         }
-        else { //under 40
+        else
+        { //under 40
             currentIntensity = 4.0f;
         }
 
@@ -79,18 +105,23 @@ public class LightSourceBehaviour : MonoBehaviour
 
     }
 
-    public void changeSize(float theta) {
+    public void changeSize(float theta)
+    {
 
-        if(theta > 80){
+        if (theta > 80)
+        {
             currentSize = new Vector3(0.35f, 0.35f, 0.35f);
         }
-        else if (60 < theta && theta > 80){
+        else if (60 < theta && theta > 80)
+        {
             currentSize = new Vector3(0.3f, 0.3f, 0.3f);
         }
-        else if (40 < theta && theta > 60){
+        else if (40 < theta && theta > 60)
+        {
             currentSize = new Vector3(0.25f, 0.25f, 0.25f);
         }
-        else { //under 40
+        else
+        { //under 40
             currentSize = new Vector3(0.2f, 0.2f, 0.2f);
         }
         transform.localScale = currentSize;
