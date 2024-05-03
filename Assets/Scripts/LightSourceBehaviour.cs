@@ -9,16 +9,19 @@ public class LightSourceBehaviour : MonoBehaviour
 {
     
     public Material emissiveMaterial;   //player material
+
+    //original colors 
     public Color originalBaseColor;     //player color
     public Color originalEmissionColor; //player emission color
-    public float intensity = 2.0f;      //intensity factor
+    public float initialIntensity = 4.0f;      //intensity factor
+    public Vector3 initialSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
 
-    /*
-    [SerializeField] // Expose in the inspector
-    private Vector3 sphereSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
-    */
 
-    public Vector3 sphereSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
+    // Current colors and properties
+    private Color currentBaseColor;
+    private Color currentEmissionColor;
+    public float currentIntensity;
+    private Vector3 currentSize;
 
     [Range(0f, 100f)]
     public float testAlpha = 50f;
@@ -29,78 +32,43 @@ public class LightSourceBehaviour : MonoBehaviour
 
     void Start()
     {
-        
         // Store the original base color and emission color
         originalBaseColor = emissiveMaterial.color;
         originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
 
+        // Set initial appearance
+        currentBaseColor = originalBaseColor;
+        currentEmissionColor = originalEmissionColor;
+        currentIntensity = initialIntensity;
+        currentSize = initialSize;
+
     }
-
-
 
     void Update()
     {
-
         changeIntensity(testAlpha);
         changeSize(testTheta);
-
-/*
-        // Calculate the final emissive color with the desired intensity
-        Color finalEmissiveColor = originalEmissionColor * intensity;
-
-        // Set the emissive color of the material
-        emissiveMaterial.SetColor("_EmissionColor", finalEmissiveColor);
-
-        // Enable emission on the material (required for emission to be visible)
-        emissiveMaterial.EnableKeyword("_EMISSION");
-
-        // Update the size of the sphere
-        transform.localScale = sphereSize;
-*/
     }
 
 
     public void changeIntensity(float alpha) {
 
-        //int alphaTransform = alpha/100f + 1;
         Color finalEmissiveColor;
 
         if(alpha > 80){
-
-            intensity = 3.0f;
-            // Calculate the final emissive color with the desired intensity
-            finalEmissiveColor = originalEmissionColor * intensity;
-        }
-        if(60 < alpha && alpha > 80){
-
-            intensity = 3.0f;
-            // Calculate the final emissive color with the desired intensity
-            finalEmissiveColor = originalEmissionColor * intensity;
+            currentIntensity = 10.0f;
         }
         else if(60 < alpha && alpha > 80){
-
-            intensity = 3.0f;
-            // Calculate the final emissive color with the desired intensity
-            finalEmissiveColor = originalEmissionColor * intensity;
+            currentIntensity = 8.0f;
         }
         else if(40 < alpha && alpha > 60){
-
-            intensity = 3.0f;
-            // Calculate the final emissive color with the desired intensity
-            finalEmissiveColor = originalEmissionColor * intensity;
+            currentIntensity = 6.0f;
         }
-        else if(60 < alpha && alpha > 80){
-
-            intensity = 3.0f;
-            // Calculate the final emissive color with the desired intensity
-            finalEmissiveColor = originalEmissionColor * intensity;
+        else { //under 40
+            currentIntensity = 4.0f;
         }
 
-        else {
-            intensity = 1.0f;
-            // Calculate the final emissive color with the desired intensity
-            finalEmissiveColor = originalEmissionColor * intensity;
-        }
+        finalEmissiveColor = originalEmissionColor * currentIntensity;
 
         // Set the emissive color of the material
         emissiveMaterial.SetColor("_EmissionColor", finalEmissiveColor);
@@ -113,15 +81,41 @@ public class LightSourceBehaviour : MonoBehaviour
 
     public void changeSize(float theta) {
 
-        if(theta > 50){
-            sphereSize = new Vector3(0.4f, 0.4f, 0.4f);
-            transform.localScale = sphereSize;
+        if(theta > 80){
+            currentSize = new Vector3(0.35f, 0.35f, 0.35f);
         }
-        else {
-            sphereSize = new Vector3(0.2f, 0.2f, 0.2f);
-            transform.localScale = sphereSize;
+        else if (60 < theta && theta > 80){
+            currentSize = new Vector3(0.3f, 0.3f, 0.3f);
         }
+        else if (40 < theta && theta > 60){
+            currentSize = new Vector3(0.25f, 0.25f, 0.25f);
+        }
+        else { //under 40
+            currentSize = new Vector3(0.2f, 0.2f, 0.2f);
+        }
+        transform.localScale = currentSize;
     }
+
+
+    public void ResetAppearance()
+    {
+        currentIntensity = initialIntensity;      //intensity factor
+        currentSize = initialSize;
+
+        // Reset emissive color to its original value
+        emissiveMaterial.SetColor("_EmissionColor", originalEmissionColor * initialIntensity);
+        // Enable emission on the material (required for emission to be visible)
+        emissiveMaterial.EnableKeyword("_EMISSION");
+    }
+
+
+    // Reset appearance when the script is disabled (game ends or resets)
+    void OnDisable()
+    {
+        Debug.Log("Script disabled; resetting appearance.");
+        ResetAppearance();
+    }
+}
 
 /*
 
@@ -157,7 +151,6 @@ public class LightSourceBehaviour : MonoBehaviour
     }
 
 */
-}
 
 
 
