@@ -4,59 +4,47 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
+
 public class LightSourceBehaviour : MonoBehaviour
 {
+    
     public Material emissiveMaterial;   //player material
     public Color originalBaseColor;     //player color
     public Color originalEmissionColor; //player emission color
-    public float intensity = 1.0f;      //intensity factor
-
-
-    /*----------- Advanced version ----------*/
+    public float intensity = 2.0f;      //intensity factor
 
     /*
-    public Material emissiveMaterial;
-    public Color originalBaseColor;
-    public Color originalEmissionColor;
-
-    // Parameters for each player
-    public float alpha = 50.0f; // Default value
-    public float theta = 50.0f; // Default value
-
-    // Mapping from alpha and theta to emission intensity and object size
-    public AnimationCurve intensityCurve;
-    public AnimationCurve sizeCurve;
-
+    [SerializeField] // Expose in the inspector
+    private Vector3 sphereSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
     */
 
+    public Vector3 sphereSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
 
-    /*---------------------------------------*/
+    [Range(0f, 100f)]
+    public float testAlpha = 50f;
+
+    [Range(0f, 100f)]
+    public float testTheta = 50f;
 
 
     void Start()
     {
-        // Store the original base color and emission color
-        originalBaseColor = emissiveMaterial.color;
-        originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
-
-
-        /*----------- Advanced version --------------------*/
-
-        /*
         
         // Store the original base color and emission color
         originalBaseColor = emissiveMaterial.color;
         originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
-        
-        */
-
-
-        /*--------------------------------------------------*/
 
     }
 
+
+
     void Update()
     {
+
+        changeIntensity(testAlpha);
+        changeSize(testTheta);
+
+/*
         // Calculate the final emissive color with the desired intensity
         Color finalEmissiveColor = originalEmissionColor * intensity;
 
@@ -66,24 +54,31 @@ public class LightSourceBehaviour : MonoBehaviour
         // Enable emission on the material (required for emission to be visible)
         emissiveMaterial.EnableKeyword("_EMISSION");
 
-        
-        /*---------------- Advanced version ------------------------------------*/
+        // Update the size of the sphere
+        transform.localScale = sphereSize;
+*/
+    }
 
-        /*
 
-        // Calculate emission intensity based on alpha value
-        float emissionIntensity = intensityCurve.Evaluate(alpha / 100f);
+    public void changeIntensity(float alpha) {
 
-        // Calculate object size based on theta value
-        float objectSize = sizeCurve.Evaluate(theta / 100f);
+        //int alphaTransform = alpha/100f + 1;
+        Color finalEmissiveColor;
 
-        //---------INTENSITY------------
+        if(alpha > 50){
 
-        // Adjust the emissive intensity based on the desired intensity range
-        float finalIntensity = Mathf.Lerp(5.0f, 10.0f, emissionIntensity);
+            intensity = 3.0f;
+            // Calculate the final emissive color with the desired intensity
+            finalEmissiveColor = originalEmissionColor * intensity;
 
-        // Calculate the final emissive color with the desired intensity
-        Color finalEmissiveColor = originalEmissionColor * finalIntensity;
+        }
+
+        else {
+            intensity = -3.0f;
+            // Calculate the final emissive color with the desired intensity
+            finalEmissiveColor = originalEmissionColor * intensity;
+
+        }
 
         // Set the emissive color of the material
         emissiveMaterial.SetColor("_EmissionColor", finalEmissiveColor);
@@ -92,37 +87,22 @@ public class LightSourceBehaviour : MonoBehaviour
         emissiveMaterial.EnableKeyword("_EMISSION");
 
 
-        //------------SIZE---------------
-
-        // Set the object size
-        transform.localScale = new Vector3(objectSize, objectSize, objectSize);
-
-        */
-
-        /*-----------------------------------------------------------------------*/
     }
 
-    /*----------- Advanced version --------------------*/
+    public void changeSize(float theta) {
 
-        // Method to update player performance parameters
-        
-        /*
-        
-        public void UpdatePerformance(float newAlpha, float newTheta)
-        {
-            // Update alpha and theta values
-            alpha = newAlpha;
-            theta = newTheta;
+        if(theta > 50){
+            sphereSize = new Vector3(0.4f, 0.4f, 0.4f);
+            transform.localScale = sphereSize;
         }
+        else {
+            sphereSize = new Vector3(0.2f, 0.2f, 0.2f);
+            transform.localScale = sphereSize;
+        }
+    }
 
-        */
-
-
-    /*--------------------------------------------------*/
 
 }
-
-
 
 
 

@@ -735,9 +735,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: 84ad738add6e74ceebd39349c914b551, type: 2}
-  originalBaseColor: {r: 0.6650944, g: 1, b: 1, a: 1}
-  originalEmissionColor: {r: 0, g: 1, b: 1, a: 1}
+  originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
+  originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
+  testAlpha: 52.3
+  testTheta: 50
 --- !u!1 &657586985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,9 +1196,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: b89da0aadb2774c5fb6ff42e6e604347, type: 2}
-  originalBaseColor: {r: 1, g: 1, b: 0, a: 1}
-  originalEmissionColor: {r: 1, g: 1, b: 0, a: 0}
+  originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
+  originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
+  testAlpha: 50
+  testTheta: 50
 --- !u!1 &884187393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1510,7 +1516,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.99158335
+  m_FillAmount: 0.9770296
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1750,9 +1756,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: 92c5b8b572be24fd2b0267b0bcd010ca, type: 2}
-  originalBaseColor: {r: 0.4669811, g: 1, b: 0.6718276, a: 1}
-  originalEmissionColor: {r: 0, g: 1, b: 0.38518524, a: 0}
+  originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
+  originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
+  testAlpha: 50
+  testTheta: 50
 --- !u!1 &1375332334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,9 +1948,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissiveMaterial: {fileID: 2100000, guid: 382f5d9c9bb9c42cfb93bf8ef74cebe1, type: 2}
-  originalBaseColor: {r: 1, g: 0.5235849, b: 0.99490136, a: 1}
-  originalEmissionColor: {r: 0.846046, g: 0, b: 1, a: 0}
+  originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
+  originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
   intensity: 1
+  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
+  testAlpha: 50
+  testTheta: 50
 --- !u!4 &1600163989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2407604758047532364, guid: ebc0be07968695b4e9b2118edfcfd0f3, type: 3}
