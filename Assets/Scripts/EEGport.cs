@@ -29,6 +29,9 @@ namespace EEG
         public static GameObject PlayerObject4;
         public float barStatus;
 
+        public float att = 0;
+        public float med = 0;
+
         //public static GameObject[] playerObjects;
         //public static EEGport[] ports;
 
@@ -98,7 +101,7 @@ namespace EEG
             if(PlayerObject4 == null){
                 PlayerObject4 = new GameObject("PlayerObject4");
                 EEGport p4 = PlayerObject4.AddComponent<EEGport>();
-                p4.comPortName = "COM3";
+                p4.comPortName = "COM9";
                 p4.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p4.errCodeConnect = 2;
                 p4.errCodeAutoRead = 2;
@@ -160,6 +163,8 @@ namespace EEG
 
         void Update()
         { 
+            att = getAttention();
+            med = getMeditation();
         }
 
     }
