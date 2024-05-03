@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 //using System.Runtime.Remoting.Channels;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using EEG;
 
 public class gamePlay : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class gamePlay : MonoBehaviour
     public int p3Power = 55;
     public int p4Power = 57;
 
+    public GameObject[] playersObject;
+    public EEGport[] EEGplayers;
+
     // Declare the singleton instance
     public static gamePlay Instance { get; private set; }
 
@@ -27,6 +31,23 @@ public class gamePlay : MonoBehaviour
     // Awake is called before Start
     void Awake()
     {
+
+        playersObject = new GameObject[4];
+        EEGplayers = new EEGport[4];
+        
+        for (int index = 0; index < playersObject.Length; index++)
+        {
+           
+            playersObject[index] = GameObject.Find("PlayerObject" + (index + 1).ToString());
+            if (playersObject[index] != null)
+            {
+                EEGport playerComponent = playersObject[index].GetComponent<EEGport>();
+                if (playerComponent != null)
+                {
+                    EEGplayers[index] = playerComponent;
+                }
+            }
+        }
         // Ensure only one instance of gamePlay exists
         if (Instance == null)
         {
@@ -78,7 +99,7 @@ public class gamePlay : MonoBehaviour
             // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
             // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
-            players[3].displayPlayerInfo();
+            players[0].displayPlayerInfo();
 
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -190,10 +211,10 @@ public class gamePlay : MonoBehaviour
         public int placement;
         public float power;
         public float prevPower;
-        public int alpha;
-        public int prevAlpha;
-        public int theta;
-        public int prevTheta;
+        public float alpha;
+        public float prevAlpha;
+        public float theta;
+        public float prevTheta;
 	
 	    // Functionality
 	    public bool update;
@@ -240,8 +261,8 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
             UnityEngine.Debug.Log("Player Power: " + power);
-            // UnityEngine.Debug.Log("Player Alpha: " + alpha);
-            // UnityEngine.Debug.Log("Player Theta: " + theta);
+            UnityEngine.Debug.Log("Player Alpha: " + alpha);
+            UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
             // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
             // UnityEngine.Debug.Log("Player Consistency: " + consistency);
@@ -337,23 +358,24 @@ public class gamePlay : MonoBehaviour
     public static void updatePrevAndCurrent(gamePlay instance){
         
         // Assign prevAlpha
-        int[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
+        float[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
 
         // Assign alpha
         /*int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
         (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};*/
-        int[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+        float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
         instance.assignValuesToField(alphaValues, "alpha");
+        UnityEngine.Debug.Log(instance.EEGplayers[1].med);
         
         // Assign prevTheta
-        int[] prevThetaValues = {instance.players[0].theta, instance.players[1].theta, instance.players[2].theta, instance.players[3].theta};
+        float[] prevThetaValues = {instance.players[0].theta, instance.players[1].theta, instance.players[2].theta, instance.players[3].theta};
         instance.assignValuesToField(prevThetaValues, "prevTheta");
 
         // Assign theta
         /*int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
         (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};*/
-        int[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+        float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
         instance.assignValuesToField(thetaValues, "theta");
 
         // Assign prevPower
