@@ -22,6 +22,8 @@ namespace EEG
         public int errCodeAutoRead;
         public static int enable = -1;
         public static int disable = 0;
+        public float att = 0;
+        public float med = 0;
 
         public static GameObject PlayerObject1;
         public static GameObject PlayerObject2;
@@ -160,6 +162,8 @@ namespace EEG
 
         void Update()
         { 
+            att = NativeThinkgear.TG_GetValue(connectionID, NativeThinkgear.DataType.TG_DATA_ATTENTION);
+            med = NativeThinkgear.TG_GetValue(connectionID, NativeThinkgear.DataType.TG_DATA_MEDITATION);
         }
 
     }

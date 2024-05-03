@@ -37,8 +37,6 @@ public class buttonsConnect : MonoBehaviour
     public EEGport[] players;
     public Button deleteCon;
 
-    
-
     void Awake()
     {  
         
@@ -143,6 +141,8 @@ public class buttonsConnect : MonoBehaviour
             connectButtons[index].onClick.AddListener(() => ConnectClicked());
             disconnectButtons[index].onClick.AddListener(() => DisconnectClicked());
         }
+
+        
         //deleteCon.onClick.AddListener(deleteAllConnections);
     }
 
