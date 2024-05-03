@@ -38,6 +38,10 @@ public class LightSourceBehaviour : MonoBehaviour
 
     void Start()
     {
+
+        // Create a new material instance from the original material
+        emissiveMaterial = new Material(emissiveMaterial);
+
         // Store the original base color and emission color
         originalBaseColor = emissiveMaterial.color;
         originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
@@ -47,6 +51,17 @@ public class LightSourceBehaviour : MonoBehaviour
         currentEmissionColor = originalEmissionColor;
         currentIntensity = initialIntensity;
         currentSize = initialSize;
+
+
+        //// Store the original base color and emission color
+        //originalBaseColor = emissiveMaterial.color;
+        //originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
+
+        //// Set initial appearance
+        //currentBaseColor = originalBaseColor;
+        //currentEmissionColor = originalEmissionColor;
+        //currentIntensity = initialIntensity;
+        //currentSize = initialSize;
 
     }
 

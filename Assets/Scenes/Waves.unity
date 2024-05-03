@@ -768,9 +768,11 @@ MonoBehaviour:
   emissiveMaterial: {fileID: 2100000, guid: 84ad738add6e74ceebd39349c914b551, type: 2}
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
-  intensity: 1
+  initialIntensity: 4
+  initialSize: {x: 0.3, y: 0.3, z: 0.3}
+  playerID: 1
+  GP: {fileID: 1741228514}
   currentIntensity: 0
-  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
 --- !u!1 &657586985
@@ -1230,9 +1232,11 @@ MonoBehaviour:
   emissiveMaterial: {fileID: 2100000, guid: b89da0aadb2774c5fb6ff42e6e604347, type: 2}
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
-  intensity: 1
+  initialIntensity: 4
+  initialSize: {x: 0.3, y: 0.3, z: 0.3}
+  playerID: 4
+  GP: {fileID: 1741228514}
   currentIntensity: 0
-  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
 --- !u!1 &884187393
@@ -1549,14 +1553,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-
-
-  m_FillAmount: 0.9874167
-  m_FillAmount: 0.9770296
-  m_FillAmount: 0.99707866
-
-  m_FillAmount: 0.9999167
-
+  m_FillAmount: 0.9971389
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1798,9 +1795,11 @@ MonoBehaviour:
   emissiveMaterial: {fileID: 2100000, guid: 92c5b8b572be24fd2b0267b0bcd010ca, type: 2}
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
-  intensity: 1
+  initialIntensity: 4
+  initialSize: {x: 0.3, y: 0.3, z: 0.3}
+  playerID: 3
+  GP: {fileID: 1741228514}
   currentIntensity: 0
-  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
 --- !u!1 &1375332334
@@ -1923,11 +1922,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeForce: {fileID: 1486937032}
---- !u!1 &1526918185 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3456472412088275715, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
-  m_PrefabInstance: {fileID: 3766128749637116234}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1540716020 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5398400700581430240, guid: ebc0be07968695b4e9b2118edfcfd0f3, type: 3}
@@ -1996,9 +1990,11 @@ MonoBehaviour:
   emissiveMaterial: {fileID: 2100000, guid: 382f5d9c9bb9c42cfb93bf8ef74cebe1, type: 2}
   originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
   originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
-  intensity: 1
+  initialIntensity: 4
+  initialSize: {x: 0.3, y: 0.3, z: 0.3}
+  playerID: 2
+  GP: {fileID: 1741228514}
   currentIntensity: 0
-  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
   testAlpha: 50
   testTheta: 50
 --- !u!4 &1600163989 stripped
@@ -2094,6 +2090,8 @@ MonoBehaviour:
   p2Power: 50
   p3Power: 55
   p4Power: 57
+  playersObject: []
+  EEGplayers: []
   delay: 1
   delay1: 1
   players10Power: []
@@ -2136,26 +2134,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5858291080567895073, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
   m_PrefabInstance: {fileID: 3766128749637116234}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1756330368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526918185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d1237ef08e64f6f94e35ee1b1d266f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emissiveMaterial: {fileID: 2100000, guid: 09383c4470e45403ea2b43d4bc673665, type: 2}
-  originalBaseColor: {r: 0, g: 0, b: 0, a: 0}
-  originalEmissionColor: {r: 0, g: 0, b: 0, a: 0}
-  intensity: 1
-  currentIntensity: 0
-  sphereSize: {x: 0.3, y: 0.3, z: 0.3}
-  testAlpha: 50
-  testTheta: 50
 --- !u!1 &1836533402
 GameObject:
   m_ObjectHideFlags: 0
@@ -2840,15 +2818,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5858291080567895073, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.05
+      value: 0.41
       objectReference: {fileID: 0}
     - target: {fileID: 5858291080567895073, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.05
+      value: 0.41
       objectReference: {fileID: 0}
     - target: {fileID: 5858291080567895073, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.05
+      value: 0.41
       objectReference: {fileID: 0}
     - target: {fileID: 5858291080567895073, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2897,14 +2875,11 @@ PrefabInstance:
     - target: {fileID: 8128816802509442644, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 09383c4470e45403ea2b43d4bc673665, type: 2}
+      objectReference: {fileID: 2100000, guid: 9192b0045ba274549bcaff14ba4953b6, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3456472412088275715, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1756330368}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe8eb32f1c47541f9b969f187883f790, type: 3}
 --- !u!1001 &4025231396770122508
 PrefabInstance:
