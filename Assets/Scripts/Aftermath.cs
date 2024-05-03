@@ -9,8 +9,12 @@ public class Aftermath: MonoBehaviour
 
     public GameObject[] objectsToShow;
 
+    public bool win = false;
+    public GameObject[] HeaderToShow;
+
     void Start()
     {
+        ShowHeader(); // Ensure object is hidden at the start
         ShowObjects(); // Ensure object is hidden at the start
     }
 
@@ -18,6 +22,29 @@ public class Aftermath: MonoBehaviour
     {
         // Call the function to show objects based on the updated value of ConnectedPlayers
         ShowObjects();
+        ShowHeader();
+
+    }
+
+    // Function to show objects based on the value of ConnectedPlayers
+    void ShowHeader()
+    {
+        // Loop through all the objects in the objectsToShow array
+        if (win)
+        {
+            //set Victory to true
+            HeaderToShow[0].SetActive(true);
+            //set Lost to false
+            HeaderToShow[1].SetActive(false);
+        }
+        else
+        {
+            //set Victory to false
+            HeaderToShow[0].SetActive(false);
+            //set Lost to true
+            HeaderToShow[1].SetActive(true);
+
+        }
     }
 
     // Function to show objects based on the value of ConnectedPlayers
@@ -39,6 +66,8 @@ public class Aftermath: MonoBehaviour
             }
         }
     }
+
+
 
     public void StartMenu()
     {
