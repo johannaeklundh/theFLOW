@@ -12,16 +12,19 @@ public class gamePlay : MonoBehaviour
 {
     /********Refrence instances to other classes/scripts********/
     public AIScript AI;
-
-    public PlayerData[] players;    // Public array of all players
-
-    public int p1Power = 35;
-    public int p2Power = 50;
-    public int p3Power = 55;
-    public int p4Power = 57;
-
     public GameObject[] playersObject;
     public EEGport[] EEGplayers;
+
+    /********Variables********/
+    public PlayerData[] players;    // Public array of all players
+
+    /********Delete********/
+    public float p1Power = 50.0f;
+    public float p2Power = 51.0f;
+    public float p3Power = 52.0f;
+    public float p4Power = 53.0f;
+
+    public float adjust = 0.0f;
 
     // Declare the singleton instance
     public static gamePlay Instance { get; private set; }
@@ -67,6 +70,8 @@ public class gamePlay : MonoBehaviour
         createPlayers(4);   // Number of players given by EEGport
 
         StartCoroutine(delayUpdate(3.0f)); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate1Sec(3.0f)); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate10Sec(13.0f));
 
         updatePrevAndCurrent(this); // Update brainwves
 
@@ -75,14 +80,14 @@ public class gamePlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Dont destroy causes problems when reloading game.....
-        if(SceneManager.GetActiveScene().buildIndex==0) 
-        { Destroy(gameObject); }
 
 
         // Put functions inside this to delay the update to every delay sec
         if(canUpdate){
 
+            //Dont destroy causes problems when reloading game.....
+            if(SceneManager.GetActiveScene().buildIndex==0) 
+            { Destroy(gameObject); }
             
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);
@@ -99,7 +104,7 @@ public class gamePlay : MonoBehaviour
             // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
             // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
-            players[0].displayPlayerInfo();
+            players[3].displayPlayerInfo();
 
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -112,24 +117,26 @@ public class gamePlay : MonoBehaviour
         // Functions that can update every 1 sec
         if(canUpdate1sec){
 
-            set10Vectors(this); // Updates the vectors to decide whose winning, AI or players
-
             canUpdate1sec = false;
 
+            set10Vectors(this); // Updates the vectors to decide whose winning, AI or players
+
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after delay1 seconds
-            StartCoroutine(delayUpdate(delay1));
+            StartCoroutine(delayUpdate1Sec(delay1));
         }
 
         // Functions that can update every 10 sec
         if(canUpdate10sec){
 
-            whoseWinning(this); // Returns how the vortex spins, -1, 0 or 1 dephending on who is winning
+            // UnityEngine.Debug.Log("Enter if-10: ");
 
             // Stop update
             canUpdate10sec = false;
 
+            whoseWinning(this); // Returns how the vortex spins, -1, 0 or 1 dephending on who is winning
+
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after delay10 seconds
-            StartCoroutine(delayUpdate(delay10));
+            StartCoroutine(delayUpdate10Sec(delay10));
         }
     }
 
@@ -146,9 +153,9 @@ public class gamePlay : MonoBehaviour
 
     private bool canUpdate10sec = false;
 
-    public float delay = 0.25f;
+    private float delay = 0.25f;
 
-    public float delay1 = 1.0f;
+    private float delay1 = 1.0f;
 
     private float delay10 = 10.0f;
     
@@ -156,7 +163,7 @@ public class gamePlay : MonoBehaviour
     // Functions
     IEnumerator delayUpdate(float d){
 
-        // Wait for 3 seconds
+        // Wait for d seconds
         yield return new WaitForSeconds(d);
 
         // Allow updates to happen
@@ -170,13 +177,12 @@ public class gamePlay : MonoBehaviour
 
     IEnumerator delayUpdate1Sec(float d){
 
-        // Wait for 3 seconds
+        // Wait for d seconds
         yield return new WaitForSeconds(d);
 
-        // Allow whoseWinning to happen
-        canUpdate10sec = true;
+        canUpdate1sec = true;
 
-        delay1 = 1.0f;   // Reset delay10
+        delay1 = 1.0f;   // Reset delay1
 
         // UnityEngine.Debug.Log("1 seconds has passed!");
 
@@ -184,10 +190,9 @@ public class gamePlay : MonoBehaviour
     
     IEnumerator delayUpdate10Sec(float d){
 
-        // Wait for 3 seconds
+        // Wait for d seconds
         yield return new WaitForSeconds(d);
 
-        // Allow whoseWinning to happen
         canUpdate10sec = true;
 
         delay10 = 10.0f;   // Reset delay10
@@ -229,8 +234,8 @@ public class gamePlay : MonoBehaviour
         public float smallestDistance;
 
         // Constructor
-        public PlayerData(int playerID, float playerradius = 1.5f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
-        float playerThetaMean = 0.0f, float playerConsistency = 0.0f, float playerUnbothered = 0.0f, float playerBalance = 0.0f)
+        public PlayerData(int playerID, float playerradius = 2.0f, int playerPlacement = 1, float playerPower = 50.0f, float playerAlphaMean = 0.0f,
+        float playerThetaMean = 0.0f, float playerConsistency = 100.0f, float playerUnbothered = 100.0f, float playerBalance = 0.0f)
         {
             id = playerID;
             radius = playerradius;
@@ -261,13 +266,13 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
             UnityEngine.Debug.Log("Player Power: " + power);
-            UnityEngine.Debug.Log("Player Alpha: " + alpha);
-            UnityEngine.Debug.Log("Player Theta: " + theta);
-            // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
-            // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
-            // UnityEngine.Debug.Log("Player Consistency: " + consistency);
-            // UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
-            // UnityEngine.Debug.Log("Player Balance: " + balance);
+            // UnityEngine.Debug.Log("Player Alpha: " + alpha);
+            // UnityEngine.Debug.Log("Player Theta: " + theta);
+            UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
+            UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
+            UnityEngine.Debug.Log("Player Consistency: " + consistency);
+            UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
+            UnityEngine.Debug.Log("Player Balance: " + balance);
         }
     }
 
@@ -357,25 +362,40 @@ public class gamePlay : MonoBehaviour
     // Set the players alpha, theta and power and all the previous ones
     public static void updatePrevAndCurrent(gamePlay instance){
         
+        UnityEngine.Debug.Log("prevCurrent called!");
+        
         // Assign prevAlpha
         float[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
 
         // Assign alpha
+        // Sin-ver
         /*int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
         (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};*/
-        float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
+
+        // EEG-ver
+        /*float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};*/
+
+        // Test-ver
+        float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
         instance.assignValuesToField(alphaValues, "alpha");
-        UnityEngine.Debug.Log(instance.EEGplayers[1].med);
+        // UnityEngine.Debug.Log(instance.EEGplayers[1].med);
         
         // Assign prevTheta
         float[] prevThetaValues = {instance.players[0].theta, instance.players[1].theta, instance.players[2].theta, instance.players[3].theta};
         instance.assignValuesToField(prevThetaValues, "prevTheta");
 
         // Assign theta
+
+        // Cos-ver
         /*int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
         (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};*/
-        float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
+
+        // EEG-ver
+        /*float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};*/
+
+        // Test-ver
+        float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
         instance.assignValuesToField(thetaValues, "theta");
 
         // Assign prevPower
@@ -395,14 +415,8 @@ public class gamePlay : MonoBehaviour
         return change;
     }
 
-    // Calculates derivate
-    public static float derivatePower(PlayerData player){
-        float derivate = change(player.power, player.prevPower) / Time.deltaTime;
-        return derivate;
-    }
-
-    // Placeholder to decide the placement of the players, updates every 3 sec
-    public static void setPlacements(gamePlay instance){    // FIX so always placements 1-3
+    // Placeholder to decide the placement of the players, updates every delay sec
+    public static void setPlacements(gamePlay instance){
 
          // Create a copy of the players array
         PlayerData[] sortedCopy = new PlayerData[instance.players.Length];
@@ -466,14 +480,14 @@ public class gamePlay : MonoBehaviour
 
     // Set consistency of each player
     public static void setConsistency(gamePlay instance){
-
+        
         float[] consistencyValues = new float[instance.players.Length];
 
         for (int i = 0; i < instance.players.Length; i++) {
-            
-            float con = derivatePower(instance.players[i]);
+        
+            float con = 100 - change(instance.players[i].power, instance.players[i].prevPower);
 
-            if(con > instance.players[i].consistency){
+            if(con < instance.players[i].consistency){
                 consistencyValues[i] = con;
             }
             else{
@@ -481,13 +495,13 @@ public class gamePlay : MonoBehaviour
             }
         }
 
-        instance.assignValuesToField(consistencyValues, "consistency"); //  Assign consistencyValues tto players
+        instance.assignValuesToField(consistencyValues, "consistency"); //  Assign consistencyValues to players
     }
 
     // Set unbothered of each player, is utilized in AI-class
     public static void setUnbothered(gamePlay instance, int id){
 
-        float unbothered = derivatePower(instance.players[(id-1)]);
+        float unbothered = 100 - change(instance.players[id-1].power, instance.players[id-1].prevPower);
 
         if(unbothered < instance.players[(id-1)].unbothered){ // Update to the largest decending value
             instance.players[(id-1)].unbothered = unbothered;
@@ -558,7 +572,7 @@ public class gamePlay : MonoBehaviour
         instance.assignValuesToField(balanceValues, "balance"); //  Assign balanceValues to players
     }
 
-    public static float calculateRadius(gamePlay instance, int place){  // FIX so that other players get boost when winning
+    public static float calculateRadius(gamePlay instance, int place){ 
 
         if(instance.players[place].update == false){
              return 0.0f;
@@ -567,40 +581,13 @@ public class gamePlay : MonoBehaviour
         float addOn = 0.0f;
         
         // Normal increase (closer to center)
-        if(instance.players[(place)].power > instance.AI.power + 20){
-            addOn = -0.25f;
-        }
-        else if(instance.players[(place)].power > instance.AI.power + 15){
-            addOn = -0.17f;
-        }
-        else if(instance.players[(place)].power > instance.AI.power + 10){
-            addOn = -0.1f;
-        }
-        else if(instance.players[(place)].power > instance.AI.power + 7){
-            addOn = -0.06f;
-        }
-        else if(instance.players[(place)].power >= instance.AI.power){
-        addOn = -0.01f;
+        if(instance.players[(place)].power > instance.AI.power){
+            addOn = -((instance.players[(place)].power - instance.AI.power)/500 - instance.adjust);
         }
 
         // Normal decrease (further from center)
-        if(instance.players[(place)].radius < 3.0f){   // Must be less than 2
-
-            if(instance.players[(place)].power < instance.AI.power - 22){
-                addOn = 0.17f;
-            }
-            else if(instance.players[(place)].power < instance.AI.power - 15){
-                addOn = 0.14f;
-            }
-            else if(instance.players[(place)].power < instance.AI.power - 12){
-                addOn = 0.1f;
-            }
-            else if(instance.players[(place)].power < instance.AI.power -9){
-                addOn = 0.06f;
-            }
-            else if(instance.players[(place)].power <= instance.AI.power){
-            addOn = 0.005f;
-            }
+        if(instance.players[(place)].radius < 3.0f && instance.players[(place)].power < instance.AI.power){   // Must be less than radius of vortex
+            addOn = (instance.AI.power - instance.players[(place)].power)/500 + instance.adjust;
         }
 
         /*if(instance.players[(place)].id == 4){  // Write out increase/decrease for player 4
@@ -635,15 +622,14 @@ public class gamePlay : MonoBehaviour
 
         instance.assignValuesToField(radiusValues, "radius"); //  Assign radiusValues to players
     }
-
-
+    
     public static void set10Vectors(gamePlay instance){
 
         instance.players10Power.Add(AIScript.calculateTeamPower(instance.AI));    // Add latest teamPower last
         instance.ai10Power.Add(instance.AI.power);    // Add latest AI-power last
     }
     
-    // Decides who is currently winning return either 1, 0 or -1 based on status of the game, updates every 10 sec FIX
+    // Decides who is currently winning return either 1, 0 or -1 based on status of the game, updates every 10 sec
     public static int whoseWinning(gamePlay instance){
         // 1 = players are winning
 
@@ -651,16 +637,75 @@ public class gamePlay : MonoBehaviour
 
         // 0 = game is over
         
-        float aiPowerSum = 0.0f;
-        float playerPowerSum = 0.0f;
+        int ai10Length = instance.ai10Power.Count;
+        // UnityEngine.Debug.Log("ai10Length = " + ai10Length);
+        int players10Length = instance.players10Power.Count;
+        // UnityEngine.Debug.Log("players10Length = " + players10Length);
         
-        for(int i = 0; i < instance.ai10Power.Count; i++){
-            aiPowerSum += instance.ai10Power[i];
-            playerPowerSum += instance.players10Power[i];
+        if(ai10Length == players10Length && ai10Length != 0){
+            // UnityEngine.Debug.Log("Entered sum!");
+
+            if(playersWon(instance)){
+                return 0;
+            }
+            
+            float aiPowerSum = 0.0f;
+            float playerPowerSum = 0.0f;
+            
+            for(int i = ai10Length-1; i >= 0 ; i--){
+                
+                // Add to sums
+                aiPowerSum += instance.ai10Power[i];
+                playerPowerSum += instance.players10Power[i];
+
+                // Remove last member of lists to reset them
+                instance.ai10Power.RemoveAt(instance.ai10Power.Count - 1);
+                instance.players10Power.RemoveAt(instance.players10Power.Count - 1);        
+            }
+
+            // UnityEngine.Debug.Log("Exit");
+
+            // Calculate average
+            aiPowerSum = aiPowerSum / ai10Length;
+            playerPowerSum = playerPowerSum/ players10Length;
+
+            if(aiPowerSum > playerPowerSum){
+                UnityEngine.Debug.Log("Returned -1");
+                return -1;
+            }
+            else if(aiPowerSum < playerPowerSum){
+                UnityEngine.Debug.Log("Returned 1");
+                return 1;
+            }
         }
 
-
+        UnityEngine.Debug.Log("Returned 1");
         return 1;
+    }
+
+
+    // Returns true if all players have won
+    public static bool playersWon(gamePlay instance){
+
+        int activePlayers = 0;
+        
+        for (int i = 0; i < instance.players.Length; i++) {
+        
+            if(instance.players[i].update){
+                activePlayers++;
+            }
+        }
+
+        if(activePlayers == 0){ // Check if no players are active
+            instance.canUpdate = false;
+            instance.canUpdate1sec = false;
+            instance.canUpdate10sec = false;
+
+            UnityEngine.Debug.Log("Game is over, player have won!");
+            return true;
+        }
+
+        return false;
     }
      
     /************************************************************************************/

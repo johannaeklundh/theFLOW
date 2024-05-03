@@ -115,15 +115,14 @@ public class AIScript : MonoBehaviour
 
     /**********************Functions************************/
 
-    // Placeholder to calcute the AIs power
-    //[ContextMenu("CalculatePower")] // Makes it so that we can run the function on command when playing the game by pressing the 3 dot beside the script on the right (only work on non-static)
+    // Placeholder to calcute the AIs power FIX, balence for one
     public static void calculatePower(AIScript instance){   // FIX so that it works for 1 or 2 players
         
-        int maxIncrease = 5;    // Maximum amount of increase in power for the AI
-        int minDecrease = -5;   // Minimum amount of decrease in the power for the AI
+        int maxIncrease = 0;    // Maximum amount of increase in power for the AI
+        int minDecrease = 0;   // Minimum amount of decrease in the power for the AI
 
         // How far apart the player placed in 1:st place is from the player placed in last
-        float diff1_4 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, instance.GP.players.Length).radius);
+        float diff1_last = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, instance.GP.players.Length).radius);
 
         // How far apart the player placed in 1:st place is from the player placed in 2:th place, small diffrence can result in big boost to the others
         float diff1_2 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, 2).radius);
@@ -131,25 +130,35 @@ public class AIScript : MonoBehaviour
 
         // Assign max and min distance
         if(instance.state == 3 && diff1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
-            maxIncrease = 10;
-            if(diff1_4 > 30.0f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
-                minDecrease = -4;
+            maxIncrease = 17;
+            if(diff1_last > 0.5f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
+                minDecrease = -5;
             }
             else{   // Otherwise it may push harder to not give a sudden boost that makes everyone finish.
-                minDecrease = -1; 
+                minDecrease = -9; 
+            }
+        }
+        else if(instance.state == 3 && diff1_2 > 10.0f){
+            maxIncrease = 14;
+
+            if(diff1_last > 0.5f){
+                minDecrease = -7;
+            }
+            else{
+                minDecrease = - -10;
             }
         }
         else if(instance.state == 2){
-            maxIncrease = 7;
-            minDecrease = -3;
+            maxIncrease = 11;
+            minDecrease = -11;
         }
         else if (instance.state == 1){
-            maxIncrease = 6;
-            minDecrease = -2;
+            maxIncrease = 8;
+            minDecrease = -4;
         }
         else{
-            maxIncrease = 5;
-            minDecrease = -5;
+            maxIncrease = 6;
+            minDecrease = -6;
         }
 
         // Generate random integer inbetween min and max, decides how much the AI:s power will increase/decrease
@@ -205,7 +214,7 @@ public class AIScript : MonoBehaviour
 
 
     // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
-    public static void setState(AIScript instance, int s = 4){
+    public static void setState(AIScript instance, int s = 4){  // FIX for the new closest
 
         if(s == 4){
             //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
