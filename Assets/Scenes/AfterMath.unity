@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4985,13 +4985,23 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Research shows that, when the brain is in a competing mode, the recognition
-    of being in \"flow\" is created as an emotional memory in the body. This memory
-    is stored and can be used as a tool in everyday life.\r\n\r\nThe FLOW was created
-    by artist and innovator Martin Lima de Faria and built in collaboration with
-    engineer Fredrik Borg, AI-researchers at Uppsala University and brain researchers
-    and students of media technology at Link\xF6pings University in Sweden.\r\n\r\nMore
-    info at www.martinlimadefaria.com\r\n"
+  m_text: 'Research shows that, when the brain is in a competing mode, the recognition
+    of being in "flow" is created as an emotional memory in the body. This memory
+    is stored and can be used as a tool in everyday life.
+
+    
+
+    The FLOW was
+    created by artist and innovator Martin Lima de Faria and built in collaboration
+    with engineer Fredrik Borg, AI-researchers at Uppsala University and brain researchers
+    and students of media technology at Linkopings University in Sweden.
+
+    
+
+    More
+    info at www.martinlimadefaria.com
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ca365bb8de77742a280297737e7efefa, type: 2}
   m_sharedMaterial: {fileID: 2326351258092716362, guid: ca365bb8de77742a280297737e7efefa, type: 2}
