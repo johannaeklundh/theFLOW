@@ -25,9 +25,9 @@ public class AIScript : MonoBehaviour
     void Update()
     {  
 
-        if(canUpdate){
-            calculatePower(this);   // Runs this function on start, see changes to the right
-            setState(this);   // Test to set the state of the AI
+        if(canUpdate && GP.isBoosted == false){
+            calculatePower(this);   // Caculates and set the power of AI
+            setState(this);   // Sets the state of the AI
             isHit(this);
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -105,8 +105,8 @@ public class AIScript : MonoBehaviour
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
     public const int PerState1 = 10; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 20; // 8% chance of getting hit per second when state = 2
-    public const int PerState3 = 30; // 16% chance of getting hit per second when state = 3
+    public const int PerState2 = 14; // 8% chance of getting hit per second when state = 2
+    public const int PerState3 = 18; // 16% chance of getting hit per second when state = 3
 
 
     // Other

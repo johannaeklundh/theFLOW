@@ -158,6 +158,8 @@ public class gamePlay : MonoBehaviour
     private float delay1 = 1.0f;
 
     private float delay10 = 10.0f;
+
+    public bool isBoosted = false; // Tells if boost is active
     
     
     // Functions
@@ -199,6 +201,16 @@ public class gamePlay : MonoBehaviour
 
         UnityEngine.Debug.Log("10 seconds has passed!");
 
+    }
+
+    // Coroutine to end the boost after 5 seconds
+    private IEnumerator EndBoost(gamePlay instance) {
+
+        yield return new WaitForSeconds(5.0f);
+
+        instance.AI.canUpdate = true;  // Allow updates in AI to happen again
+
+        isBoosted = false;  // Reset the flag
     }
     /**************************************************************************************/
 
@@ -452,27 +464,49 @@ public class gamePlay : MonoBehaviour
     // Gives boost to remaining players when ones finishes by nerfing AI for a while, no lightning, lesser power for 5 sec
     public static void boost(gamePlay instance){
         
-        instance.AI.canUpdate = false;  // Stop update() AI
+        if (!instance.isBoosted) {
+            instance.isBoosted = true; 
 
-        instance.AI.state = 0;      // AI-state at 0, no lightning can occur
-        AIScript.calculatePower(instance.AI);
-        instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;    // AI-power reduced to last placed players power minus 10
+            instance.AI.canUpdate = false;  // Stop update() in AI
 
-        instance.AI.StartCoroutine(instance.AI.delayUpdate(5.0f)); // Pause AI for 5 seconds
+            instance.AI.state = 0;  // AI-state at 0, no lightning can occur
+            instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;  // AI-power reduced to last placed player's power minus 10
+
+            instance.StartCoroutine(instance.EndBoost(instance));
+        }
     }
 
 
     // Triggers when a player finishes the game, aka radius = 0.0f
     public static void playerFinished(gamePlay instance, int place){
 
+            // Set radius to 0.0f
             var field = typeof(PlayerData).GetField("radius");
-            field.SetValueDirect(__makeref(instance.players[(place)]), 0.0f); // Set radius to 0.0f
-
+            field.SetValueDirect(__makeref(instance.players[(place)]), 0.0f);
             
-            instance.players[place].update = false;
+            instance.players[place].update = false; // Players stats can no longer update
+
             UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
             
-            boost(instance);
+            boost(instance);    // Gives boost to remaining players by decreasing AI for 5 seconds
+            playersWon(instance);   // Checks if game is over bc the players won
+            
+    }
+
+    public int numberOfActivePlayers(){
+
+        int activePlayers = 0;
+        
+        for (int i = 0; i < players.Length; i++) {
+        
+            if(players[i].update){
+                activePlayers++;
+            }
+        }
+
+        UnityEngine.Debug.Log("Number of remaining players are: " + activePlayers);
+
+        return activePlayers;
     }
 
 
@@ -645,7 +679,7 @@ public class gamePlay : MonoBehaviour
         if(ai10Length == players10Length && ai10Length != 0){
             // UnityEngine.Debug.Log("Entered sum!");
 
-            if(playersWon(instance)){
+            if(instance.numberOfActivePlayers() == 0){
                 return 0;
             }
             
@@ -684,28 +718,18 @@ public class gamePlay : MonoBehaviour
     }
 
 
-    // Returns true if all players have won
-    public static bool playersWon(gamePlay instance){
+    // Returns if all players have won
+    public static void playersWon(gamePlay instance){
 
-        int activePlayers = 0;
-        
-        for (int i = 0; i < instance.players.Length; i++) {
-        
-            if(instance.players[i].update){
-                activePlayers++;
-            }
-        }
 
-        if(activePlayers == 0){ // Check if no players are active
+        if(instance.numberOfActivePlayers() == 0){ // Check if no players are active
             instance.canUpdate = false;
             instance.canUpdate1sec = false;
             instance.canUpdate10sec = false;
 
             UnityEngine.Debug.Log("Game is over, player have won!");
-            return true;
         }
 
-        return false;
     }
      
     /************************************************************************************/
