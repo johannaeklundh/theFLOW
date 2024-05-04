@@ -102,9 +102,9 @@ public class gamePlay : MonoBehaviour
 
             // Write out in console..
             // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            // players[1].displayPlayerInfo();
+            players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
-            players[3].displayPlayerInfo();
+            // players[3].displayPlayerInfo();
 
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -159,6 +159,9 @@ public class gamePlay : MonoBehaviour
 
     private float delay10 = 10.0f;
 
+    // Related to boost
+    private float boostTime = 5.0f; // How many seconds the boost lasts
+
     public bool isBoosted = false; // Tells if boost is active
     
     
@@ -206,7 +209,7 @@ public class gamePlay : MonoBehaviour
     // Coroutine to end the boost after 5 seconds
     private IEnumerator EndBoost(gamePlay instance) {
 
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(boostTime);
 
         instance.AI.canUpdate = true;  // Allow updates in AI to happen again
 
@@ -280,11 +283,11 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player Power: " + power);
             // UnityEngine.Debug.Log("Player Alpha: " + alpha);
             // UnityEngine.Debug.Log("Player Theta: " + theta);
-            UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
-            UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
-            UnityEngine.Debug.Log("Player Consistency: " + consistency);
-            UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
-            UnityEngine.Debug.Log("Player Balance: " + balance);
+            // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
+            // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
+            // UnityEngine.Debug.Log("Player Consistency: " + consistency);
+            // UnityEngine.Debug.Log("Player Unbothered: " + unbothered);
+            // UnityEngine.Debug.Log("Player Balance: " + balance);
         }
     }
 
@@ -460,7 +463,7 @@ public class gamePlay : MonoBehaviour
         float power = (alpha + theta) / 2;
         return power;
     }
-
+    
     // Gives boost to remaining players when ones finishes by nerfing AI for a while, no lightning, lesser power for 5 sec
     public static void boost(gamePlay instance){
         
@@ -723,9 +726,12 @@ public class gamePlay : MonoBehaviour
 
 
         if(instance.numberOfActivePlayers() == 0){ // Check if no players are active
+            
+            // Make all update-functions inactive
             instance.canUpdate = false;
             instance.canUpdate1sec = false;
             instance.canUpdate10sec = false;
+            instance.AI.canUpdate = false;
 
             UnityEngine.Debug.Log("Game is over, player have won!");
         }

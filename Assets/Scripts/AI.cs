@@ -115,11 +115,11 @@ public class AIScript : MonoBehaviour
 
     /**********************Functions************************/
 
-    // Placeholder to calcute the AIs power FIX, balence for one
+    // Calcutes the AIs power
     public static void calculatePower(AIScript instance){   // FIX so that it works for 1 or 2 players
         
-        int maxIncrease = 0;    // Maximum amount of increase in power for the AI
-        int minDecrease = 0;   // Minimum amount of decrease in the power for the AI
+        float maxIncrease = 0.0f;    // Maximum amount of increase in power for the AI
+        float minDecrease = 0.0f;    // Minimum amount of decrease in the power for the AI
 
         // How far apart the player placed in 1:st place is from the player placed in last
         float diff1_last = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, instance.GP.players.Length).radius);
@@ -129,42 +129,135 @@ public class AIScript : MonoBehaviour
 
 
         // Assign max and min distance
-        if(instance.state == 3 && diff1_2 < 10.0f){  // If the AI seem to be losing and there is 2 players near finishing, they AI may push harder
-            maxIncrease = 17;
-            if(diff1_last > 0.5f){ // If there is a super huge gap between the first and the last placement, the AI may not push as hard
-                minDecrease = -5;
-            }
-            else{   // Otherwise it may push harder to not give a sudden boost that makes everyone finish.
-                minDecrease = -9; 
-            }
-        }
-        else if(instance.state == 3 && diff1_2 > 10.0f){
-            maxIncrease = 14;
+        float currentTeamP = calculateTeamPower(instance);
 
-            if(diff1_last > 0.5f){
-                minDecrease = -7;
+        // Check state, metric on how close the player placed clostest to center is to winning 
+        if(instance.state == 3){    // AI is more likely to get higher numbers and less likely to get lower values
+
+            // Check if teamPower is over or under 50
+            if(currentTeamP > 50){  
+
+                if(currentTeamP > 80){  // Players are doing really good
+                    maxIncrease = 20;
+                    minDecrease = -20;
+                }
+                else{   // Players are is doing good
+                    maxIncrease = 30;
+                    minDecrease = -10;
+                }
             }
-            else{
-                minDecrease = - -10;
+            else{   
+                if(currentTeamP < 20){  // Players are is doing really bad
+                    maxIncrease = 30;
+                    minDecrease = -5;
+                }
+                else{   // Players are doing bad
+                    maxIncrease = 30;
+                    minDecrease = -15;
+                }
             }
         }
         else if(instance.state == 2){
-            maxIncrease = 11;
-            minDecrease = -11;
+
+            // Check if teamPower is over or under 50
+            if(currentTeamP > 50){  
+
+                if(currentTeamP > 80){  // Players are doing really good
+                    maxIncrease = 10;
+                    minDecrease = -20;
+                }
+                else{   // Players are doing good
+                    maxIncrease = 20;
+                    minDecrease = -10;
+                }
+            }
+            else{   
+                if(currentTeamP < 20){  // Players are doing really bad
+                    maxIncrease = 30;
+                    minDecrease = -10;
+                }
+                else{   // Players are doing bad
+                    maxIncrease = 20;
+                    minDecrease = -15;
+                }
+            }
         }
-        else if (instance.state == 1){
-            maxIncrease = 8;
-            minDecrease = -4;
+        else if(instance.state == 1){
+
+            // Check if teamPower is over or under 50
+            if(currentTeamP > 50){  
+
+                if(currentTeamP > 80){  // Players are doing really good
+                    maxIncrease = 5;
+                    minDecrease = -40;
+                }
+                else{   // Players are doing good
+                    maxIncrease = 10;
+                    minDecrease = -30;
+                }
+            }
+            else{   
+                if(currentTeamP < 20){  // Players are doing really bad
+                    maxIncrease = 20;
+                    minDecrease = -10;
+                }
+                else{   // Players are doing bad
+                    maxIncrease = 20;
+                    minDecrease = -15;
+                }
+            }
         }
-        else{
-            maxIncrease = 6;
-            minDecrease = -6;
+        else{   // state = 0
+
+            // Check if teamPower is over or under 50
+            if(currentTeamP > 50){  
+
+                if(currentTeamP > 80){  // Players are doing really good
+                    maxIncrease = 5;
+                    minDecrease = -50;
+                }
+                else{   // Player is doing good
+                    maxIncrease = 10;
+                    minDecrease = -40;
+                }
+            }
+            else{   
+
+                if(currentTeamP < 20){  // Players are doing really bad
+                    maxIncrease = 15;
+                    minDecrease = -15;
+                }
+                else{   // Players are doing bad
+                    maxIncrease = 10;
+                    minDecrease = -20;
+                }
+            }
         }
+
+        
+        float avgMeanAlpha = 0.0f;  // Average for each active players meanAlpha
+        float avgMeanTheta = 0.0f;  // Average for each active players meanTheta
+
+        foreach(var player in instance.GP.players){
+            
+            if(player.update){
+                avgMeanAlpha += player.meanAlpha;
+                avgMeanTheta += player.meanTheta;
+            }
+        }
+
+        avgMeanAlpha = avgMeanAlpha/instance.GP.numberOfActivePlayers();
+        avgMeanTheta = avgMeanTheta/instance.GP.numberOfActivePlayers();
+        
+        // Bonus for the players
+        maxIncrease -= avgMeanAlpha/15;
+        minDecrease -= avgMeanTheta/15;
+
 
         // Generate random integer inbetween min and max, decides how much the AI:s power will increase/decrease
-        int inc_dec = Random.Range(minDecrease, maxIncrease);
+        float inc_dec = Random.Range(minDecrease, maxIncrease);
 
-        instance.power = (float)inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
+        instance.power = inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
 
         //UnityEngine.Debug.Log("AI Power: " + instance.power);
     }
@@ -235,11 +328,11 @@ public class AIScript : MonoBehaviour
             }
         }
         else{
-            instance.state = s;
+            instance.state = s; // FIX
         }
     }
 
-    // Placeholder to answer if a player DID get hit by lightning
+    // Answers if a player DID get hit by lightning
     public static void isHit(AIScript instance){
 
         int chance = 0; // The chance of getting hit based on the state of th AI
@@ -273,7 +366,7 @@ public class AIScript : MonoBehaviour
 
 
 
-    // Placeholder to answer WHO got hit by lightning and HOW hard they got hit
+    // Answers WHO got hit by lightning and HOW hard they got hit
     public static void playerHit(AIScript instance){    // Only the players placed 1 to next last can get hit to not bully last player <--LOVE THIS
 
         // Generate random integer inbetween 1 and the next last placement, decides what player at the generated placement got hit
