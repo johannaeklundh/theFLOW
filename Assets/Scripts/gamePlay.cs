@@ -102,7 +102,7 @@ public class gamePlay : MonoBehaviour
 
             // Write out in console..
             // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            players[1].displayPlayerInfo();
+            // players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
             // players[3].displayPlayerInfo();
 

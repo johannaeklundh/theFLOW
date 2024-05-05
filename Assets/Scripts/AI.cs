@@ -27,7 +27,7 @@ public class AIScript : MonoBehaviour
 
         if(canUpdate && GP.isBoosted == false){
             calculatePower(this);   // Caculates and set the power of AI
-            setState(this);   // Sets the state of the AI
+            setState();   // Sets the state of the AI
             isHit(this);
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -99,16 +99,20 @@ public class AIScript : MonoBehaviour
 
 
     // Lightning Constants, how many steps a player is thrown back when struck by lightning dephening on AI-state
-    public const float LIGHT = 0.15f;
-    public const float MEDIUM = 0.25f;
-    public const float HARD = 0.35f;
+    private const float LIGHT = 0.15f;
+    private const float MEDIUM = 0.25f;
+    private const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    public const int PerState1 = 10; // 4% chance of getting hit per second when state = 1
-    public const int PerState2 = 14; // 8% chance of getting hit per second when state = 2
-    public const int PerState3 = 18; // 16% chance of getting hit per second when state = 3
+    private const int PerState1 = 10; // 10% chance of getting hit per delay when in state = 1
+    private const int PerState2 = 14; // 14% chance of getting hit per delay when in state = 2
+    private const int PerState3 = 18; // 18% chance of getting hit per delay when in state = 3
 
 
+    // Power constants
+    private const float maxPower = 80.0f;   // Maximum power the AI can achieve, rewards good performance 
+    private const float minPower = 10.0f;   // Minimum power the AI can achieve, discourages bad performance 
+    
     // Other
     private const float LightningRadious = 2.0f;    // The radius a player have to be within to be able to get hit by lightning
 
@@ -116,16 +120,10 @@ public class AIScript : MonoBehaviour
     /**********************Functions************************/
 
     // Calcutes the AIs power
-    public static void calculatePower(AIScript instance){   // FIX so that it works for 1 or 2 players
+    public static void calculatePower(AIScript instance){ 
         
         float maxIncrease = 0.0f;    // Maximum amount of increase in power for the AI
         float minDecrease = 0.0f;    // Minimum amount of decrease in the power for the AI
-
-        // How far apart the player placed in 1:st place is from the player placed in last
-        float diff1_last = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, instance.GP.players.Length).radius);
-
-        // How far apart the player placed in 1:st place is from the player placed in 2:th place, small diffrence can result in big boost to the others
-        float diff1_2 = Mathf.Abs(placementPlayer(instance, 1).radius - placementPlayer(instance, 2).radius);
 
 
         // Assign max and min distance
@@ -235,6 +233,7 @@ public class AIScript : MonoBehaviour
         }
 
         
+        // Bonus for the players for doing well overall
         float avgMeanAlpha = 0.0f;  // Average for each active players meanAlpha
         float avgMeanTheta = 0.0f;  // Average for each active players meanTheta
 
@@ -249,9 +248,26 @@ public class AIScript : MonoBehaviour
         avgMeanAlpha = avgMeanAlpha/instance.GP.numberOfActivePlayers();
         avgMeanTheta = avgMeanTheta/instance.GP.numberOfActivePlayers();
         
-        // Bonus for the players
         maxIncrease -= avgMeanAlpha/15;
         minDecrease -= avgMeanTheta/15;
+
+
+        // Modifiers based on how far the players are apart (only works when more than 1 active player)
+        if(instance.GP.numberOfActivePlayers() > 1){
+
+            // How far apart the player closest to finishing and the players placed last are
+            float diff1_last = Mathf.Abs(instance.closestPlayerToFinish().radius - placementPlayer(instance, instance.GP.players.Length).radius);
+
+            // How far apart the player closest to finishing is from the player placed in 2:th place
+            float diff1_2 = Mathf.Abs(instance.closestPlayerToFinish().radius - placementPlayer(instance, 2).radius);
+
+            // Lesser chance of generating big numbers the further apart closest and last players are, to help last placed player, may even result in boost
+            maxIncrease -= diff1_last;
+
+            // More chance of generating low numbers the further apart closest and 2:ond closest players are to help the closest finishing but at the same 
+            // time not make both players finish
+            minDecrease -= diff1_2;
+        }
 
 
         // Generate random integer inbetween min and max, decides how much the AI:s power will increase/decrease
@@ -259,7 +275,13 @@ public class AIScript : MonoBehaviour
 
         instance.power = inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
 
-        //UnityEngine.Debug.Log("AI Power: " + instance.power);
+        // power should stay withing 10 to 80 to keep thing fair, if player are performing so well that the avrage is above 80, they shall be rewarded
+        if(instance.power > maxPower){
+            instance.power = 80;
+        }
+        else if(instance.power < minPower){
+            instance.power = 10;
+        }
     }
 
     // Calculates the player-teams averge power of the currenlty active players
@@ -302,33 +324,44 @@ public class AIScript : MonoBehaviour
         throw new System.Exception("Could not find player at placement " + place);
     }
 
+    // Returns the currently active player that is closest to finishing
+    public gamePlay.PlayerData closestPlayerToFinish(){
+
+        gamePlay.PlayerData p = new gamePlay.PlayerData(0);  // Make new player
+        p.radius = 3.1f;    // Assign radius that will always be bigger than possible for other players
+
+        foreach(var player in GP.players){
+
+            if(player.update && player.radius < p.radius){  // If a player has a lesser radius than p, p becomes that player
+                p = player;
+            }
+        }
+
+        // Debug.Log("Currenly closest player to finishing is " + p.id);
+        return p;
+    }
+
 
 
 
 
     // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
-    public static void setState(AIScript instance, int s = 4){  // FIX for the new closest
+    public void setState(){
 
-        if(s == 4){
-            //switch(placementPlayer(instance, 1).radius)   // Uses the player whose placement is 1:s radius
-            switch(placementPlayer(instance, 1).radius)
-            {
-                case float n when n <= 0.6f:
-                    instance.state = 3;
-                    break;
-                case float n when n <= 0.9f:
-                    instance.state = 2;
-                    break;
-                case float n when n <= 1.5f:
-                    instance.state = 1;
-                    break;
-                default:
-                    instance.state = 0;
-                    break;
-            }
-        }
-        else{
-            instance.state = s; // FIX
+        switch(closestPlayerToFinish().radius)
+        {
+            case float n when n <= 0.6f:
+                state = 3;
+                break;
+            case float n when n <= 0.9f:
+                state = 2;
+                break;
+            case float n when n <= 1.5f:
+                state = 1;
+                break;
+            default:
+                state = 0;
+                break;
         }
     }
 
