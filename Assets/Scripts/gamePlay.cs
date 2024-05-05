@@ -376,9 +376,7 @@ public class gamePlay : MonoBehaviour
     
     // Set the players alpha, theta and power and all the previous ones
     public static void updatePrevAndCurrent(gamePlay instance){
-        
-        UnityEngine.Debug.Log("prevCurrent called!");
-        
+               
         // Assign prevAlpha
         float[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
@@ -473,7 +471,12 @@ public class gamePlay : MonoBehaviour
             instance.AI.canUpdate = false;  // Stop update() in AI
 
             instance.AI.state = 0;  // AI-state at 0, no lightning can occur
-            instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;  // AI-power reduced to last placed player's power minus 10
+            if(AIScript.placementPlayer(instance.AI, instance.players.Length).power > 60){
+                instance.AI.power = 60.0f;
+            }
+            else{
+                instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;  // AI-power reduced to last placed player's power minus 10
+            }
 
             instance.StartCoroutine(instance.EndBoost(instance));
         }
@@ -637,7 +640,7 @@ public class gamePlay : MonoBehaviour
         if(radius > 3.0f){
             radius = 3.0f;
         }
-        else if(radius < 0.0f){
+        else if(radius < 0.2f){ // The radius for lightsource in the middle
             radius = 0.0f;
             playerFinished(instance, place);    // Triggers boost effect
         }

@@ -12,13 +12,15 @@ public class AIScript : MonoBehaviour
 
     public LightningEffect lightningEffect;
     //public ChangeSpeed changeSpeed; 
+    private AudioSource audioSource;    // Reference to the AudioSource component
 
     /***********************************************************/
-
+    
+    
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(delayUpdate(3.0f)); // Delay Start() by 3 seconds
+        StartCoroutine(delayUpdate(6.0f)); // Delay Start() by 3 seconds
     }
 
     // Update is called once per frame
@@ -41,13 +43,6 @@ public class AIScript : MonoBehaviour
     
 
     /************INFO concerning the following code************
-    
-    RULES:
-    1. Varible-names for constants will always begin with a big letter.
-    2. Function-names will always begin with a small letter
-    3. Regular variable-names will begin with a small letter
-    4. Struct-names always begin with a big letter
-
 
     Necessary inputs from other code:
     - Power from the player-team
@@ -66,7 +61,7 @@ public class AIScript : MonoBehaviour
     /************Things used obly to control update(), not relevant for behaviour************/
     public bool canUpdate = false; // Decides weather a function can update in update()
 
-    public float delay = 0.25f;
+    private float delay = 0.25f;
     
     public IEnumerator delayUpdate(float d){
 
@@ -104,9 +99,9 @@ public class AIScript : MonoBehaviour
     private const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    private const int PerState1 = 10; // 10% chance of getting hit per delay when in state = 1
-    private const int PerState2 = 14; // 14% chance of getting hit per delay when in state = 2
-    private const int PerState3 = 18; // 18% chance of getting hit per delay when in state = 3
+    private const int PerState1 = 6; // 10% chance of getting hit per delay when in state = 1
+    private const int PerState2 = 10; // 14% chance of getting hit per delay when in state = 2
+    private const int PerState3 = 15; // 18% chance of getting hit per delay when in state = 3
 
 
     // Power constants
@@ -350,13 +345,13 @@ public class AIScript : MonoBehaviour
 
         switch(closestPlayerToFinish().radius)
         {
-            case float n when n <= 0.6f:
+            case float n when n <= 0.8f:
                 state = 3;
                 break;
-            case float n when n <= 0.9f:
+            case float n when n <= 1.4f:
                 state = 2;
                 break;
-            case float n when n <= 1.5f:
+            case float n when n <= 2.0f:
                 state = 1;
                 break;
             default:
@@ -369,18 +364,19 @@ public class AIScript : MonoBehaviour
     public static void isHit(AIScript instance){
 
         int chance = 0; // The chance of getting hit based on the state of th AI
+        int activePlayers = instance.GP.numberOfActivePlayers();
 
         // Chance of getting hit is generated based on the AIs state where higher state equals higher chance of hit
         switch(instance.state)
         {
             case int n when n == 3:
-                chance = PerState3;
+                chance = PerState3 + activePlayers;
                 break;
             case int n when n == 2:
-                chance = PerState2;
+                chance = PerState2 + activePlayers;
                 break;
             case int n when n == 1:
-                chance = PerState1;
+                chance = PerState1 + activePlayers;
                 break;
             default:
                 chance = 0;
@@ -410,8 +406,6 @@ public class AIScript : MonoBehaviour
         if(secondLastPlayer > 1){   // Check if more than 1 player
             placement = Random.Range(1, secondLastPlayer);
         }
-
-        Debug.Log("The placement who shall be hit is " + placement);
 
         gamePlay.PlayerData player = placementPlayer(instance, placement);  // Find player
 
@@ -453,6 +447,17 @@ public class AIScript : MonoBehaviour
             if (instance.lightningEffect != null) //Lightning when player gets hit
             {
                 instance.lightningEffect.ActivateLightning(player.id);
+
+            }
+
+            // Get the AudioSource component
+            instance.audioSource = instance.GetComponent<AudioSource>();
+
+            // Audio-effect of getting hit by lightning
+            if (instance.audioSource != null) //Lightning-audio when player gets hit
+            {
+                // Play the audio clip
+                instance.audioSource.Play();
 
             }
 
