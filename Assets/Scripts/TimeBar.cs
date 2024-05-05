@@ -13,7 +13,7 @@ public class TimeBar : MonoBehaviour
     {
 
         //SceneManager.LoadSceneAsync(3); // Load scene 2 asynchronously
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene(4);
        
     }
 

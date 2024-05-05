@@ -7,6 +7,6 @@ public class MainGame : MonoBehaviour
 {
     public void Finish()
     {
-        SceneManager.LoadSceneAsync(3); // Can also use 1;
+        SceneManager.LoadSceneAsync(4); // Can also use 1;
     }
 }
