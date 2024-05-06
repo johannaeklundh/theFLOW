@@ -147,11 +147,11 @@ public class gamePlay : MonoBehaviour
     /************Things used obly to control delays, not relevant for overall behaviour************/
     
     // Variables
-    private bool canUpdate = false; // Decides weather a function can update in update()
+    public bool canUpdate = false; // Decides weather a function can update in update()
 
-    private bool canUpdate1sec = false;
+    public bool canUpdate1sec = false;
 
-    private bool canUpdate10sec = false;
+    public bool canUpdate10sec = false;
 
     private float delay = 0.25f;
 
@@ -710,16 +710,16 @@ public class gamePlay : MonoBehaviour
             playerPowerSum = playerPowerSum/ players10Length;
 
             if(aiPowerSum > playerPowerSum){
-                UnityEngine.Debug.Log("Returned -1");
+                // UnityEngine.Debug.Log("Returned -1");
                 return -1;
             }
             else if(aiPowerSum < playerPowerSum){
-                UnityEngine.Debug.Log("Returned 1");
+                // UnityEngine.Debug.Log("Returned 1");
                 return 1;
             }
         }
 
-        UnityEngine.Debug.Log("Returned 1");
+        // UnityEngine.Debug.Log("Returned 1");
         return 1;
     }
 

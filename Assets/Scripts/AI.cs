@@ -428,7 +428,7 @@ public class AIScript : MonoBehaviour
                     break;
             }
 
-            Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
+            // Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
             // player.displayPlayerInfo();
 
             // Moving the player in question back "how" many steps
