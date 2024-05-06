@@ -321,7 +321,7 @@ public class gamePlay : MonoBehaviour
         
         for (int i = 0; i < players.Length; i++) {  // Go through all players
 
-            if(players[i].update){  // Test if player should update
+            //if(players[i].update){  // Test if player should update
 
                 // Use reflection to set the value of the specified field
                 var field = typeof(PlayerData).GetField(fieldName);
@@ -329,7 +329,7 @@ public class gamePlay : MonoBehaviour
                 if (field != null && field.FieldType == typeof(float)) {    // Test if field is possible and if it truly is a float
                     field.SetValueDirect(__makeref(players[i]), values[i]); // Set value 
                 }
-            }
+            //}
         }
     }
 
