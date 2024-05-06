@@ -118,12 +118,14 @@ public class AddForce : MonoBehaviour
 
             //direction = GP.whoseWinning(); //-1 = AI leading, 0 = gameover , 1 = player leading
 
-            if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); }
-            else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); }
-            else
-            {
-                if (behaviorID == 1) { radius = 100; } //out of screen
-            }
+            if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); } //FETCH FROM GP
+            else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); } //FETCH FROM GP
+            //else
+            //{
+            //   // if (behaviorID == 1) { radius = 100; } //out of screen if = 0 FETCH FROM GP
+
+            //}
+            if (Input.GetKeyDown(KeyCode.D)) { radius = 100; } //PRESS D FOR THE LOSINGANIMATION other part is on screendarkener
 
             if (Mathf.Abs(targetCircularSpeed) < DetermineSpeedBySpeedID(speedID))
             {
