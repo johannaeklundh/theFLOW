@@ -19,7 +19,6 @@ public class LightSourceBehaviour : MonoBehaviour
     public int playerID;
     public gamePlay GP;
 
-
     // Current colors and properties
     private Color currentBaseColor;
     private Color currentEmissionColor;
@@ -32,13 +31,8 @@ public class LightSourceBehaviour : MonoBehaviour
     [Range(0f, 100f)]
     public float testTheta = 50f;
 
-
-
-
-
     void Start()
     {
-
         // Create a new material instance from the original material
         emissiveMaterial = new Material(emissiveMaterial);
 
@@ -51,7 +45,6 @@ public class LightSourceBehaviour : MonoBehaviour
         currentEmissionColor = originalEmissionColor;
         currentIntensity = initialIntensity;
         currentSize = initialSize;
-
 
         //// Store the original base color and emission color
         //originalBaseColor = emissiveMaterial.color;
@@ -74,7 +67,6 @@ public class LightSourceBehaviour : MonoBehaviour
         changeSize(testTheta);
     }
 
-
     int getPlayerID(int id)
     {
         switch (id)
@@ -89,7 +81,6 @@ public class LightSourceBehaviour : MonoBehaviour
 
     public void changeIntensity(float alpha)
     {
-
         Color finalEmissiveColor;
 
         if (alpha > 80)
@@ -116,13 +107,10 @@ public class LightSourceBehaviour : MonoBehaviour
 
         // Enable emission on the material (required for emission to be visible)
         emissiveMaterial.EnableKeyword("_EMISSION");
-
-
     }
 
     public void changeSize(float theta)
     {
-
         if (theta > 80)
         {
             currentSize = new Vector3(0.35f, 0.35f, 0.35f);
@@ -139,21 +127,21 @@ public class LightSourceBehaviour : MonoBehaviour
         { //under 40
             currentSize = new Vector3(0.2f, 0.2f, 0.2f);
         }
+        
         transform.localScale = currentSize;
     }
 
-
     public void ResetAppearance()
     {
-        currentIntensity = initialIntensity;      //intensity factor
+        currentIntensity = initialIntensity; 
         currentSize = initialSize;
 
         // Reset emissive color to its original value
         emissiveMaterial.SetColor("_EmissionColor", originalEmissionColor * initialIntensity);
+        
         // Enable emission on the material (required for emission to be visible)
         emissiveMaterial.EnableKeyword("_EMISSION");
     }
-
 
     // Reset appearance when the script is disabled (game ends or resets)
     void OnDisable()
