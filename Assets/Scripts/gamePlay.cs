@@ -395,12 +395,12 @@ public class gamePlay : MonoBehaviour
         (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};*/
 
         // EEG-ver
-        /*float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};*/
+        float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
 
-        // Test-ver
+        /*/ Test-ver
         float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
         instance.assignValuesToField(alphaValues, "alpha");
-        // UnityEngine.Debug.Log(instance.EEGplayers[1].med);
+        // UnityEngine.Debug.Log(instance.EEGplayers[1].med);*/
         
         // Assign prevTheta
         float[] prevThetaValues = {instance.players[0].theta, instance.players[1].theta, instance.players[2].theta, instance.players[3].theta};
@@ -413,11 +413,11 @@ public class gamePlay : MonoBehaviour
         (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};*/
 
         // EEG-ver
-        /*float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};*/
+        float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
 
-        // Test-ver
+        /*/ Test-ver
         float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
-        instance.assignValuesToField(thetaValues, "theta");
+        instance.assignValuesToField(thetaValues, "theta");*/
 
         // Assign prevPower
         float[] prevPowerValues = {instance.players[0].power, instance.players[1].power, instance.players[2].power, instance.players[3].power};
@@ -518,7 +518,7 @@ public class gamePlay : MonoBehaviour
             }
         }
 
-        UnityEngine.Debug.Log("Number of remaining players are: " + activePlayers);
+        // UnityEngine.Debug.Log("Number of remaining players are: " + activePlayers);
 
         return activePlayers;
     }
