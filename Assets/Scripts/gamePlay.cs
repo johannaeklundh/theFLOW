@@ -48,6 +48,7 @@ public class gamePlay : MonoBehaviour
                 }
             }
         }
+
         // Ensure only one instance of gamePlay exists
         if (Instance == null)
         {

@@ -101,7 +101,7 @@ namespace EEG
             if(PlayerObject4 == null){
                 PlayerObject4 = new GameObject("PlayerObject4");
                 EEGport p4 = PlayerObject4.AddComponent<EEGport>();
-                p4.comPortName = "COM9";
+                p4.comPortName = "\\\\.\\COM12";
                 p4.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p4.errCodeConnect = 2;
                 p4.errCodeAutoRead = 2;
@@ -110,7 +110,7 @@ namespace EEG
             if(PlayerObject3 == null){
                 PlayerObject3 = new GameObject("PlayerObject3");
                 EEGport p3 = PlayerObject3.AddComponent<EEGport>();
-                p3.comPortName = "COM1";
+                p3.comPortName = "COM7";
                 p3.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p3.errCodeConnect = 2;
                 p3.errCodeAutoRead = 2;
@@ -128,7 +128,7 @@ namespace EEG
             if(PlayerObject1 == null){
                 PlayerObject1 = new GameObject("PlayerObject1");
                 EEGport p1 = PlayerObject1.AddComponent<EEGport>();
-                p1.comPortName = "COM7";
+                p1.comPortName = "COM9";
                 p1.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p1.errCodeConnect = 2;
                 p1.errCodeAutoRead = 2;
