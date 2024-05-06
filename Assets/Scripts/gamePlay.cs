@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using EEG;
+//using System.Diagnostics.Eventing.Reader;
 
 public class gamePlay : MonoBehaviour
 {
@@ -502,7 +503,7 @@ public class gamePlay : MonoBehaviour
             UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
             
             boost(instance);    // Gives boost to remaining players by decreasing AI for 5 seconds
-            playersWon(instance);   // Checks if game is over bc the players won
+            bool bla = playersWon(instance);   // Checks if game is over bc the players won
             
     }
 
@@ -732,7 +733,7 @@ public class gamePlay : MonoBehaviour
 
 
     // Returns if all players have won
-    public static void playersWon(gamePlay instance){
+    public static bool playersWon(gamePlay instance){
 
 
         if(instance.numberOfActivePlayers() == 0){ // Check if no players are active
@@ -744,8 +745,9 @@ public class gamePlay : MonoBehaviour
             instance.AI.canUpdate = false;
 
             UnityEngine.Debug.Log("Game is over, player have won!");
+            return true;
         }
-
+        return false;
     }
      
     /************************************************************************************/

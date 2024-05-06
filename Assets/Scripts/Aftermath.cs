@@ -12,10 +12,13 @@ public class Aftermath: MonoBehaviour
     public bool win = false;
     public GameObject[] HeaderToShow;
 
+    public gamePlay GP;
+
     void Start()
     {
         ShowHeader(); // Ensure object is hidden at the start
         ShowObjects(); // Ensure object is hidden at the start
+        win = gamePlay.playersWon(GP);
     }
 
     void Update()
