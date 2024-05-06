@@ -86,9 +86,16 @@ public class gamePlay : MonoBehaviour
         if(canUpdate){
 
             //Dont destroy causes problems when reloading game.....
+            //Start
             if(SceneManager.GetActiveScene().buildIndex==0) 
             { Destroy(gameObject); }
-            
+            //Connect
+            if (SceneManager.GetActiveScene().buildIndex == 1)
+            { Destroy(gameObject); }
+            // Rematch
+            if (SceneManager.GetActiveScene().buildIndex == 5)
+            { Destroy(gameObject); }
+
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);
             updatePlayerRadius(this);
