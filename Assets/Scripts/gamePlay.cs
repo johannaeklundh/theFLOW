@@ -97,10 +97,10 @@ public class gamePlay : MonoBehaviour
             // setUnbothered is called upon in AI 
 
             // Write out in console..
-            // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            // players[1].displayPlayerInfo();
-            // players[2].displayPlayerInfo();
-            players[0].displayPlayerInfo();
+            players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            players[1].displayPlayerInfo();
+            players[2].displayPlayerInfo();
+            //players[0].displayPlayerInfo();
 
 
             canUpdate = false;  // Makes it so that each function doesn't update every frame
@@ -257,13 +257,13 @@ public class gamePlay : MonoBehaviour
         // A way to display each player info in the console
         public void displayPlayerInfo()
         {
-            UnityEngine.Debug.Log("Player ID: " + id);
-            UnityEngine.Debug.Log("Player radius: " + radius);
-            UnityEngine.Debug.Log("Player Placement: " + placement);
+           // UnityEngine.Debug.Log("Player ID: " + id);
+            //UnityEngine.Debug.Log("Player radius: " + radius);
+            //UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            UnityEngine.Debug.Log("Player Power: " + power);
-            UnityEngine.Debug.Log("Player Alpha: " + alpha);
-            UnityEngine.Debug.Log("Player Theta: " + theta);
+            UnityEngine.Debug.Log("Player" + id + "Player Power: " + power);
+            //UnityEngine.Debug.Log("Player Alpha: " + alpha);
+            //UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
             // UnityEngine.Debug.Log("Player Mean of Theta: " + meanTheta);
             // UnityEngine.Debug.Log("Player Consistency: " + consistency);
