@@ -7476,7 +7476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBar: {fileID: 1394103277}
-  timeLimit: 120
+  timeLimit: 30
   objectsToShow:
   - {fileID: 777219883}
   - {fileID: 200379206}

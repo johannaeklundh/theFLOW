@@ -24,7 +24,6 @@ public class gamePlay : MonoBehaviour
     public float p2Power = 51.0f;
     public float p3Power = 52.0f;
     public float p4Power = 53.0f;
-
     public float adjust = 0.0f;
 
     // Declare the singleton instance
@@ -109,8 +108,8 @@ public class gamePlay : MonoBehaviour
             // setUnbothered is called upon in AI 
 
             // Write out in console..
-            // players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            // players[1].displayPlayerInfo();
+            //players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
             // players[3].displayPlayerInfo();
 
@@ -198,7 +197,6 @@ public class gamePlay : MonoBehaviour
         delay1 = 1.0f;   // Reset delay1
 
         // UnityEngine.Debug.Log("1 seconds has passed!");
-
     }
     
     IEnumerator delayUpdate10Sec(float d){
@@ -211,7 +209,6 @@ public class gamePlay : MonoBehaviour
         delay10 = 10.0f;   // Reset delay10
 
         UnityEngine.Debug.Log("10 seconds has passed!");
-
     }
 
     // Coroutine to end the boost after 5 seconds
@@ -284,11 +281,11 @@ public class gamePlay : MonoBehaviour
         // A way to display each player info in the console
         public void displayPlayerInfo()
         {
-            UnityEngine.Debug.Log("Player ID: " + id);
-            UnityEngine.Debug.Log("Player radius: " + radius);
-            UnityEngine.Debug.Log("Player Placement: " + placement);
+            //UnityEngine.Debug.Log("Player ID: " + id);
+            //UnityEngine.Debug.Log("Player radius: " + radius);
+            //UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            UnityEngine.Debug.Log("Player Power: " + power);
+            UnityEngine.Debug.Log("Player ID: "+ id + " Player Power: " + power);
             // UnityEngine.Debug.Log("Player Alpha: " + alpha);
             // UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
@@ -348,7 +345,7 @@ public class gamePlay : MonoBehaviour
         
         for (int i = 0; i < players.Length; i++) {  // Go through all players
 
-            if(players[i].update){  // Test if player should update
+            //if(players[i].update){  // Test if player should update
 
                 // Use reflection to set the value of the specified field
                 var field = typeof(PlayerData).GetField(fieldName);
@@ -356,7 +353,7 @@ public class gamePlay : MonoBehaviour
                 if (field != null && field.FieldType == typeof(float)) {    // Test if field is possible and if it truly is a float
                     field.SetValueDirect(__makeref(players[i]), values[i]); // Set value 
                 }
-            }
+            //}
         }
     }
 
@@ -370,7 +367,7 @@ public class gamePlay : MonoBehaviour
         
         for (int i = 0; i < players.Length; i++) {  // Go through all players
 
-            if(players[i].update){  // Test if player should update
+            //if(players[i].update){  // Test if player should update
 
                 // Use reflection to set the value of the specified field
                 var field = typeof(PlayerData).GetField(fieldName);
@@ -378,7 +375,7 @@ public class gamePlay : MonoBehaviour
                 if (field != null && field.FieldType == typeof(int)) {  // Test if field is possible and if it truly is a float
                     field.SetValueDirect(__makeref(players[i]), values[i]); // Set value
                 }
-            }
+            //}
         }
     }
     
@@ -415,9 +412,9 @@ public class gamePlay : MonoBehaviour
         // EEG-ver
         float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
 
-        /*/ Test-ver
-        float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
-        instance.assignValuesToField(thetaValues, "theta");*/
+        // Test-ver
+        //float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+        instance.assignValuesToField(thetaValues, "theta");
 
         // Assign prevPower
         float[] prevPowerValues = {instance.players[0].power, instance.players[1].power, instance.players[2].power, instance.players[3].power};

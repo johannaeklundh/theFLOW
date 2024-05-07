@@ -122,7 +122,7 @@ public class AIScript : MonoBehaviour
 
 
         // Assign max and min distance
-        float currentTeamP = calculateTeamPower(instance);
+        float currentTeamP = calculateTeamPower(instance) - 25;
 
         // Check state, metric on how close the player placed clostest to center is to winning 
         if(instance.state == 3){    // AI is more likely to get higher numbers and less likely to get lower values
