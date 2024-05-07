@@ -99,9 +99,9 @@ public class AIScript : MonoBehaviour
     private const float HARD = 0.35f;
 
     // Percentages of getting hit by lightning based on state, no lighning in NEUTRAL-state
-    private const int PerState1 = 6; // 10% chance of getting hit per delay when in state = 1
-    private const int PerState2 = 10; // 14% chance of getting hit per delay when in state = 2
-    private const int PerState3 = 15; // 18% chance of getting hit per delay when in state = 3
+    private const int PerState1 = 4; // 10% chance of getting hit per delay when in state = 1
+    private const int PerState2 = 7; // 14% chance of getting hit per delay when in state = 2
+    private const int PerState3 = 10; // 18% chance of getting hit per delay when in state = 3
 
 
     // Power constants
@@ -111,6 +111,8 @@ public class AIScript : MonoBehaviour
     // Other
     private const float LightningRadious = 2.0f;    // The radius a player have to be within to be able to get hit by lightning
 
+    private const int wellPerformanceThreshold = 60;
+
 
     /**********************Functions************************/
 
@@ -118,35 +120,35 @@ public class AIScript : MonoBehaviour
     public static void calculatePower(AIScript instance){ 
         
         float maxIncrease = 0.0f;    // Maximum amount of increase in power for the AI
-        float minDecrease = 0.0f;    // Minimum amount of decrease in the power for the AI
+        float maxDecrease = 0.0f;    // Minimum amount of decrease in the power for the AI
 
 
         // Assign max and min distance
-        float currentTeamP = calculateTeamPower(instance) - 25;
+        float currentTeamP = calculateTeamPower(instance);
 
         // Check state, metric on how close the player placed clostest to center is to winning 
         if(instance.state == 3){    // AI is more likely to get higher numbers and less likely to get lower values
 
             // Check if teamPower is over or under 50
-            if(currentTeamP > 50){  
+            if(currentTeamP > 40){  
 
                 if(currentTeamP > 80){  // Players are doing really good
                     maxIncrease = 20;
-                    minDecrease = -20;
+                    maxDecrease = -20;
                 }
                 else{   // Players are is doing good
                     maxIncrease = 30;
-                    minDecrease = -10;
+                    maxDecrease = -10;
                 }
             }
             else{   
                 if(currentTeamP < 20){  // Players are is doing really bad
                     maxIncrease = 30;
-                    minDecrease = -5;
+                    maxDecrease = -5;
                 }
                 else{   // Players are doing bad
                     maxIncrease = 30;
-                    minDecrease = -15;
+                    maxDecrease = -15;
                 }
             }
         }
@@ -157,21 +159,21 @@ public class AIScript : MonoBehaviour
 
                 if(currentTeamP > 80){  // Players are doing really good
                     maxIncrease = 10;
-                    minDecrease = -20;
+                    maxDecrease = -20;
                 }
                 else{   // Players are doing good
                     maxIncrease = 20;
-                    minDecrease = -10;
+                    maxDecrease = -10;
                 }
             }
             else{   
                 if(currentTeamP < 20){  // Players are doing really bad
                     maxIncrease = 30;
-                    minDecrease = -10;
+                    maxDecrease = -10;
                 }
                 else{   // Players are doing bad
                     maxIncrease = 20;
-                    minDecrease = -15;
+                    maxDecrease = -15;
                 }
             }
         }
@@ -182,21 +184,21 @@ public class AIScript : MonoBehaviour
 
                 if(currentTeamP > 80){  // Players are doing really good
                     maxIncrease = 5;
-                    minDecrease = -40;
+                    maxDecrease = -40;
                 }
                 else{   // Players are doing good
                     maxIncrease = 10;
-                    minDecrease = -30;
+                    maxDecrease = -30;
                 }
             }
             else{   
                 if(currentTeamP < 20){  // Players are doing really bad
                     maxIncrease = 20;
-                    minDecrease = -10;
+                    maxDecrease = -10;
                 }
                 else{   // Players are doing bad
                     maxIncrease = 20;
-                    minDecrease = -15;
+                    maxDecrease = -15;
                 }
             }
         }
@@ -207,22 +209,22 @@ public class AIScript : MonoBehaviour
 
                 if(currentTeamP > 80){  // Players are doing really good
                     maxIncrease = 5;
-                    minDecrease = -50;
+                    maxDecrease = -50;
                 }
                 else{   // Player is doing good
                     maxIncrease = 10;
-                    minDecrease = -40;
+                    maxDecrease = -40;
                 }
             }
             else{   
 
                 if(currentTeamP < 20){  // Players are doing really bad
                     maxIncrease = 15;
-                    minDecrease = -15;
+                    maxDecrease = -15;
                 }
                 else{   // Players are doing bad
                     maxIncrease = 10;
-                    minDecrease = -20;
+                    maxDecrease = -20;
                 }
             }
         }
@@ -244,7 +246,7 @@ public class AIScript : MonoBehaviour
         avgMeanTheta = avgMeanTheta/instance.GP.numberOfActivePlayers();
         
         maxIncrease -= avgMeanAlpha/15;
-        minDecrease -= avgMeanTheta/15;
+        maxDecrease -= avgMeanTheta/15;
 
 
         // Modifiers based on how far the players are apart (only works when more than 1 active player)
@@ -261,12 +263,15 @@ public class AIScript : MonoBehaviour
 
             // More chance of generating low numbers the further apart closest and 2:ond closest players are to help the closest finishing but at the same 
             // time not make both players finish
-            minDecrease -= diff1_2;
+            maxDecrease -= diff1_2;
         }
+
+        // Reward for multible players doing well, encourages team-effort
+        maxIncrease -= instance.numberOFWellperformances()*5;
 
 
         // Generate random integer inbetween min and max, decides how much the AI:s power will increase/decrease
-        float inc_dec = Random.Range(minDecrease, maxIncrease);
+        float inc_dec = Random.Range(maxDecrease, maxIncrease);
 
         instance.power = inc_dec + calculateTeamPower(instance); // Adds onto the player-teams average power
 
@@ -277,6 +282,17 @@ public class AIScript : MonoBehaviour
         else if(instance.power < minPower){
             instance.power = 10;
         }
+
+        // Best-case scenario for the players
+        // minimum maxIncrease = -25
+        // minimum maxDecrease = -60
+        
+        
+        
+        // Best-case scenario for the AI
+        // maximum maxIncrease = 30
+        // maximum maxDecrease = -5
+
     }
 
     // Calculates the player-teams averge power of the currenlty active players
@@ -334,6 +350,21 @@ public class AIScript : MonoBehaviour
 
         // Debug.Log("Currenly closest player to finishing is " + p.id);
         return p;
+    }
+
+    // Returns number of players with power over 70, the higher the number, the lower the AI-power and more reward for players
+    public int numberOFWellperformances(){
+
+        int counter = 0;
+
+        foreach(var player in GP.players){
+
+            if(player.update && player.power > wellPerformanceThreshold){  // If a player has a lesser radius than p, p becomes that player
+                counter++;
+            }
+        }
+
+        return counter;
     }
 
 

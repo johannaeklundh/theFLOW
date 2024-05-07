@@ -208,7 +208,7 @@ public class gamePlay : MonoBehaviour
 
         delay10 = 10.0f;   // Reset delay10
 
-        UnityEngine.Debug.Log("10 seconds has passed!");
+        // UnityEngine.Debug.Log("10 seconds has passed!");
     }
 
     // Coroutine to end the boost after 5 seconds
@@ -382,45 +382,40 @@ public class gamePlay : MonoBehaviour
     // Set the players alpha, theta and power and all the previous ones
     public static void updatePrevAndCurrent(gamePlay instance){
                
-        // Assign prevAlpha
+        // Assign prevAlpha*******************
         float[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
 
-        // Assign alpha
-        // Sin-ver
-        /*int[] alphaValues = {(int)Mathf.Abs(50*Mathf.Sin(Time.time)), (int)Mathf.Abs(44*Mathf.Sin(Time.time)),
-        (int)Mathf.Abs(28*Mathf.Sin(Time.time)), (int)Mathf.Abs(52*Mathf.Sin(Time.time))};*/
+        // Assign alpha*******************
 
         // EEG-ver
-        float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
+        // float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
 
-        /*/ Test-ver
+        // Test-ver
         float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
-        instance.assignValuesToField(alphaValues, "alpha");
+
+        instance.assignValuesToField(alphaValues, "alpha");     // Assign
         // UnityEngine.Debug.Log(instance.EEGplayers[1].med);*/
         
         // Assign prevTheta
         float[] prevThetaValues = {instance.players[0].theta, instance.players[1].theta, instance.players[2].theta, instance.players[3].theta};
         instance.assignValuesToField(prevThetaValues, "prevTheta");
 
-        // Assign theta
-
-        // Cos-ver
-        /*int[] thetaValues = {(int)Mathf.Abs(66*Mathf.Cos(Time.time)), (int)Mathf.Abs(28*Mathf.Cos(Time.time)),
-        (int)Mathf.Abs(74*Mathf.Cos(Time.time)), (int)Mathf.Abs(12*Mathf.Cos(Time.time))};*/
+        // Assign theta*******************
 
         // EEG-ver
-        float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
+        // float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
 
         // Test-ver
-        //float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
-        instance.assignValuesToField(thetaValues, "theta");
+        float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
 
-        // Assign prevPower
+        instance.assignValuesToField(thetaValues, "theta");     // Assign
+
+        // Assign prevPower*******************
         float[] prevPowerValues = {instance.players[0].power, instance.players[1].power, instance.players[2].power, instance.players[3].power};
         instance.assignValuesToField(prevPowerValues, "prevPower");
 
-        // Assign power
+        // Assign power*******************
         float[] powerValues = {calculatePower(instance.players[0].alpha, instance.players[0].theta), calculatePower(instance.players[1].alpha, instance.players[1].theta),
          calculatePower(instance.players[2].alpha, instance.players[2].theta),calculatePower(instance.players[3].alpha, instance.players[3].theta)};
         instance.assignValuesToField(powerValues, "power");
@@ -627,12 +622,12 @@ public class gamePlay : MonoBehaviour
         
         // Normal increase (closer to center)
         if(instance.players[(place)].power > instance.AI.power){
-            addOn = -((instance.players[(place)].power - instance.AI.power)/500 - instance.adjust);
+            addOn = -((instance.players[(place)].power - instance.AI.power)/400 - instance.adjust);
         }
 
         // Normal decrease (further from center)
         if(instance.players[(place)].radius < 3.0f && instance.players[(place)].power < instance.AI.power){   // Must be less than radius of vortex
-            addOn = (instance.AI.power - instance.players[(place)].power)/500 + instance.adjust;
+            addOn = (instance.AI.power - instance.players[(place)].power)/400 + instance.adjust;
         }
 
         /*if(instance.players[(place)].id == 4){  // Write out increase/decrease for player 4
