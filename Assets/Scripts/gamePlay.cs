@@ -46,6 +46,7 @@ public class gamePlay : MonoBehaviour
             if (playersObject[index] != null)
             {
                 EEGport playerComponent = playersObject[index].GetComponent<EEGport>();
+
                 if (playerComponent != null)
                 {
                     EEGplayers[index] = playerComponent;
@@ -94,8 +95,8 @@ public class gamePlay : MonoBehaviour
             if (SceneManager.GetActiveScene().buildIndex == 1)
             { Destroy(gameObject); }
             // Rematch
-            if (SceneManager.GetActiveScene().buildIndex == 5)
-            { Destroy(gameObject); }
+            //if (SceneManager.GetActiveScene().buildIndex == 5)
+            //{ Destroy(gameObject); }
 
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);

@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: 162306603}
   - component: {fileID: 162306602}
   m_Layer: 5
-  m_Name: Player 3
+  m_Name: Player3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1070,7 +1070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 200379207}
   m_Layer: 5
-  m_Name: Player 2
+  m_Name: Player2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3616,7 +3616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 777219884}
   m_Layer: 5
-  m_Name: Player 1
+  m_Name: Player1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5905,7 +5905,7 @@ GameObject:
   - component: {fileID: 1396283559}
   - component: {fileID: 1396283558}
   m_Layer: 5
-  m_Name: Player 4
+  m_Name: Player4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7493,6 +7493,21 @@ MonoBehaviour:
   - {fileID: 1130046611}
   - {fileID: 164240827}
   count: 4
+  EEGplayers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  playersObject:
+  - {fileID: 777219883}
+  - {fileID: 200379206}
+  - {fileID: 162306600}
+  - {fileID: 1396283556}
+  alphaBars:
+  - {fileID: 1236569920}
+  - {fileID: 69281611}
+  - {fileID: 992686892}
+  - {fileID: 1130046616}
 --- !u!1 &1901685912
 GameObject:
   m_ObjectHideFlags: 0
