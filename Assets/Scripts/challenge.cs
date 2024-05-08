@@ -17,7 +17,7 @@ public class challenge : MonoBehaviour
     private HashSet<GameObject> countedBars = new HashSet<GameObject>();
     public GameObject[] playersObject;
     public alpha_bar[] alphaBars;  // Ensure alpha_bar scripts are referenced here
-    //gamePlay GP; 
+
     
 
     // This method will be called to finish the challenge
@@ -70,15 +70,21 @@ public class challenge : MonoBehaviour
     {
         // Loop through all players in the array
         for (int i = 0; i < gamePlay.Instance.players.Length; i++)
+    
         {
+
+            // Send data to alpha and theta 
+            alphaBars[i].getAlphaData(gamePlay.Instance.players[i].alpha); 
+
             // Log the alpha value of each player
             Debug.Log("Alpha value of player " + i + ": " + gamePlay.Instance.players[i].alpha);
+             Debug.Log("Theta value of player " + i + ": " + gamePlay.Instance.players[i].theta);
         }
     }
     else
     {
         // If GP or GP.players is null, log an error message
-        Debug.Log("GP is not initialized or players array is null.");
+        Debug.Log("gamePlay instance is not initialized or players array is null.");
     }
     }
 
