@@ -816,6 +816,7 @@ MonoBehaviour:
   playerThetaData: 3c000000410000000f0000004d000000280000002c0000003b000000190000004e0000005b000000
   thetaMask: {fileID: 1119615901}
   updateInterval: 0.1
+  currentVal: 0
   numPlayers: 0
   lineIndicator: {fileID: 2066352609}
   runChallenge: 0
@@ -1057,6 +1058,7 @@ MonoBehaviour:
   playerThetaData: 0d0000004d0000000e000000130000000f000000470000005c000000300000001000000009000000
   thetaMask: {fileID: 1263694199}
   updateInterval: 0.1
+  currentVal: 0
   numPlayers: 0
   lineIndicator: {fileID: 1025610400}
   runChallenge: 0
@@ -3469,6 +3471,7 @@ MonoBehaviour:
   playerThetaData: 1200000062000000300000000400000059000000350000002a00000022000000160000005a000000
   thetaMask: {fileID: 591549209}
   updateInterval: 0.1
+  currentVal: 0
   numPlayers: 0
   lineIndicator: {fileID: 1344332934}
   runChallenge: 0
@@ -7316,6 +7319,7 @@ MonoBehaviour:
   playerThetaData: 3000000013000000520000005600000020000000020000003400000055000000400000005b000000
   thetaMask: {fileID: 1082498470}
   updateInterval: 0.1
+  currentVal: 0
   numPlayers: 0
   lineIndicator: {fileID: 1611003392}
   runChallenge: 0
@@ -7503,6 +7507,11 @@ MonoBehaviour:
   - {fileID: 69281611}
   - {fileID: 992686892}
   - {fileID: 1130046616}
+  thetaBars:
+  - {fileID: 1802909505}
+  - {fileID: 696572780}
+  - {fileID: 139560012}
+  - {fileID: 164240832}
 --- !u!1 &1901685912
 GameObject:
   m_ObjectHideFlags: 0

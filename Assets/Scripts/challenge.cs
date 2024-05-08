@@ -16,7 +16,8 @@ public class challenge : MonoBehaviour
     public int count = 0;
     private HashSet<GameObject> countedBars = new HashSet<GameObject>();
     public GameObject[] playersObject;
-    public alpha_bar[] alphaBars;  // Ensure alpha_bar scripts are referenced here
+    public alpha_bar[] alphaBars; 
+     public theta_bar[] thetaBars; // Ensure alpha_bar scripts are referenced here
 
     
 
@@ -73,6 +74,7 @@ public class challenge : MonoBehaviour
 
             // Send data to alpha and theta 
             alphaBars[i].getAlphaData(gamePlay.Instance.players[i].alpha); 
+            thetaBars[i].getThetaData(gamePlay.Instance.players[i].theta); 
 
             // Log the alpha value of each player
             Debug.Log("Alpha value of player " + i + ": " + gamePlay.Instance.players[i].alpha);

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [ExecuteInEditMode()]
 public class alpha_bar : MonoBehaviour
 {
-    public int maxVal = 100;
+    public float maxVal = 100;
     public int[] playerAlphaData;
     public Image alphaMask; // Each GameObject should have this set in the inspector to its unique Image component
     public float updateInterval = 0.1f;
@@ -57,7 +57,7 @@ public class alpha_bar : MonoBehaviour
                 float alphaTargetFillAmount = currentVal / maxVal;
 
                 // Check if the value is 60 or greater
-                if (currentVal >= 100)
+                if (currentVal >= 60)
                 {
                     alphaMask.fillAmount = alphaTargetFillAmount;
                     runChallenge = false;
