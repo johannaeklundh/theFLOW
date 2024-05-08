@@ -18,7 +18,7 @@ public class TimeBar : MonoBehaviour
 
     public void Finish()
     {
-        
+
         // Make all update-functions in gamePlay and AI unable to update
         GP.canUpdate = false;
         GP.canUpdate1sec = false;

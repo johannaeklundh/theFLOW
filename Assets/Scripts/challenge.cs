@@ -17,7 +17,7 @@ public class challenge : MonoBehaviour
     private HashSet<GameObject> countedBars = new HashSet<GameObject>();
     public GameObject[] playersObject;
     public alpha_bar[] alphaBars;  // Ensure alpha_bar scripts are referenced here
-    gamePlay GP; 
+    //gamePlay GP; 
     
 
     // This method will be called to finish the challenge
@@ -66,13 +66,13 @@ public class challenge : MonoBehaviour
     {
         CheckSuccess();
        // First, ensure that the gamePlay instance and the players array are not null
-    if (GP != null && GP.players != null)
+    if (gamePlay.Instance != null && gamePlay.Instance.players != null)
     {
         // Loop through all players in the array
-        for (int i = 0; i < GP.players.Length; i++)
+        for (int i = 0; i < gamePlay.Instance.players.Length; i++)
         {
             // Log the alpha value of each player
-            Debug.Log("Alpha value of player " + i + ": " + GP.players[i].alpha);
+            Debug.Log("Alpha value of player " + i + ": " + gamePlay.Instance.players[i].alpha);
         }
     }
     else

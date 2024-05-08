@@ -89,7 +89,7 @@ public class gamePlay : MonoBehaviour
 
             //Dont destroy causes problems when reloading game.....
             //Start
-            if(SceneManager.GetActiveScene().buildIndex==0) 
+            if (SceneManager.GetActiveScene().buildIndex == 0)
             { Destroy(gameObject); }
             //Connect
             if (SceneManager.GetActiveScene().buildIndex == 1)
