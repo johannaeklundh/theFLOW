@@ -57,7 +57,7 @@ public class alpha_bar : MonoBehaviour
                 float alphaTargetFillAmount = currentVal / maxVal;
 
                 // Check if the value is 60 or greater
-                if (currentVal >= 60)
+                if (currentVal >= 100)
                 {
                     alphaMask.fillAmount = alphaTargetFillAmount;
                     runChallenge = false;

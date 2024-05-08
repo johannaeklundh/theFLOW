@@ -449,6 +449,7 @@ MonoBehaviour:
   alphaMask: {fileID: 902432781}
   updateInterval: 0.1
   lineIndicator: {fileID: 278649563}
+  currentVal: 0
   numPlayers: 0
   alphaSuccess: 0
 --- !u!1 &95871473
@@ -4239,6 +4240,7 @@ MonoBehaviour:
   alphaMask: {fileID: 651262799}
   updateInterval: 0.1
   lineIndicator: {fileID: 1416529267}
+  currentVal: 0
   numPlayers: 0
   alphaSuccess: 0
 --- !u!1 &999553406
@@ -4890,6 +4892,7 @@ MonoBehaviour:
   alphaMask: {fileID: 458899296}
   updateInterval: 0.1
   lineIndicator: {fileID: 1901685913}
+  currentVal: 0
   numPlayers: 0
   alphaSuccess: 0
 --- !u!1 &1170448552
@@ -5062,6 +5065,7 @@ MonoBehaviour:
   alphaMask: {fileID: 1060987496}
   updateInterval: 0.1
   lineIndicator: {fileID: 227299459}
+  currentVal: 0
   numPlayers: 0
   alphaSuccess: 0
 --- !u!1 &1263694196
@@ -7493,6 +7497,12 @@ MonoBehaviour:
   - {fileID: 1130046611}
   - {fileID: 164240827}
   count: 4
+  playersObject: []
+  alphaBars:
+  - {fileID: 1236569920}
+  - {fileID: 69281611}
+  - {fileID: 992686892}
+  - {fileID: 1130046616}
 --- !u!1 &1901685912
 GameObject:
   m_ObjectHideFlags: 0
