@@ -10,9 +10,8 @@ public class alpha_bar : MonoBehaviour
     public int[] playerAlphaData;
     public Image alphaMask; // Each GameObject should have this set in the inspector to its unique Image component
     public float updateInterval = 0.1f;
-
-     public RectTransform lineIndicator; // Add a reference to the RectTransform of the line indicator
-
+    public RectTransform lineIndicator; // Add a reference to the RectTransform of the line indicator
+    public float currentVal; 
     [HideInInspector]
     public int numPlayers;
     private bool runChallenge = false;
@@ -20,14 +19,14 @@ public class alpha_bar : MonoBehaviour
 
     void Start()
     {
-        GenerateFakeData();
+        //GenerateFakeData();
         runChallenge = true;
         StartCoroutine(UpdateFillAmounts());
          SetLineIndicatorPosition();
     }
 
     //ÄNDRA
-    void GenerateFakeData()
+    /*void GenerateFakeData()
     {
         playerAlphaData = new int[10]; // Declare an integer array with 10 elements
 
@@ -38,40 +37,51 @@ public class alpha_bar : MonoBehaviour
         }
     }
 
-    //
+    */
+
+    // Get alpha data 
+    public void getAlphaData(float value) {
+
+       currentVal = value; 
+
+        Debug.Log("Alpha value updated: " + value);
+    
+    }
+
+    // Update the bars
     IEnumerator UpdateFillAmounts()
     {
         while (runChallenge)
         {
-            for (int j = 0; j < 10; j++)
-            {
-                float alphaTargetFillAmount = (float)playerAlphaData[j] / maxVal;
+            
+                float alphaTargetFillAmount = currentVal / maxVal;
 
                 // Check if the value is 60 or greater
-                if (playerAlphaData[j] >= 60)
+                if (currentVal >= 60)
                 {
                     alphaMask.fillAmount = alphaTargetFillAmount;
                     runChallenge = false;
                     alphaSuccess = true;
                     StopAllCoroutines();
-                    break;
+                    yield break;
                 }
                 else
                 {
                     // Perform interpolation if the value is less than 60
                     yield return StartCoroutine(
-                        InterpolateFillAmount(alphaMask, alphaTargetFillAmount, j)
+                        InterpolateFillAmount(alphaMask, alphaTargetFillAmount)
                     );
                 }
             }
 
             yield return new WaitForSeconds(updateInterval);
         }
-    }
+    
+
 
     //Interpolating 
 
-    IEnumerator InterpolateFillAmount(Image mask, float targetFillAmount, int dataIndex)
+    IEnumerator InterpolateFillAmount(Image mask, float targetFillAmount)
     {
         float currentFillAmount = mask.fillAmount;
         float elapsedTime = 0f;
@@ -118,8 +128,6 @@ void SetLineIndicatorPosition()
         Debug.LogError("Line Indicator is not assigned.");
     }
 }
-
-
 
     public void ResetSuccess()
     {

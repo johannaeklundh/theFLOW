@@ -92,9 +92,9 @@ public class gamePlay : MonoBehaviour
             //Connect
             if (SceneManager.GetActiveScene().buildIndex == 1)
             { Destroy(gameObject); }
-            // Rematch
+            /* Rematch
             if (SceneManager.GetActiveScene().buildIndex == 5)
-            { Destroy(gameObject); }
+            { Destroy(gameObject); } */
 
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);

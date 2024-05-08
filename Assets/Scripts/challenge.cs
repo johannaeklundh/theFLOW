@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using EEG;
 
 [ExecuteInEditMode]
 public class challenge : MonoBehaviour
@@ -14,18 +15,29 @@ public class challenge : MonoBehaviour
     public GameObject[] progressBars;
     public int count = 0;
     private HashSet<GameObject> countedBars = new HashSet<GameObject>();
+    public GameObject[] playersObject;
+    public alpha_bar[] alphaBars;  // Ensure alpha_bar scripts are referenced here
+
+    
 
     // This method will be called to finish the challenge
     public void Finish()
     {
+         Destroy(gameObject); 
         SceneManager.LoadSceneAsync(6); // Load scene 2 asynchronously
     }
+
+
+
+
 
     void Start()
     {
         ShowObjects(); // Make sure this method is correctly activating/deactivating player objects
         SetUpProgressBars(); // A new method to set up progress bars
         StartGame();
+
+
     }
 
     // Set up active progress bars
@@ -47,15 +59,37 @@ public class challenge : MonoBehaviour
         }
     }
 
+   
     void Update()
     {
         CheckSuccess();
+       // First, ensure that the gamePlay instance and the players array are not null
+    if (gamePlay.Instance != null && gamePlay.Instance.players != null)
+    {
+        // Loop through all players in the array
+        for (int i = 0; i < gamePlay.Instance.players.Length; i++)
+    
+        {
+
+            // Send data to alpha and theta 
+            alphaBars[i].getAlphaData(gamePlay.Instance.players[i].alpha); 
+
+            // Log the alpha value of each player
+            Debug.Log("Alpha value of player " + i + ": " + gamePlay.Instance.players[i].alpha);
+             Debug.Log("Theta value of player " + i + ": " + gamePlay.Instance.players[i].theta);
+        }
+    }
+    else
+    {
+        // If GP or GP.players is null, log an error message
+        Debug.Log("gamePlay instance is not initialized or players array is null.");
+    }
     }
 
     // Check if the players have completed the challenge
     private void CheckSuccess()
     {
-        Debug.Log("Checking active progress bars for success...");
+       // Debug.Log("Checking active progress bars for success...");
 
         foreach (GameObject progressBar in progressBars)
         {
@@ -65,13 +99,13 @@ public class challenge : MonoBehaviour
                 if (progressBar.CompareTag("alpha"))
                 {
                     alpha_bar alphaBarScript = progressBar.GetComponent<alpha_bar>();
-                    Debug.Log(
+                    /*Debug.Log(
                         $"Checking Alpha bar {progressBar.name}, success status: {alphaBarScript.alphaSuccess}"
-                    );
+                    ); */
                     if (alphaBarScript.alphaSuccess && !countedBars.Contains(progressBar))
                     {
                         count++;
-                        Debug.Log($"Counted Alpha bar: {progressBar.name}, Total count: {count}");
+                       // Debug.Log($"Counted Alpha bar: {progressBar.name}, Total count: {count}");
                         countedBars.Add(progressBar);
                         alphaBarScript.ResetSuccess(); // Reset the success flag after counting
                     }
@@ -79,13 +113,13 @@ public class challenge : MonoBehaviour
                 else if (progressBar.CompareTag("theta"))
                 {
                     theta_bar thetaBarScript = progressBar.GetComponent<theta_bar>();
-                    Debug.Log(
+                   /* Debug.Log(
                         $"Checking Theta bar {progressBar.name}, success status: {thetaBarScript.thetaSuccess}"
-                    );
+                    );*/
                     if (thetaBarScript.thetaSuccess && !countedBars.Contains(progressBar))
                     {
                         count++;
-                        Debug.Log($"Counted Theta bar: {progressBar.name}, Total count: {count}");
+                       // Debug.Log($"Counted Theta bar: {progressBar.name}, Total count: {count}");
                         countedBars.Add(progressBar);
                         thetaBarScript.ResetSuccess(); // Reset the success flag after counting
                     }
@@ -94,15 +128,15 @@ public class challenge : MonoBehaviour
         }
 
         // Log a summary after each CheckSuccess() call
-        Debug.Log($"Check complete. Total count: {count}. Counted bars: {countedBars.Count}");
+       // Debug.Log($"Check complete. Total count: {count}. Counted bars: {countedBars.Count}");
         foreach (var bar in countedBars)
         {
-            Debug.Log($"Counted bar: {bar.name}");
+            //Debug.Log($"Counted bar: {bar.name}");
         }
 
         if (count == numOfPlayers * 2)
         {
-            Debug.Log("Challenge completed successfully with count = " + count);
+            //Debug.Log("Challenge completed successfully with count = " + count);
             Finish();
         }
     }
