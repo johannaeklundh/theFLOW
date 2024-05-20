@@ -17,7 +17,7 @@ public class AddForce : MonoBehaviour
     private Vector3 randomNoise;
     public float targetCircularSpeed; // New target speed variable
     public float speedAdjustmentRate; // Rate of speed change per second
-    private float radiusAdjustmentRate = 1.0f;  // Maybe remove
+    private float radiusAdjustmentRate = 1.25f;  // Maybe remove
     public int direction = 1; //direction of vortex determined from gameplayScript
 
     public int speedID;
@@ -116,7 +116,8 @@ public class AddForce : MonoBehaviour
                 circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, DetermineSpeedBySpeedID(speedID) * Time.deltaTime);
             }
 
-            //direction = GP.whoseWinning(); //-1 = AI leading, 0 = gameover , 1 = player leading
+            direction = GP.getWhoIsWinning(); //-1 = AI leading, 0 = gameover , 1 = player leading
+            // UnityEngine.Debug.Log("Direction = " + direction);
 
             if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); } //FETCH FROM GP
             else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); } //FETCH FROM GP
