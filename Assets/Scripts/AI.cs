@@ -106,12 +106,12 @@ public class AIScript : MonoBehaviour
 
     // Power constants
     private const float maxPower = 80.0f;   // Maximum power the AI can achieve, rewards good performance 
-    private const float minPower = 10.0f;   // Minimum power the AI can achieve, discourages bad performance 
+    private const float minPower = 30.0f;   // Minimum power the AI can achieve, discourages bad performance 
     
     // Other
     private const float LightningRadious = 2.0f;    // The radius a player have to be within to be able to get hit by lightning
 
-    private const int wellPerformanceThreshold = 60;
+    private const int wellPerformanceThreshold = 65;
 
 
     /**********************Functions************************/
@@ -129,15 +129,15 @@ public class AIScript : MonoBehaviour
         // Check state, metric on how close the player placed clostest to center is to winning 
         if(instance.state == 3){    // AI is more likely to get higher numbers and less likely to get lower values
 
-            // Check if teamPower is over or under 50
-            if(currentTeamP > 40){  
+            // Check if teamPower is over or under 60
+            if(currentTeamP > 60){  
 
                 if(currentTeamP > 80){  // Players are doing really good
                     maxIncrease = 20;
                     maxDecrease = -20;
                 }
                 else{   // Players are is doing good
-                    maxIncrease = 30;
+                    maxIncrease = 40;
                     maxDecrease = -10;
                 }
             }
@@ -154,21 +154,21 @@ public class AIScript : MonoBehaviour
         }
         else if(instance.state == 2){
 
-            // Check if teamPower is over or under 50
-            if(currentTeamP > 50){  
+            // Check if teamPower is over or under 60
+            if(currentTeamP > 60){  
 
                 if(currentTeamP > 80){  // Players are doing really good
-                    maxIncrease = 10;
+                    maxIncrease = 20;
                     maxDecrease = -20;
                 }
                 else{   // Players are doing good
-                    maxIncrease = 20;
+                    maxIncrease = 30;
                     maxDecrease = -10;
                 }
             }
             else{   
                 if(currentTeamP < 20){  // Players are doing really bad
-                    maxIncrease = 30;
+                    maxIncrease = 40;
                     maxDecrease = -10;
                 }
                 else{   // Players are doing bad
@@ -179,51 +179,51 @@ public class AIScript : MonoBehaviour
         }
         else if(instance.state == 1){
 
-            // Check if teamPower is over or under 50
-            if(currentTeamP > 50){  
+            // Check if teamPower is over or under 60
+            if(currentTeamP > 60){  
 
                 if(currentTeamP > 80){  // Players are doing really good
-                    maxIncrease = 5;
+                    maxIncrease = 10;
                     maxDecrease = -40;
                 }
                 else{   // Players are doing good
-                    maxIncrease = 10;
+                    maxIncrease = 15;
                     maxDecrease = -30;
                 }
             }
             else{   
                 if(currentTeamP < 20){  // Players are doing really bad
-                    maxIncrease = 20;
+                    maxIncrease = 25;
                     maxDecrease = -10;
                 }
                 else{   // Players are doing bad
-                    maxIncrease = 20;
+                    maxIncrease = 25;
                     maxDecrease = -15;
                 }
             }
         }
         else{   // state = 0
 
-            // Check if teamPower is over or under 50
-            if(currentTeamP > 50){  
+            // Check if teamPower is over or under 60
+            if(currentTeamP > 60){  
 
                 if(currentTeamP > 80){  // Players are doing really good
-                    maxIncrease = 5;
+                    maxIncrease = 10;
                     maxDecrease = -50;
                 }
                 else{   // Player is doing good
-                    maxIncrease = 10;
+                    maxIncrease = 15;
                     maxDecrease = -40;
                 }
             }
             else{   
 
                 if(currentTeamP < 20){  // Players are doing really bad
-                    maxIncrease = 15;
+                    maxIncrease = 20;
                     maxDecrease = -15;
                 }
                 else{   // Players are doing bad
-                    maxIncrease = 10;
+                    maxIncrease = 17;
                     maxDecrease = -20;
                 }
             }
@@ -245,8 +245,8 @@ public class AIScript : MonoBehaviour
         avgMeanAlpha = avgMeanAlpha/instance.GP.numberOfActivePlayers();
         avgMeanTheta = avgMeanTheta/instance.GP.numberOfActivePlayers();
         
-        maxIncrease -= avgMeanAlpha/15;
-        maxDecrease -= avgMeanTheta/15;
+        maxIncrease -= avgMeanAlpha/20;
+        maxDecrease -= avgMeanTheta/20;
 
 
         // Modifiers based on how far the players are apart (only works when more than 1 active player)
@@ -267,7 +267,7 @@ public class AIScript : MonoBehaviour
         }
 
         // Reward for multible players doing well, encourages team-effort
-        maxIncrease -= instance.numberOFWellperformances()*5;
+        maxIncrease -= instance.numberOFWellperformances()*3;
 
 
         // Generate random integer inbetween min and max, decides how much the AI:s power will increase/decrease
@@ -277,19 +277,19 @@ public class AIScript : MonoBehaviour
 
         // power should stay withing 10 to 80 to keep thing fair, if player are performing so well that the avrage is above 80, they shall be rewarded
         if(instance.power > maxPower){
-            instance.power = 80;
+            instance.power = maxPower;
         }
         else if(instance.power < minPower){
-            instance.power = 10;
+            instance.power = minPower;
         }
 
-        // Best-case scenario for the players
+        // Best-case scenario for the players (not up to date)
         // minimum maxIncrease = -25
         // minimum maxDecrease = -60
         
         
         
-        // Best-case scenario for the AI
+        // Best-case scenario for the AI    (not up to date)
         // maximum maxIncrease = 30
         // maximum maxDecrease = -5
 
