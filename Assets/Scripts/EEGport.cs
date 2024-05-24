@@ -23,24 +23,32 @@ namespace EEG
         public static int enable = -1;
         public static int disable = 0;
 
+        //"Spelare"
         public static GameObject PlayerObject1;
         public static GameObject PlayerObject2;
         public static GameObject PlayerObject3;
         public static GameObject PlayerObject4;
+
+        //Till för att uppvisa en wifi bar av värden för spelare i connection meny
         public float barStatus;
 
+        //Alfa och theta värden för en spelare
         public float att = 0;
         public float med = 0;
 
+        //Går att lägga in spelarobjekten i vektor, krånglade dock under implementeringen
         //public static GameObject[] playerObjects;
         //public static EEGport[] ports;
 
+
+        //Konstruktorn används inte längre här pga spelarobjekten
         public EEGport(string s)
         {
             comPortName = s;
             connectionID = NativeThinkgear.TG_GetNewConnectionId();
         }
         //Funktioner på connection sidan
+        
         public void connect()
         {
             if(errCodeConnect != 0){
@@ -73,6 +81,8 @@ namespace EEG
             
         }
 
+        //Tar bort kopplingen och thinkgear connection objekten
+        //Måste utföras för Unity innan "Playmode" avslutas för objekten tas inte bort mellan körningar och orsakar problem.
         public void deleteConnection() // När applikationen ska stängas ner
         {
             //Kollar att Auto Read inte redan blivit 
@@ -84,7 +94,7 @@ namespace EEG
             NativeThinkgear.TG_FreeConnection(connectionID); 
         }
 
-        // Kan endast uföras om connectionID existerar, TG_connect och TG_EnableAutoRead redan utförts
+        // Kan endast uföras om connectionID existerar, TG_connect och TG_EnableAutoRead redan utförts. Annars fås 0
         public float getAttention()
         {
             return NativeThinkgear.TG_GetValue(connectionID, NativeThinkgear.DataType.TG_DATA_ATTENTION);
@@ -101,7 +111,8 @@ namespace EEG
             if(PlayerObject4 == null){
                 PlayerObject4 = new GameObject("PlayerObject4");
                 EEGport p4 = PlayerObject4.AddComponent<EEGport>();
-                p4.comPortName = "\\\\.\\COM12";
+                p4.comPortName = "\\\\.\\COM11";
+                //Skapar ett thinkgear connection objekt, sparar dess värde som ID
                 p4.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p4.errCodeConnect = 2;
                 p4.errCodeAutoRead = 2;
@@ -110,7 +121,7 @@ namespace EEG
             if(PlayerObject3 == null){
                 PlayerObject3 = new GameObject("PlayerObject3");
                 EEGport p3 = PlayerObject3.AddComponent<EEGport>();
-                p3.comPortName = "COM9";
+                p3.comPortName = "\\\\.\\COM10";
                 p3.connectionID = NativeThinkgear.TG_GetNewConnectionId();
                 p3.errCodeConnect = 2;
                 p3.errCodeAutoRead = 2;
