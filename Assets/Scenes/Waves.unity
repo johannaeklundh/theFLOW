@@ -1555,7 +1555,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.9887222
+  m_FillAmount: 0.99864405
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1896,7 +1896,7 @@ MonoBehaviour:
   GP: {fileID: 1741228514}
   AI: {fileID: 1741228515}
   timeBar: {fileID: 907014784}
-  timeLimit: 120
+  timeLimit: 30
 --- !u!1 &1486937030 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6167054303538224233, guid: 55f1e10601f8fe74cb2913dc1da15c7b, type: 3}
@@ -2102,6 +2102,7 @@ MonoBehaviour:
   canUpdate1sec: 0
   canUpdate10sec: 0
   isBoosted: 0
+  gameOver: 0
   players10Power: []
   ai10Power: []
 --- !u!114 &1741228515
@@ -2118,7 +2119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GP: {fileID: 1741228514}
   lightningEffect: {fileID: 88874521}
-  canUpdate: 0
+  canUpdateAI: 0
   state: 0
   power: 50
 --- !u!4 &1741228516

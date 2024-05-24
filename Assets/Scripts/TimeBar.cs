@@ -20,10 +20,7 @@ public class TimeBar : MonoBehaviour
     {
         
         // Make all update-functions in gamePlay and AI unable to update
-        GP.canUpdate = false;
-        GP.canUpdate1sec = false;
-        GP.canUpdate10sec = false;
-        AI.canUpdate = false;
+        GP.gameOver = true;
 
         //SceneManager.LoadSceneAsync(3); // Load scene 2 asynchronously
         SceneManager.LoadScene(4);

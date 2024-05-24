@@ -80,22 +80,23 @@ public class gamePlay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Dont destroy causes problems when reloading game.....
+        //Start
+        if(SceneManager.GetActiveScene().buildIndex==0) 
+        { Destroy(gameObject); }
+        //Connect
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        { Destroy(gameObject); }
+        // Rematch
+        /*if (SceneManager.GetActiveScene().buildIndex == 5)
+        { Destroy(gameObject); }*/
 
 
         // Put functions inside this to delay the update to every delay sec
-        if(canUpdate){
-
-            //Dont destroy causes problems when reloading game.....
-            //Start
-            if(SceneManager.GetActiveScene().buildIndex==0) 
-            { Destroy(gameObject); }
-            //Connect
-            if (SceneManager.GetActiveScene().buildIndex == 1)
-            { Destroy(gameObject); }
-            /* Rematch
-            if (SceneManager.GetActiveScene().buildIndex == 5)
-            { Destroy(gameObject); } */
-
+        
+        if(canUpdate && !gameOver){
+            
+            UnityEngine.Debug.Log("Entered canUpdate");
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);
             updatePlayerRadius(this);
@@ -122,7 +123,7 @@ public class gamePlay : MonoBehaviour
         }
 
         // Functions that can update every 1 sec
-        if(canUpdate1sec){
+        if(canUpdate1sec && !gameOver){
 
             canUpdate1sec = false;
 
@@ -133,14 +134,12 @@ public class gamePlay : MonoBehaviour
         }
 
         // Functions that can update every 10 sec
-        if(canUpdate10sec){
-
-            // UnityEngine.Debug.Log("Enter if-10: ");
+        if(canUpdate10sec && !gameOver){
 
             // Stop update
             canUpdate10sec = false;
 
-            whoseWinning(this); // Returns how the vortex spins, -1, 0 or 1 dephending on who is winning
+            whoIsWinning = whoseWinning(this); // Returns how the vortex spins, -1, 0 or 1 dephending on who is winning
 
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after delay10 seconds
             StartCoroutine(delayUpdate10Sec(delay10));
@@ -170,6 +169,10 @@ public class gamePlay : MonoBehaviour
     private float boostTime = 5.0f; // How many seconds the boost lasts
 
     public bool isBoosted = false; // Tells if boost is active
+
+    private int whoIsWinning = 1;
+
+    public bool gameOver = false;
     
     
     // Functions
@@ -178,7 +181,6 @@ public class gamePlay : MonoBehaviour
         // Wait for d seconds
         yield return new WaitForSeconds(d);
 
-        // Allow updates to happen
         canUpdate = true;
 
         delay = 0.25f;   // Reset delay
@@ -216,7 +218,7 @@ public class gamePlay : MonoBehaviour
 
         yield return new WaitForSeconds(boostTime);
 
-        instance.AI.canUpdate = true;  // Allow updates in AI to happen again
+        instance.AI.canUpdateAI = true;  // Allow updates in AI to happen again
 
         isBoosted = false;  // Reset the flag
     }
@@ -382,6 +384,8 @@ public class gamePlay : MonoBehaviour
     // Set the players alpha, theta and power and all the previous ones
     public static void updatePrevAndCurrent(gamePlay instance){
                
+        // UnityEngine.Debug.Log("updatePrev&Curr!");
+        
         // Assign prevAlpha*******************
         float[] prevAlphaValues = {instance.players[0].alpha, instance.players[1].alpha, instance.players[2].alpha, instance.players[3].alpha};
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
@@ -389,10 +393,12 @@ public class gamePlay : MonoBehaviour
         // Assign alpha*******************
 
         // EEG-ver
-         float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
+
+        float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
 
         // Test-ver
-        //float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+        // float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+
 
         instance.assignValuesToField(alphaValues, "alpha");     // Assign
         // UnityEngine.Debug.Log(instance.EEGplayers[1].med);*/
@@ -404,10 +410,12 @@ public class gamePlay : MonoBehaviour
         // Assign theta*******************
 
         // EEG-ver
-         float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
+
+        float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
 
         // Test-ver
-        //float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+        // float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+
 
         instance.assignValuesToField(thetaValues, "theta");     // Assign
 
@@ -419,6 +427,8 @@ public class gamePlay : MonoBehaviour
         float[] powerValues = {calculatePower(instance.players[0].alpha, instance.players[0].theta), calculatePower(instance.players[1].alpha, instance.players[1].theta),
          calculatePower(instance.players[2].alpha, instance.players[2].theta),calculatePower(instance.players[3].alpha, instance.players[3].theta)};
         instance.assignValuesToField(powerValues, "power");
+
+        instance.canUpdate = true;
 
     }
     
@@ -468,7 +478,7 @@ public class gamePlay : MonoBehaviour
         if (!instance.isBoosted) {
             instance.isBoosted = true; 
 
-            instance.AI.canUpdate = false;  // Stop update() in AI
+            instance.AI.canUpdateAI = false;  // Stop update() in AI
 
             instance.AI.state = 0;  // AI-state at 0, no lightning can occur
             if(AIScript.placementPlayer(instance.AI, instance.players.Length).power > 60){
@@ -640,7 +650,7 @@ public class gamePlay : MonoBehaviour
         if(radius > 3.0f){
             radius = 3.0f;
         }
-        else if(radius < 0.2f){ // The radius for lightsource in the middle
+        else if(radius < 0.35f){ // The radius for lightsource in the middle
             radius = 0.0f;
             playerFinished(instance, place);    // Triggers boost effect
         }
@@ -669,7 +679,7 @@ public class gamePlay : MonoBehaviour
         instance.ai10Power.Add(instance.AI.power);    // Add latest AI-power last
     }
     
-    // Decides who is currently winning return either 1, 0 or -1 based on status of the game, updates every 10 sec
+    // Decides who is currently winning, set whoIsWinning to either 1, 0 or -1 based on status of the game, updates every 10 sec
     public static int whoseWinning(gamePlay instance){
         // 1 = players are winning
 
@@ -710,17 +720,23 @@ public class gamePlay : MonoBehaviour
             playerPowerSum = playerPowerSum/ players10Length;
 
             if(aiPowerSum > playerPowerSum){
-                // UnityEngine.Debug.Log("Returned -1");
+                UnityEngine.Debug.Log("Returned -1");
                 return -1;
             }
             else if(aiPowerSum < playerPowerSum){
-                // UnityEngine.Debug.Log("Returned 1");
+                UnityEngine.Debug.Log("Returned 1");
                 return 1;
             }
         }
 
-        // UnityEngine.Debug.Log("Returned 1");
+        UnityEngine.Debug.Log("Returned 1, default");
         return 1;
+    }
+
+    // Return-function for whoIsWinning
+    public int getWhoIsWinning(){
+        // UnityEngine.Debug.Log("whoIsWinning = " + whoIsWinning);
+        return whoIsWinning;
     }
 
 
@@ -731,12 +747,13 @@ public class gamePlay : MonoBehaviour
         if(instance.numberOfActivePlayers() == 0){ // Check if no players are active
             
             // Make all update-functions inactive
-            instance.canUpdate = false;
-            instance.canUpdate1sec = false;
-            instance.canUpdate10sec = false;
-            instance.AI.canUpdate = false;
+            instance.gameOver = true;
 
             UnityEngine.Debug.Log("Game is over, player have won!");
+
+            // Go to next scene
+            SceneManager.LoadScene(4);
+
             return true;
         }
         return false;

@@ -27,12 +27,12 @@ public class AIScript : MonoBehaviour
     void Update()
     {  
 
-        if(canUpdate && GP.isBoosted == false){
+        if(canUpdateAI && !GP.isBoosted && !GP.gameOver){
             calculatePower(this);   // Caculates and set the power of AI
             setState();   // Sets the state of the AI
             isHit(this);
 
-            canUpdate = false;  // Makes it so that each function doesn't update every frame
+            canUpdateAI = false;  // Makes it so that each function doesn't update every frame
 
             // Start the coroutine (allows to delay update or execute over several frames) to enable updates after 3 seconds
             StartCoroutine(delayUpdate(delay));
@@ -59,7 +59,7 @@ public class AIScript : MonoBehaviour
 
 
     /************Things used obly to control update(), not relevant for behaviour************/
-    public bool canUpdate = false; // Decides weather a function can update in update()
+    public bool canUpdateAI = false; // Decides weather a function can update in update()
 
     private float delay = 0.25f;
     
@@ -69,7 +69,7 @@ public class AIScript : MonoBehaviour
         yield return new WaitForSeconds(d);
 
         // Allow updates to happen
-        canUpdate = true;
+        canUpdateAI = true;
 
         delay = 0.25f;   // Reset delay
 
@@ -374,6 +374,11 @@ public class AIScript : MonoBehaviour
     // Placeholder to set the state of the AI dephending on the player radiused the closest to the center (change to include other players and update once every 3 sec)
     public void setState(){
 
+        if(GP.numberOfActivePlayers() == 1){
+            state = 0;  // Makes it easier for one player to win
+            return;
+        }
+        
         switch(closestPlayerToFinish().radius)
         {
             case float n when n <= 0.8f:
@@ -461,7 +466,7 @@ public class AIScript : MonoBehaviour
 
             // Debug.Log("playerHit:   Player " + player.id  + " whose placement is " + player.placement + " and who = " + who + " and how = " + how);
             // player.displayPlayerInfo();
-
+            
             // Moving the player in question back "how" many steps
             var field = typeof(gamePlay.PlayerData).GetField("radius"); 
             field.SetValueDirect(__makeref(instance.GP.players[who-1]), (instance.GP.players[who-1].radius + how)); 
@@ -473,6 +478,7 @@ public class AIScript : MonoBehaviour
             else if(instance.GP.players[who-1].radius < 0.0f){   // If lesser than 0, set to 0 (max-value)
                 field.SetValueDirect(__makeref(instance.GP.players[who-1]), 0.0f);
             }
+
 
             // Visual effect of getting hit by lightning (add sound)
             if (instance.lightningEffect != null) //Lightning when player gets hit
