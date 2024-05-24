@@ -88,15 +88,15 @@ public class gamePlay : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 1)
         { Destroy(gameObject); }
         // Rematch
-        if (SceneManager.GetActiveScene().buildIndex == 5)
-        { Destroy(gameObject); }
+        /*if (SceneManager.GetActiveScene().buildIndex == 5)
+        { Destroy(gameObject); }*/
 
 
         // Put functions inside this to delay the update to every delay sec
+        
         if(canUpdate && !gameOver){
             
             UnityEngine.Debug.Log("Entered canUpdate");
-
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);
             updatePlayerRadius(this);
@@ -109,8 +109,8 @@ public class gamePlay : MonoBehaviour
             // setUnbothered is called upon in AI 
 
             // Write out in console..
-            //players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
-            players[1].displayPlayerInfo();
+            players[0].displayPlayerInfo();    // Displays all info stored in the PlayerData struct
+            //players[1].displayPlayerInfo();
             // players[2].displayPlayerInfo();
             // players[3].displayPlayerInfo();
 
@@ -393,10 +393,12 @@ public class gamePlay : MonoBehaviour
         // Assign alpha*******************
 
         // EEG-ver
+
         float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
 
         // Test-ver
         // float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+
 
         instance.assignValuesToField(alphaValues, "alpha");     // Assign
         // UnityEngine.Debug.Log(instance.EEGplayers[1].med);*/
@@ -408,10 +410,12 @@ public class gamePlay : MonoBehaviour
         // Assign theta*******************
 
         // EEG-ver
+
         float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
 
         // Test-ver
         // float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
+
 
         instance.assignValuesToField(thetaValues, "theta");     // Assign
 

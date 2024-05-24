@@ -6,28 +6,28 @@ using UnityEngine.UI;
 public class theta_bar : MonoBehaviour
 {
     //Variables
-    public int maxVal = 100;
+    public float maxVal = 100;
     public int[] playerThetaData;
     public Image thetaMask; // Each GameObject should have this set in the inspector to its unique Image component
     public float updateInterval = 0.1f;
 
+    public float currentVal; 
+
     [HideInInspector]
     public int numPlayers = 1; // Adjust in editor
-
     public RectTransform lineIndicator; // Add a reference to the RectTransform of the line indicator
-
     public bool runChallenge = true;
     public bool thetaSuccess = false;
 
     void Start()
     {
-        GenerateFakeData();
+        
         runChallenge = true;
         StartCoroutine(UpdateFillAmounts());
         SetLineIndicatorPosition();
     }
 
-    // ÄNDRA
+    /*ÄNDRA
     void GenerateFakeData()
     {
         // Initialize arrays for players
@@ -39,17 +39,26 @@ public class theta_bar : MonoBehaviour
             playerThetaData[i] = Random.Range(0, 101); // Assign the specific values instead of random values
         }
     }
+    */
+
+      // Get alpha data 
+    public void getThetaData(float value) {
+
+       currentVal = value; 
+
+        Debug.Log("Theta value updated: " + value);
+    
+    }
 
     //Fill the bars depending on the playerData
     IEnumerator UpdateFillAmounts()
     {
         while (runChallenge) // This will keep updating in a loop
         {
-            for (int i = 0; i < 10; i++)
-            {
-                float thetaTargetFillAmount = (float)playerThetaData[i] / (float)maxVal;
+            
+                float thetaTargetFillAmount = currentVal / maxVal;
 
-                if (playerThetaData[i] >= 60)
+                if (currentVal >= 60)
                 {
                     thetaMask.fillAmount = thetaTargetFillAmount;
                     runChallenge = false;
@@ -61,17 +70,17 @@ public class theta_bar : MonoBehaviour
                 {
                     // Perform interpolation if the value is less than 60
                     yield return StartCoroutine(
-                        InterpolateFillAmount(thetaMask, thetaTargetFillAmount, i)
+                        InterpolateFillAmount(thetaMask, thetaTargetFillAmount)
                     );
                 }
             }
 
             yield return new WaitForSeconds(updateInterval); // Wait before updating again
         }
-    }
+    
 
     //Interpolat the fillAmount for smooth trasition
-    IEnumerator InterpolateFillAmount(Image mask, float targetFillAmount, int dataIndex)
+    IEnumerator InterpolateFillAmount(Image mask, float targetFillAmount)
     {
         float currentFillAmount = mask.fillAmount;
         float elapsedTime = 0f;
