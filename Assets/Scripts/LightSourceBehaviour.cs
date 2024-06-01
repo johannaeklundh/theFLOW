@@ -11,9 +11,9 @@ public class LightSourceBehaviour : MonoBehaviour
     public Material emissiveMaterial;   //player material
 
     //original colors 
-    public Color originalBaseColor;     //player color
-    public Color originalEmissionColor; //player emission color
-    public float initialIntensity = 4.0f;      //intensity factor
+    public Color originalBaseColor;             //shpere color
+    public Color originalEmissionColor;         //emission color
+    public float initialIntensity = 4.0f;       //intensity factor
     public Vector3 initialSize = new Vector3(0.3f, 0.3f, 0.3f); // Size of the sphere
 
     public int playerID;
@@ -45,28 +45,20 @@ public class LightSourceBehaviour : MonoBehaviour
         currentEmissionColor = originalEmissionColor;
         currentIntensity = initialIntensity;
         currentSize = initialSize;
-
-        //// Store the original base color and emission color
-        //originalBaseColor = emissiveMaterial.color;
-        //originalEmissionColor = emissiveMaterial.GetColor("_EmissionColor");
-
-        //// Set initial appearance
-        //currentBaseColor = originalBaseColor;
-        //currentEmissionColor = originalEmissionColor;
-        //currentIntensity = initialIntensity;
-        //currentSize = initialSize;
-
     }
 
     void Update()
     {
+        //storing new alpha and theta values
         testAlpha = GP.players[getPlayerID(playerID)].alpha;
         testTheta = GP.players[getPlayerID(playerID)].theta;
 
+        //changing appearence for feedback purposes
         changeIntensity(testAlpha);
         changeSize(testTheta);
     }
 
+    //checking which player is being evaluated
     int getPlayerID(int id)
     {
         switch (id)
@@ -150,41 +142,3 @@ public class LightSourceBehaviour : MonoBehaviour
         ResetAppearance();
     }
 }
-
-/*
-
-    // Update appearance based on alpha (intensity) and theta (size) values
-    void UpdateAppearance(float alpha, float theta)
-    {
-        // Clamp alpha and theta values between 0 and 100
-        alpha = Mathf.Clamp(alpha, 0f, 100f);
-        theta = Mathf.Clamp(theta, 0f, 100f);
-
-        // Calculate intensity and size based on alpha and theta values
-        currentIntensity = Mathf.Lerp(3f, 9f, alpha / 100f);
-        currentSize = Vector3.Lerp(new Vector3(0.2f, 0.2f, 0.2f), new Vector3(0.4f, 0.4f, 0.4f), theta / 100f);
-
-        // Update appearance
-        emissiveMaterial.SetColor("_EmissionColor", originalEmissionColor * currentIntensity);
-        transform.localScale = currentSize;
-    }
-
-    // Reset appearance to initial values
-    public void ResetAppearance()
-    {
-        currentIntensity = initialIntensity;
-        currentSize = initialSize;
-
-        UpdateAppearance(testAlpha, testTheta);
-    }
-
-    // Reset appearance when the script is disabled (game ends or resets)
-    void OnDisable()
-    {
-        ResetAppearance();
-    }
-
-*/
-
-
-
