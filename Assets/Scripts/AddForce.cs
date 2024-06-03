@@ -27,7 +27,7 @@ public class AddForce : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (behaviorID == 1) //keep the waves invisible in the beginning
+        if (behaviorID == 1) // keep the waves invisible in the beginning
         {
             transform.position = new Vector3(-2f, -2f, -2f);
         }
@@ -51,7 +51,6 @@ public class AddForce : MonoBehaviour
                 return;
             }
         }
-        //transform.localScale = new Vector3(1f, 1f, 1f); //THIS TO CHANGE SIZE
 
         // Initialize centerPoint to origin
         if (centerPoint == null)
@@ -77,25 +76,25 @@ public class AddForce : MonoBehaviour
         canUpdate = true;
     }
 
-    float DetermineSpeedBySpeedID(int id)
+    float DetermineSpeedBySpeedID(int id) // Speed for players and vortex
     {
         switch (id)
         {
-            case 1: return 20f;
-            case 2: return 40f;
+            case 1: return 20f; // Players speed
+            case 2: return 40f; // Speed of vortex
 
-            default: return 10f;
+            default: return 10f; 
         }
     }
 
-    int DetermineRadiusByPlayerId(int id)
+    int DetermineRadiusByPlayerId(int id) // To distinguish players from eachother, here more players can be added if needed
     {
         switch (id)
         {
-            case 1: return 0;
-            case 2: return 1;
-            case 3: return 2;
-            case 4: return 3;
+            case 1: return 0; // player 1
+            case 2: return 1; // player 2
+            case 3: return 2; // player 3
+            case 4: return 3; // player 4
             default: return 0;
         }
     }
@@ -117,14 +116,12 @@ public class AddForce : MonoBehaviour
             }
 
             direction = GP.getWhoIsWinning(); //-1 = AI leading, 0 = gameover , 1 = player leading
-            // UnityEngine.Debug.Log("Direction = " + direction);
 
-            if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); } //FETCH FROM GP
-            else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); } //FETCH FROM GP
+            if (direction == 1) { circularSpeed = DetermineSpeedBySpeedID(speedID); }
+            else if (direction == -1) { circularSpeed = -1 * DetermineSpeedBySpeedID(speedID); }
             //else
             //{
-            //   // if (behaviorID == 1) { radius = 100; } //out of screen if = 0 FETCH FROM GP
-
+            //   // if (behaviorID == 1) { radius = 100; } //out of screen if == 0 (NOT DONE)
             //}
             if (Input.GetKeyDown(KeyCode.D)) { radius = 100; } //PRESS D FOR THE LOSINGANIMATION other part is on screendarkener
 
@@ -140,7 +137,6 @@ public class AddForce : MonoBehaviour
                 //Change direction slowly
                 circularSpeed = Mathf.MoveTowards(circularSpeed, targetCircularSpeed, speedAdjustmentRate * Time.deltaTime);
             }
-
 
             if (behaviorID == 0)
             {
@@ -168,7 +164,6 @@ public class AddForce : MonoBehaviour
         Vector3 newPosition = centerPoint.position + direction * radius;
 
         // Apply the new position (and noise)
-
         if (Mathf.Abs(circularSpeed) > DetermineSpeedBySpeedID(speedID) + 10f && behaviorID == 1)
         {
             float noiseX = RandomGen();
@@ -181,7 +176,7 @@ public class AddForce : MonoBehaviour
 
     }
 
-    float RandomGen()
+    float RandomGen() // Noise, can change values for more noise
     {
         return UnityEngine.Random.Range(-0.03f, 0.03f);
     }

@@ -6,12 +6,11 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class LightningEffect : MonoBehaviour
 {
-    public Transform target;
-    //public AddForce players;
-    public float maxJitter = 0.2f;
+    public Transform target; // Where/who the lightning will hit
+    public float maxJitter = 0.2f; // Can be changed for a more or less dramatic lightning
     private LineRenderer lineRenderer;
     public KeyCode triggerKey = KeyCode.Space; // Key to trigger the lightning
-    public Transform[] players;
+    public Transform[] players; // Array of players that can be hit by the lightning
     public CameraShake cameraShake;
 
     void Start()

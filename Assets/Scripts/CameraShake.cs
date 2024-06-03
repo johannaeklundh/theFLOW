@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
+    // All these values can be changed to give another effect to the camerashake
     public float shakeDuration = 0.3f;
     public float shakeMagnitude = 0.1f;
     public float dampingSpeed = 1.0f;
@@ -24,7 +25,6 @@ public class CameraShake : MonoBehaviour
             TriggerShake();
         }
     }
-
 
     void OnEnable()
     {

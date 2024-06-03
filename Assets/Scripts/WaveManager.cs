@@ -6,27 +6,24 @@ public class WaveManager : MonoBehaviour
 {
     public Material waveMaterial;
     public ComputeShader waveCompute;
-    public RenderTexture NState, Nm1State, Np1State;
+    public RenderTexture NState, Nm1State, Np1State; // Nstate = current state of wave, Nm1State = Previous state, Np1State = next state
     public Vector2Int resolution;
     public RenderTexture obstaclesTex;
     public float size = 1;
     private bool render;
     public Transform[] objects;
     private Vector4[] array = new Vector4[15];
-   // public Vector3 effect; // x,y, strength
-    public float dispersion; //How much the waves are disappering 
-
+    public float dispersion; //How much the waves are disappering, can be changed in Unitys inspector during runtime to see the changes
 
     // Start is called before the first frame update
     void Start()
     {
+        // All textures are initialized and set
         InitializeTexture(ref NState);
         InitializeTexture(ref Nm1State);
         InitializeTexture(ref Np1State);
         waveMaterial.SetTexture("_rippleTex", NState);
         obstaclesTex.enableRandomWrite = true;
-
-        //Debug.Assert(obstaclesTex.width == resolution.x && obstaclesTex.height == resolution.y);
         waveMaterial.mainTexture = NState;
     }
 
@@ -51,7 +48,7 @@ public class WaveManager : MonoBehaviour
         waveCompute.SetTexture(0, "Nm1State", Nm1State);
         waveCompute.SetTexture(0, "Np1State", Np1State);
 
-        //Array
+        // Array with objects that create ripples. update if more objects are being added.
         for (int i = 0; i < objects.Length; i++)
         {
             if(i > 15) break;
@@ -60,17 +57,14 @@ public class WaveManager : MonoBehaviour
         }
         waveCompute.SetVectorArray("rippleObjs", array);
         waveCompute.SetFloat("arrayLength", array.Length);
-        //waveCompute.SetVector("effect", effect);
-
 
         waveCompute.SetInts("resolution", resolution.x, resolution.y);
         waveCompute.SetFloat("dispersion", dispersion);
         waveCompute.SetTexture(0, "obstaclesTex", obstaclesTex);
         waveCompute.Dispatch(0, resolution.x / 8, resolution.y / 8, 1);
     }
-    Vector2 Remap(float posX, float posZ)
+    Vector2 Remap(float posX, float posZ) // Places objects in the world
     {
-
         float x2 = transform.position.x - transform.localScale.x * 5;
         float x1 = transform.position.x + transform.localScale.x * 5;
         float y2 = transform.position.z - transform.localScale.z * 5;

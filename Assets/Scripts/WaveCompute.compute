@@ -7,7 +7,7 @@ RWTexture2D<float4> obstaclesTex;
 int2 resolution;
 float3 effect;
 float dispersion;
-float4 rippleObjs[15];
+float4 rippleObjs[15]; // Ugly code, but increase if adding players or object that should make ripples on the plane
 float arrayLength;
 
 [numthreads(8, 8, 1)]
@@ -24,7 +24,7 @@ void CSMain(uint3 id : SV_DispatchThreadID)
 
    
 
-    for(int i; i<15; i++)
+    for(int i; i<15; i++) // Ugly code, but same number as for the rippleObjs, change at the same time
     {
         if(i > arrayLength) break;
         if(distance(rippleObjs[i].xy, id.xy) < rippleObjs[i].z)
