@@ -10,9 +10,9 @@ public class PentagonFillOutline : MonoBehaviour
     public float radius = 1f; // Radius of the pentagon
     public float offsetX = 0f; // Offset in the x-direction
     public float offsetY = 0f; // Offset in the y-direction
-    public float width = 0.5f;
-    [Range(0f, 100f)]
-    public float[] inputs = new float[] { 100.0f, 100.0f, 100.0f, 100.0f, 100.0f };
+    public float width = 0.5f; // width of the line
+    [Range(0f, 100f)] // set range of the input below to 0 to 100
+    public float[] inputs = new float[] { 100.0f, 100.0f, 100.0f, 100.0f, 100.0f }; // were used before connected to real data
 
     LineRenderer lineRenderer;
 
@@ -36,6 +36,7 @@ public class PentagonFillOutline : MonoBehaviour
     {
         lineRenderer.endWidth = width;
         lineRenderer.startWidth = width;
+
         // Calculate the positions of the pentagon vertices
         Vector3[] pentagonVertices = CalculatePentagonVertices();
 
@@ -55,7 +56,7 @@ public class PentagonFillOutline : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             float angleInRadians = Mathf.Deg2Rad * (i * angle + 70); // Offset by 90 degrees to orient the pentagon correctly
-            vertices[i] = new Vector3(Mathf.Cos(angleInRadians) * radius * inputs[i]/100 + offsetX, Mathf.Sin(angleInRadians) * radius*inputs[i] / 100 + offsetY, 0);
+            vertices[i] = new Vector3(Mathf.Cos(angleInRadians) * radius * inputs[i] / 100 + offsetX, Mathf.Sin(angleInRadians) * radius * inputs[i] / 100 + offsetY, 0);
         }
 
         return vertices;
@@ -77,86 +78,14 @@ public class PentagonFillOutline : MonoBehaviour
     // Set the positions for the LineRenderer
     void SetLinePositions(Vector3 middlePoint, Vector3[] pentagonVertices)
     {
-        for (int i = 0; i < 10; i+=2)
+        for (int i = 0; i < 10; i += 2)
         {
             // Draw line from middle point to each corner of the pentagon
             lineRenderer.SetPosition(i, middlePoint);
-            lineRenderer.SetPosition(i + 1, pentagonVertices[i/2]);
+            lineRenderer.SetPosition(i + 1, pentagonVertices[i / 2]);
         }
 
         // Close the loop by connecting the last point to the first point
         lineRenderer.SetPosition(10, middlePoint);
     }
-
-
-
-    //// Draw the outline of the pentagon
-    //void OnDrawGizmos()
-    //{
-    //    if (lineRenderer == null)
-    //        lineRenderer = GetComponent<LineRenderer>();
-
-    //    lineRenderer.startColor = lineColor;
-    //    lineRenderer.endColor = lineColor;
-
-    //    Vector3[] vertices = CalculatePentagonVertices();
-    //    SetLinePositions(transform.position, vertices);
-    //}
-
-
-    //    [Range(0f, 1f)]
-    //    public float[] inputs = new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-
-    //    LineRenderer lineRenderer;
-
-    //    void Start()
-    //    {
-    //        lineRenderer = GetComponent<LineRenderer>();
-    //        lineRenderer.positionCount = 6;
-
-    //        // Set the positions to form the outline of the pentagon
-    //        SetPentagonOutline();
-    //    }
-
-    //    void SetPentagonOutline()
-    //    {
-    //        // Calculate the positions of the pentagon vertices
-    //        Vector3[] vertices = CalculatePentagonVertices();
-
-    //        // Set the positions for the LineRenderer
-    //        for (int i = 0; i < 5; i++)
-    //        {
-    //            lineRenderer.SetPosition(i, vertices[i]);
-    //        }
-
-    //        // Close the loop by connecting the last point to the first point
-    //        lineRenderer.SetPosition(5, vertices[0]);
-    //    }
-
-    //    Vector3[] CalculatePentagonVertices()
-    //    {
-    //        Vector3[] vertices = new Vector3[5];
-    //        float angle = 360f / 5;
-
-    //        for (int i = 0; i < 5; i++)
-    //        {
-    //            float angleInRadians = Mathf.Deg2Rad * (i * angle); // No need for offset here
-    //            vertices[i] = new Vector3(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians), 0);
-    //        }
-
-    //        return vertices;
-    //    }
-
-    //    // Method to get the points of the pentagon outline
-    //    public Vector2[] GetPentagonPoints()
-    //    {
-    //        Vector3[] vertices = CalculatePentagonVertices();
-    //        Vector2[] points = new Vector2[vertices.Length];
-    //        for (int i = 0; i < vertices.Length; i++)
-    //        {
-    //            points[i] = new Vector2(vertices[i].x, vertices[i].y);
-    //        }
-    //        return points;
-    //    }
-
 }

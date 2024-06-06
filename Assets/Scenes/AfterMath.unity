@@ -3870,7 +3870,6 @@ MonoBehaviour:
   moveX: 2.2
   moveY: 0.5
   width: 0.1
-  isLooped: 1
 --- !u!120 &952152218
 LineRenderer:
   serializedVersion: 2
@@ -4530,7 +4529,6 @@ MonoBehaviour:
   moveX: -6.4
   moveY: 0.5
   width: 0.1
-  isLooped: 1
 --- !u!120 &1211056153
 LineRenderer:
   serializedVersion: 2
@@ -4803,7 +4801,6 @@ MonoBehaviour:
   moveX: -2
   moveY: 0.5
   width: 0.1
-  isLooped: 1
 --- !u!120 &1215863427
 LineRenderer:
   serializedVersion: 2
@@ -5268,11 +5265,11 @@ MonoBehaviour:
   offsetY: 0.5
   width: 0.1
   inputs:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
+  - 49.7
+  - 55.4
+  - 49
+  - 48.4
+  - 77.9
 --- !u!120 &1343035793
 LineRenderer:
   serializedVersion: 2
@@ -6462,7 +6459,6 @@ MonoBehaviour:
   moveX: 6.4
   moveY: 0.5
   width: 0.1
-  isLooped: 1
 --- !u!120 &1744654756
 LineRenderer:
   serializedVersion: 2
@@ -7478,6 +7474,7 @@ MonoBehaviour:
   HeaderToShow:
   - {fileID: 1928134014}
   - {fileID: 49781815}
+  GP: {fileID: 0}
 --- !u!114 &1986655439
 MonoBehaviour:
   m_ObjectHideFlags: 0

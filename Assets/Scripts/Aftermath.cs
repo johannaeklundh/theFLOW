@@ -16,9 +16,9 @@ public class Aftermath: MonoBehaviour
 
     void Start()
     {
+        win = gamePlay.playersWon(GP);
         ShowHeader(); // Ensure object is hidden at the start
         ShowObjects(); // Ensure object is hidden at the start
-        win = gamePlay.playersWon(GP);
     }
 
     void Update()
