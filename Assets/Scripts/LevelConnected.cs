@@ -36,6 +36,80 @@ public class LevelConnected : MonoBehaviour
         }
     }
 
+
+    void Start()
+    {
+        HideObjects(); // Ensure object is hidden at the start
+    }
+
+    void Update()
+    {
+        // Call the function to show objects based on the updated value of ConnectedPlayers
+        ShowObjects();
+
+    }
+
+    void HideObjects()
+    {
+        foreach (GameObject obj in objectsToShow)
+        {
+            obj.SetActive(false);
+        }
+    }
+
+    // Function to show objects based on the value of ConnectedPlayers
+    void ShowObjects()
+    {
+        // fungerade tidigare
+        // foreach(EEGport e in players)
+        // {
+        //     for(int i = 0; i < objectsToShow.Length; i++){
+
+        //     objectsToShow[i].SetActive(i < e.barStatus);
+
+        //         // Set the material to each object
+        //         SetMaterialForObject(objectsToShow[i], e);
+        //     }
+        // }
+
+        calcBars();
+        //ALLA FÅR SAMMA
+        // for (int i = 0; i < objectsToShow.Length; i++)
+        // {
+        //     GameObject obj = objectsToShow[i];
+
+        //     // Iterate over each player to determine the bar status for the current object
+        //     float maxBarStatus = 0; // Initialize max bar status
+        //     foreach (EEGport player in players)
+        //     {
+        //         // Update maxBarStatus if the player's barStatus is higher
+        //         maxBarStatus = Mathf.Max(maxBarStatus, player.barStatus);
+        //     }
+
+        //     // Set the active state of the object based on maxBarStatus
+        //     obj.SetActive(i < maxBarStatus);
+
+        //     // Set the material for the object based on maxBarStatus
+        //     SetMaterialForObject(obj, maxBarStatus);
+        // }
+
+
+        // for(int playerIndex = 0; playerIndex < players.Length; playerIndex++){
+        //     EEGport player = players[playerIndex];
+
+
+        //     for(int i = 0; i < objectsToShow.Length; i++){
+        //         GameObject obj = objectsToShow[i];
+
+        //         // Set the active status of the bar based on barStatus
+        //         obj.SetActive(i < player.barStatus);
+
+        //         // Set the material for the bar
+        //         SetMaterialForObject(obj, player);
+        //     }
+        // }
+    }
+
     void calcBars(){
         float attention;
         float meditation;
@@ -58,77 +132,6 @@ public class LevelConnected : MonoBehaviour
             }
         }
         
-    }
-
-    void Start()
-    {
-        HideObjects(); // Ensure object is hidden at the start
-    }
-
-    void Update()
-    {
-        // Call the function to show objects based on the updated value of ConnectedPlayers
-        ShowObjects();
-
-    }
-
-    void HideObjects(){
-        foreach (GameObject obj in objectsToShow)
-        {
-            obj.SetActive(false);
-        }
-    }
-
-    // Function to show objects based on the value of ConnectedPlayers
-    void ShowObjects()
-    {
-        // foreach(EEGport e in players)
-        // {
-        //     for(int i = 0; i < objectsToShow.Length; i++){
-
-        //     objectsToShow[i].SetActive(i < e.barStatus);
-            
-        //         // Set the material to each object
-        //         SetMaterialForObject(objectsToShow[i], e);
-        //     }
-        // }
-        
-        calcBars();
-    //ALLA FÅR SAMMA
-        // for (int i = 0; i < objectsToShow.Length; i++)
-        // {
-        //     GameObject obj = objectsToShow[i];
-
-        //     // Iterate over each player to determine the bar status for the current object
-        //     float maxBarStatus = 0; // Initialize max bar status
-        //     foreach (EEGport player in players)
-        //     {
-        //         // Update maxBarStatus if the player's barStatus is higher
-        //         maxBarStatus = Mathf.Max(maxBarStatus, player.barStatus);
-        //     }
-
-        //     // Set the active state of the object based on maxBarStatus
-        //     obj.SetActive(i < maxBarStatus);
-
-        //     // Set the material for the object based on maxBarStatus
-        //     SetMaterialForObject(obj, maxBarStatus);
-        // }
-    
-
-        // for(int playerIndex = 0; playerIndex < players.Length; playerIndex++){
-        //     EEGport player = players[playerIndex];
-            
-
-        //     for(int i = 0; i < objectsToShow.Length; i++){
-        //         GameObject obj = objectsToShow[i];
-
-        //         // Set the active status of the bar based on barStatus
-        //         obj.SetActive(i < player.barStatus);
-
-        //         // Set the material for the bar
-        //         SetMaterialForObject(obj, player);
-        //     }
-        // }
     }
 
     // Function to set material for a given object
