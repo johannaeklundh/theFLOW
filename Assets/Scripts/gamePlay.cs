@@ -16,16 +16,6 @@ public class gamePlay : MonoBehaviour
     public GameObject[] playersObject;
     public EEGport[] EEGplayers;
 
-    /********Variables********/
-    public PlayerData[] players;    // Public array of all players
-
-    /********Delete********/
-    public float p1Power = 50.0f;
-    public float p2Power = 51.0f;
-    public float p3Power = 52.0f;
-    public float p4Power = 53.0f;
-    public float adjust = 0.0f;
-
     // Declare the singleton instance
     public static gamePlay Instance { get; private set; }
 
@@ -96,7 +86,6 @@ public class gamePlay : MonoBehaviour
         
         if(canUpdate && !gameOver){
             
-            UnityEngine.Debug.Log("Entered canUpdate");
             // Main GamePlay-Functions
             updatePrevAndCurrent(this);
             updatePlayerRadius(this);
@@ -230,10 +219,14 @@ public class gamePlay : MonoBehaviour
 
 
     /*************************************Structs****************************************/
+    
+    /********Variables********/
+    public PlayerData[] players;    // Public array of all players
+
     public struct PlayerData{
         
-	// Values for gameplay
-	public int id;
+        // Values for gameplay
+        public int id;
         public float radius;
         public int placement;
         public float power;
@@ -246,7 +239,7 @@ public class gamePlay : MonoBehaviour
 	    // Functionality
 	    public bool update;
         
-        // Values for after game
+        // Values for after game or AI
         public float meanAlpha;
         public float meanTheta;
         public float consistency;
@@ -287,7 +280,7 @@ public class gamePlay : MonoBehaviour
             //UnityEngine.Debug.Log("Player radius: " + radius);
             //UnityEngine.Debug.Log("Player Placement: " + placement);
             // UnityEngine.Debug.Log("Player Prev Power: " + prevPower);
-            UnityEngine.Debug.Log("Player ID: "+ id + " Player Power: " + power);
+            // UnityEngine.Debug.Log("Player ID: "+ id + " Player Power: " + power);
             // UnityEngine.Debug.Log("Player Alpha: " + alpha);
             // UnityEngine.Debug.Log("Player Theta: " + theta);
             // UnityEngine.Debug.Log("Player Mean of Alpha: " + meanAlpha);
@@ -312,6 +305,9 @@ public class gamePlay : MonoBehaviour
 
     // Saves 10 latest power-values for AI
     public List<float> ai10Power = new List<float>();
+
+    // Constants
+    public const float winRadius = 0.4f;
 
 
 
@@ -380,6 +376,37 @@ public class gamePlay : MonoBehaviour
             //}
         }
     }
+
+    
+    // Calculates change
+    public static float change(float current, float previous){
+        float change = current - previous;
+        return change;
+    }
+
+
+    // Triggers when a player finishes the game, aka radius = 0.0f
+    public static void playerFinished(gamePlay instance, int place){
+            
+            instance.players[place].update = false; // Players stats can no longer update
+
+            // UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
+            
+            boost(instance);    // Gives boost to remaining players by decreasing AI for 5 seconds
+            bool bla = playersWon(instance);   // Checks if game is over bc the players won
+            
+    }
+
+
+    /**********************************Main Functions*************************************/
+
+    
+    // Returns the new calculated power (a mean of alpha and theta)
+    public static float calculatePower(float alpha, float theta)
+    {
+        float power = (alpha + theta) / 2;
+        return power;
+    }
     
     // Set the players alpha, theta and power and all the previous ones
     public static void updatePrevAndCurrent(gamePlay instance){
@@ -391,13 +418,7 @@ public class gamePlay : MonoBehaviour
         instance.assignValuesToField(prevAlphaValues, "prevAlpha");
 
         // Assign alpha*******************
-
-        // EEG-ver
-
         float[] alphaValues = {instance.EEGplayers[0].med, instance.EEGplayers[1].med, instance.EEGplayers[2].med, instance.EEGplayers[3].med};
-
-        // Test-ver
-        // float[] alphaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
 
 
         instance.assignValuesToField(alphaValues, "alpha");     // Assign
@@ -408,13 +429,7 @@ public class gamePlay : MonoBehaviour
         instance.assignValuesToField(prevThetaValues, "prevTheta");
 
         // Assign theta*******************
-
-        // EEG-ver
-
         float[] thetaValues = {instance.EEGplayers[0].att, instance.EEGplayers[1].att, instance.EEGplayers[2].att, instance.EEGplayers[3].att};
-
-        // Test-ver
-        // float[] thetaValues = {instance.p1Power, instance.p2Power, instance.p3Power, instance.p4Power};
 
 
         instance.assignValuesToField(thetaValues, "theta");     // Assign
@@ -431,14 +446,8 @@ public class gamePlay : MonoBehaviour
         instance.canUpdate = true;
 
     }
-    
-    // Calculates change
-    public static float change(float current, float previous){
-        float change = current - previous;
-        return change;
-    }
 
-    // Placeholder to decide the placement of the players, updates every delay sec
+    // Decides the placement of the players, updates every delay sec
     public static void setPlacements(gamePlay instance){
 
          // Create a copy of the players array
@@ -462,72 +471,7 @@ public class gamePlay : MonoBehaviour
         }
 
     }
-
-
-
-    // Returns the new calculated power (a mean of alpha and theta)
-    public static float calculatePower(float alpha, float theta)
-    {
-        float power = (alpha + theta) / 2;
-        return power;
-    }
     
-    // Gives boost to remaining players when ones finishes by nerfing AI for a while, no lightning, lesser power for 5 sec
-    public static void boost(gamePlay instance){
-        
-        if (!instance.isBoosted) {
-            instance.isBoosted = true; 
-
-            instance.AI.canUpdateAI = false;  // Stop update() in AI
-
-            instance.AI.state = 0;  // AI-state at 0, no lightning can occur
-            if(AIScript.placementPlayer(instance.AI, instance.players.Length).power > 60){
-                instance.AI.power = 60.0f;
-            }
-            else{
-                instance.AI.power = AIScript.placementPlayer(instance.AI, instance.players.Length).power - 10;  // AI-power reduced to last placed player's power minus 10
-            }
-
-            instance.StartCoroutine(instance.EndBoost(instance));
-        }
-    }
-
-
-    // Triggers when a player finishes the game, aka radius = 0.0f
-    public static void playerFinished(gamePlay instance, int place){
-
-            // Set radius to 0.0f
-            var field = typeof(PlayerData).GetField("radius");
-            field.SetValueDirect(__makeref(instance.players[(place)]), 0.0f);
-            
-            instance.players[place].update = false; // Players stats can no longer update
-
-            UnityEngine.Debug.Log("Player " + instance.players[(place)].id + " has finished!");
-            
-            boost(instance);    // Gives boost to remaining players by decreasing AI for 5 seconds
-            bool bla = playersWon(instance);   // Checks if game is over bc the players won
-            
-    }
-
-    public int numberOfActivePlayers(){
-
-        int activePlayers = 0;
-        
-        for (int i = 0; i < players.Length; i++) {
-        
-            if(players[i].update){
-                activePlayers++;
-            }
-        }
-
-        // UnityEngine.Debug.Log("Number of remaining players are: " + activePlayers);
-
-        return activePlayers;
-    }
-
-
-    /**********************************Main Functions*************************************/
-
     // Set consistency of each player
     public static void setConsistency(gamePlay instance){
         
@@ -630,19 +574,15 @@ public class gamePlay : MonoBehaviour
         
         float addOn = 0.0f;
         
-        // Normal increase (closer to center)
+        // Player moves closer to center
         if(instance.players[(place)].power > instance.AI.power){
-            addOn = -((instance.players[(place)].power - instance.AI.power)/400 - instance.adjust);
+            addOn = -((instance.players[(place)].power - instance.AI.power)/400);
         }
 
-        // Normal decrease (further from center)
+        // Player moves further from center
         if(instance.players[(place)].radius < 3.0f && instance.players[(place)].power < instance.AI.power){   // Must be less than radius of vortex
-            addOn = (instance.AI.power - instance.players[(place)].power)/400 + instance.adjust;
+            addOn = (instance.AI.power - instance.players[(place)].power)/400;
         }
-
-        /*if(instance.players[(place)].id == 4){  // Write out increase/decrease for player 4
-            UnityEngine.Debug.Log("addOn = " + addOn);
-        }*/
 
         float radius = instance.players[(place)].radius + addOn;    // Calculate the new radius
 
@@ -650,7 +590,7 @@ public class gamePlay : MonoBehaviour
         if(radius > 3.0f){
             radius = 3.0f;
         }
-        else if(radius < 0.35f){ // The radius for lightsource in the middle
+        else if(radius < winRadius){ // The radius for lightsource in the middle
             radius = 0.0f;
             playerFinished(instance, place);    // Triggers boost effect
         }
@@ -658,7 +598,7 @@ public class gamePlay : MonoBehaviour
         return radius;
     }
     
-    // Updates the players current radius (placeholder)
+    // Updates the players current radius
     public static void updatePlayerRadius(gamePlay instance){
 
         float[] radiusValues = new float[instance.players.Length];
@@ -675,7 +615,7 @@ public class gamePlay : MonoBehaviour
     
     public static void set10Vectors(gamePlay instance){
 
-        instance.players10Power.Add(AIScript.calculateTeamPower(instance.AI));    // Add latest teamPower last
+        instance.players10Power.Add(instance.AI.calculateTeamPower());    // Add latest teamPower last
         instance.ai10Power.Add(instance.AI.power);    // Add latest AI-power last
     }
     
@@ -749,7 +689,7 @@ public class gamePlay : MonoBehaviour
             // Make all update-functions inactive
             instance.gameOver = true;
 
-            UnityEngine.Debug.Log("Game is over, player have won!");
+            // UnityEngine.Debug.Log("Game is over, player have won!");
 
             // Go to next scene
             SceneManager.LoadScene(4);
@@ -757,6 +697,44 @@ public class gamePlay : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // The current amount of active players
+    public int numberOfActivePlayers(){
+
+        int activePlayers = 0;
+        
+        for (int i = 0; i < players.Length; i++) {
+        
+            if(players[i].update){
+                activePlayers++;
+            }
+        }
+
+        // UnityEngine.Debug.Log("Number of remaining players are: " + activePlayers);
+
+        return activePlayers;
+    }
+
+    // Gives boost to remaining players when ones finishes by nerfing AI for a while, no lightning, lesser power for 5 sec
+    public static void boost(gamePlay instance){
+        
+        if (!instance.isBoosted) {
+            instance.isBoosted = true; 
+
+            instance.AI.canUpdateAI = false;  // Stop update() in AI
+
+            instance.AI.state = 0;  // AI-state at 0, no lightning can occur
+
+            if(instance.AI.placementPlayer(instance.players.Length).power > 60){
+                instance.AI.power = 60.0f;
+            }
+            else{
+                instance.AI.power = instance.AI.placementPlayer(instance.players.Length).power - 10;  // AI-power reduced to last placed player's power minus 10
+            }
+
+            instance.StartCoroutine(instance.EndBoost(instance));
+        }
     }
      
     /************************************************************************************/
